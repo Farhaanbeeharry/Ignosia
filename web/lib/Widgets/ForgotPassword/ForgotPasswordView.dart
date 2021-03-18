@@ -11,8 +11,7 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  ForgotPasswordController forgotPasswordController =
-      new ForgotPasswordController();
+  ForgotPasswordController forgotPasswordController = new ForgotPasswordController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +78,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           ),
                         ),
                         SizedBox(
-                          height: 40.0,
+                          height: 50.0,
                         ),
                         TextFormField(
                           validator: (emailAddress) {
@@ -94,35 +93,33 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(top: 50.0),
                             prefixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
                               child: Icon(FontAwesomeIcons.at),
                             ),
                             labelText: 'Email address',
                             labelStyle: Common.labelTextStyle,
-                            border: OutlineInputBorder(),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(15.0),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
-                          height: 40.0,
+                          height: 30.0,
                         ),
                         Row(
                           children: [
                             Container(
                               height: 50.0,
-                              width: 300.0,
+                              width: 305.0,
                               child: TextButton(
                                 onPressed: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
+                                  FocusScope.of(context).requestFocus(new FocusNode());
 
-                                  if (forgotPasswordController
-                                      .forgotPasswordKey.currentState
-                                      .validate()) {}
+                                  if (forgotPasswordController.forgotPasswordKey.currentState.validate()) {}
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Color(0xFF3f3d56),
-                                ),
+                                style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                                 child: Text(
                                   "Request new password",
                                   style: Common.buttonTextStyle,
@@ -130,21 +127,18 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               ),
                             ),
                             SizedBox(
-                              width: 25.0,
+                              width: 15.0,
                             ),
                             Container(
                               height: 50.0,
-                              width: 175.0,
+                              width: 180.0,
                               child: TextButton(
                                 onPressed: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
+                                  FocusScope.of(context).requestFocus(new FocusNode());
 
                                   Navigator.pushNamed(context, '/');
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Color(0XFF6C63FF),
-                                ),
+                                style: TextButton.styleFrom(backgroundColor: Color(0XFF6C63FF), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                                 child: Text(
                                   "Cancel",
                                   style: Common.buttonTextStyle,

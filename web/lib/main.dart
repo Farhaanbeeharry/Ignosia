@@ -7,7 +7,7 @@ import 'Widgets/Login/LoginView.dart';
 void main() {
   runApp(
     new MaterialApp(
-      initialRoute: '/SignUp',
+      initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
         '/ForgotPassword': (context) => ForgotPasswordView(),
