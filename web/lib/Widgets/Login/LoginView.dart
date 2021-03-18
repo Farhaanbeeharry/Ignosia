@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
+import 'package:web/Common/Validator.dart';
 import 'package:web/Widgets/Login/LoginController.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,123 +35,162 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: 100.0,
                 ),
-                Container(
-                  width: 500.0,
-                  height: 500.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Log In",
-                        style: TextStyle(
-                            fontSize: 58.0,
-                            fontFamily: 'StemBold',
-                            color: Color(0XFF6C63FF)),
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Text(
-                        "A hero doesn't always wear a cap",
-                        style:
-                            TextStyle(fontFamily: 'StemItalic', fontSize: 18.0),
-                      ),
-                      SizedBox(
-                        height: 50.0,
-                      ),
-                      TextFormField(
-                        style: Common.labelTextStyle,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.alternate_email),
-                          labelText: 'Email address',
-                          labelStyle: Common.labelTextStyle,
-                          border: OutlineInputBorder(),
+                Form(
+                  key: loginController.loginFormKey,
+                  child: Container(
+                    width: 500.0,
+                    height: 500.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Log In",
+                          style: TextStyle(
+                              fontSize: 58.0,
+                              fontFamily: 'StemBold',
+                              color: Color(0XFF6C63FF)),
                         ),
-                      ),
-                      SizedBox(
-                        height: 25.0,
-                      ),
-                      TextFormField(
-                        style: Common.labelTextStyle,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  loginController.obscureTextCheck =
-                                      !loginController.obscureTextCheck;
-
-                                  loginController.obscureTextIcon =
-                                      loginController.obscureTextCheck
-                                          ? Icon(Icons.visibility)
-                                          : Icon(Icons.visibility_off);
-                                });
-                              },
-                              child: loginController.obscureTextIcon),
-                          labelText: 'Password',
-                          labelStyle: Common.labelTextStyle,
-                          border: OutlineInputBorder(),
+                        SizedBox(
+                          height: 15.0,
                         ),
-                        obscureText: loginController.obscureTextCheck,
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                      Container(
-                        width: 500.0,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                              },
-                              child: Text(
-                                "No account yet?",
-                                style: TextStyle(
-                                    color: Color(0XFF6C63FF),
-                                    fontSize: 16.0,
-                                    fontFamily: 'StemLight'),
-                              ),
-                            ),
-                            Spacer(),
-                            InkWell(
-                              onTap: () {
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                              },
-                              child: Text(
-                                "Forgot password?",
-                                style: TextStyle(
-                                    color: Color(0XFF6C63FF),
-                                    fontSize: 16.0,
-                                    fontFamily: 'StemLight'),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "A hero doesn't always wear a cap",
+                          style: TextStyle(
+                              fontFamily: 'StemItalic', fontSize: 18.0),
                         ),
-                      ),
-                      SizedBox(
-                        height: 25.0,
-                      ),
-                      Container(
-                        height: 50.0,
-                        width: 250.0,
-                        child: TextButton(
-                          onPressed: () {
-                            FocusScope.of(context)
-                                .requestFocus(new FocusNode());
+                        SizedBox(
+                          height: 50.0,
+                        ),
+                        TextFormField(
+                          controller: loginController.emailController,
+                          validator: (emailAddress) {
+                            if (emailAddress.isEmpty) {
+                              return "Email address cannot be empty!";
+                            } else if (!isEmail(emailAddress)) {
+                              return "Invalid email format!";
+                            }
+                            return null;
                           },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Color(0xFF3f3d56),
-                          ),
-                          child: Text(
-                            "Log in",
-                            style: Common.buttonTextStyle,
+                          style: Common.labelTextStyle,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.alternate_email),
+                            labelText: 'Email address',
+                            labelStyle: Common.labelTextStyle,
+                            border: OutlineInputBorder(),
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 25.0,
+                        ),
+                        TextFormField(
+                          controller: loginController.passwordController,
+                          validator: (password) {
+                            if (password.isEmpty) {
+                              return "Password cannot be empty!";
+                            } else if (password.length <= 8) {
+                              return "Password too short!";
+                            } else if (password.length > 32) {
+                              return "Password too long!";
+                            } else if (!Validator.checkSpecialCharacter(
+                                password)) {
+                              return "Password should have atleast one special character!";
+                            } else if (!Validator.checkUpperCase(password)) {
+                              return "Password should have atleast one upper case!";
+                            } else if (!Validator.checkLowerCase(password)) {
+                              return "Password should have atleast one lower case!";
+                            } else if (!Validator.checkNumber(password)) {
+                              return "Password should have atleast one number!";
+                            }
+                            return null;
+                          },
+                          style: Common.labelTextStyle,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    loginController.obscureTextCheck =
+                                        !loginController.obscureTextCheck;
+
+                                    loginController.obscureTextIcon =
+                                        loginController.obscureTextCheck
+                                            ? Icon(Icons.visibility)
+                                            : Icon(Icons.visibility_off);
+                                  });
+                                },
+                                child: loginController.obscureTextIcon),
+                            labelText: 'Password',
+                            labelStyle: Common.labelTextStyle,
+                            border: OutlineInputBorder(),
+                          ),
+                          obscureText: loginController.obscureTextCheck,
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Container(
+                          width: 500.0,
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
+                                },
+                                child: Text(
+                                  "No account yet?",
+                                  style: TextStyle(
+                                      color: Color(0XFF6C63FF),
+                                      fontSize: 16.0,
+                                      fontFamily: 'StemLight'),
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
+                                  Navigator.pushNamed(
+                                      context, '/ForgotPassword');
+                                },
+                                child: Text(
+                                  "Forgot password?",
+                                  style: TextStyle(
+                                      color: Color(0XFF6C63FF),
+                                      fontSize: 16.0,
+                                      fontFamily: 'StemLight'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 25.0,
+                        ),
+                        Container(
+                          height: 50.0,
+                          width: 250.0,
+                          child: TextButton(
+                            onPressed: () {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              if (loginController.loginFormKey.currentState
+                                  .validate()) {
+                                print(
+                                    "email: ${loginController.emailController.text}\npassword: ${loginController.passwordController.text}");
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Color(0xFF3f3d56),
+                            ),
+                            child: Text(
+                              "Log in",
+                              style: Common.buttonTextStyle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
