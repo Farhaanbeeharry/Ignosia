@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Validator.dart';
@@ -73,7 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           style: Common.labelTextStyle,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.alternate_email),
+                            contentPadding: EdgeInsets.only(top: 50.0),
+                            prefixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Icon(FontAwesomeIcons.at),
+                            ),
                             labelText: 'Email address',
                             labelStyle: Common.labelTextStyle,
                             border: OutlineInputBorder(),
@@ -105,7 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           style: Common.labelTextStyle,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
+                            contentPadding: EdgeInsets.only(top: 50.0),
+                            prefixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Icon(FontAwesomeIcons.lock),
+                            ),
                             suffixIcon: InkWell(
                                 onTap: () {
                                   setState(() {
@@ -114,11 +125,14 @@ class _LoginPageState extends State<LoginPage> {
 
                                     loginController.obscureTextIcon =
                                         loginController.obscureTextCheck
-                                            ? Icon(Icons.visibility)
-                                            : Icon(Icons.visibility_off);
+                                            ? Icon(FontAwesomeIcons.eye)
+                                            : Icon(FontAwesomeIcons.eyeSlash);
                                   });
                                 },
-                                child: loginController.obscureTextIcon),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 20.0),
+                                  child: loginController.obscureTextIcon,
+                                )),
                             labelText: 'Password',
                             labelStyle: Common.labelTextStyle,
                             border: OutlineInputBorder(),
@@ -136,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onTap: () {
                                   FocusScope.of(context)
                                       .requestFocus(new FocusNode());
+                                  Navigator.pushNamed(context, '/SignUp');
                                 },
                                 child: Text(
                                   "No account yet?",
