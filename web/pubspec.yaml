@@ -32,6 +32,8 @@ dependencies:
   validators: ^2.0.1
   font_awesome_flutter: ^8.12.0
   latlng: any
+  encrypt: ^4.1.0
+  awesome_dialog: ^1.3.2
 
 dev_dependencies:
   flutter_test:

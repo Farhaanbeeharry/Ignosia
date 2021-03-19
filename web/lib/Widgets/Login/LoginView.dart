@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
-import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Validator.dart';
 import 'package:web/Widgets/Login/LoginController.dart';
@@ -195,9 +194,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextButton(
                             onPressed: () {
                               FocusScope.of(context).requestFocus(new FocusNode());
+
                               if (loginController.loginFormKey.currentState.validate()) {
-                                print("email: ${loginController.emailController.text}\npassword: ${loginController.passwordController.text}");
-                                print(ApiUrl.getURL(ApiUrl.login));
+                                loginController.logIn(loginController.emailController.text, loginController.passwordController.text, context);
                               }
                             },
                             style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),

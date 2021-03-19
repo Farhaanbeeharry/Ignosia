@@ -7,7 +7,7 @@ const pool = createPool({
     host: "localhost", //hosting link of the database
     user: "Farhaan", //the username of the database (default is "root")
     password: "admin", //the password of the database (default has no password)
-    database: "test" //the name of the database
+    database: "ignosia" //the name of the database
 });
 
 //export the pool so that 'app' can use the pool
