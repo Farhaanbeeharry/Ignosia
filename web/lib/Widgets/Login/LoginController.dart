@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart' as http;
+import 'package:web/Common/API.dart';
 import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Encryptor.dart';
 import 'package:web/Model/ResponseModel.dart';
@@ -19,13 +17,11 @@ class LoginController {
 
   Future<void> logIn(String emailAddress, String password, BuildContext context) async {
     password = Encrypt().encryptPassword(password);
+    emailAddress = emailAddress.toLowerCase();
 
     var body = {"emailAddress": emailAddress, "password": password};
-    var apiResponse = await http.post(ApiUrl.getURL(ApiUrl.login), body: body);
-    String stringResponse = apiResponse.body;
-    Map<String, dynamic> mapResponse = jsonDecode(stringResponse);
 
-    ResponseModel response = new ResponseModel().cast(mapResponse);
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
     if (response.success) {
       Navigator.pushNamed(context, '/Dashboard');
