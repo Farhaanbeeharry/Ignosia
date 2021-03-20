@@ -6,19 +6,12 @@ class ResponseModel {
 
   ResponseModel({this.success, this.error, this.data, this.msg});
 
-  ResponseModel cast(Map<String, dynamic> json) {
+  ResponseModel fromJson(Map<String, dynamic> json) {
     this.success = json['success'];
     this.error = json['error'];
     this.data = json['data'];
     this.msg = json['msg'];
     return this;
-  }
-
-  ResponseModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    error = json['error'];
-    data = json['data'];
-    msg = json['msg'];
   }
 
   Map<String, dynamic> toJson() {

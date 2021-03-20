@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
@@ -81,6 +82,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           height: 50.0,
                         ),
                         TextFormField(
+                          controller: forgotPasswordController.emailController,
                           validator: (emailAddress) {
                             if (emailAddress.isEmpty) {
                               return "Email address cannot be empty!";
@@ -114,16 +116,27 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               height: 50.0,
                               width: 305.0,
                               child: TextButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   FocusScope.of(context).requestFocus(new FocusNode());
 
-                                  if (forgotPasswordController.forgotPasswordKey.currentState.validate()) {}
+                                  if (forgotPasswordController.forgotPasswordKey.currentState.validate()) {
+                                    setState(() {
+                                      forgotPasswordController.requestBtnWidget = SpinKitWave(
+                                        color: Colors.white,
+                                        size: 25.0,
+                                      );
+                                    });
+                                    await forgotPasswordController.requestKey(forgotPasswordController.emailController.text, context);
+                                    setState(() {
+                                      forgotPasswordController.requestBtnWidget = Text(
+                                        "Request reset password",
+                                        style: Common.buttonTextStyle,
+                                      );
+                                    });
+                                  }
                                 },
                                 style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
-                                child: Text(
-                                  "Request new password",
-                                  style: Common.buttonTextStyle,
-                                ),
+                                child: forgotPasswordController.requestBtnWidget,
                               ),
                             ),
                             SizedBox(
@@ -136,7 +149,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                 onPressed: () {
                                   FocusScope.of(context).requestFocus(new FocusNode());
 
-                                  Navigator.pushNamed(context, '/');
+                                  Navigator.pushNamed(context, '/Login');
                                 },
                                 style: TextButton.styleFrom(backgroundColor: Color(0XFF6C63FF), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                                 child: Text(

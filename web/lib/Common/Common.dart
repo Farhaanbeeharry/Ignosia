@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Common {
+  static String resetEmailAddress = "";
+
   static TextStyle labelTextStyle = new TextStyle(
     fontSize: 16.0,
     fontFamily: 'StemRegular',

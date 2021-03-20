@@ -568,7 +568,7 @@ class _SignupViewState extends State<SignupView> {
                                   child: InkWell(
                                     onTap: () {
                                       FocusScope.of(context).requestFocus(new FocusNode());
-                                      Navigator.pushNamed(context, '/');
+                                      Navigator.pushNamed(context, '/Login');
                                     },
                                     child: Text(
                                       "Have an account already?",

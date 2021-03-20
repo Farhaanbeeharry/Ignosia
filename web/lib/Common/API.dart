@@ -8,8 +8,9 @@ class API {
     var apiResponse = await http.post(url, body: body);
 
     String stringResponse = apiResponse.body;
-    Map<String, dynamic> mapResponse = jsonDecode(stringResponse);
 
-    return ResponseModel().cast(mapResponse);
+    Map<String, dynamic> mapJSON = jsonDecode(stringResponse);
+
+    return ResponseModel().fromJson(mapJSON);
   }
 }
