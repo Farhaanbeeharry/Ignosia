@@ -13,6 +13,10 @@ class Common {
     fontFamily: 'StemMedium',
   );
 
+  static Color disabledNavBarColor = Colors.black26;
+  static Color hoverNavBarColor = Colors.black45;
+  static Color enabledNavBarColor = Colors.black;
+
   static Map<String, dynamic> headers = {
     "Access-Control-Allow-Origin": "*", // Required for CORS support to work
     "Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS

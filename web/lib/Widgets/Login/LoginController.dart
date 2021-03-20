@@ -30,7 +30,7 @@ class LoginController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
     if (response.success) {
-      Navigator.pushNamed(context, '/Dashboard');
+      Navigator.pushNamed(context, '/Homepage');
     } else if (!response.success) {
       AwesomeDialog(
         context: context,
