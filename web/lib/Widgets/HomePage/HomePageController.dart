@@ -18,6 +18,7 @@ class HomepageController {
     "members": false,
     "beneficiary": false,
     "analytics": false,
+    "settings": false,
   };
   Color currentDashboardText = Colors.white;
   Color currentDashboardBox = Color(0XFF6C63FF);
@@ -46,7 +47,7 @@ class HomepageController {
   Color currentAnalyticsText = Colors.black54;
   Color currentAnalyticsBox = Colors.white;
 
-  Color currentSettingsText = Colors.black;
+  Color currentSettingsText = Colors.black54;
   Color currentSettingsBox = Colors.white;
 
   Color currentLogoutText = Colors.black;
