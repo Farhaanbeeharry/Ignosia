@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Stem.dart';
+
+class ScheduleWidget extends StatefulWidget {
+  @override
+  _ScheduleWidgetState createState() => _ScheduleWidgetState();
+}
+
+class _ScheduleWidgetState extends State<ScheduleWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width * 0.30,
+          height: 120.0,
+          child: Container(
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFe1e1e1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      width: 266.0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Mr J. Dormipartou',
+                            style: TextStyle(color: Colors.black, fontSize: 26.0, fontFamily: Stem.bold),
+                          ),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          Text(
+                            'Assigned to Mr Farhaan Beeharry',
+                            style: TextStyle(fontSize: 16.0, fontFamily: Stem.regular),
+                          ),
+                          SizedBox(
+                            height: 4.0,
+                          ),
+                          Text(
+                            'at 15:00 on 13/03/2021',
+                            style: TextStyle(fontSize: 14.0, fontFamily: Stem.light),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF6c63ff),
+                    ),
+                    width: 70.0,
+                    child: Icon(
+                      FontAwesomeIcons.externalLinkAlt,
+                      size: 32.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 5.0,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF6c63ff),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
+                      ),
+                    ),
+                    width: 70.0,
+                    child: Icon(
+                      FontAwesomeIcons.trashAlt,
+                      size: 32.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15.0,
+        ),
+      ],
+    );
+  }
+}

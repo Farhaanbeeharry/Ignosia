@@ -104,3 +104,16 @@ CREATE TABLE BENEFICIARY (
     PRIMARY KEY (BeneficiaryID),
     FOREIGN KEY (ScheduleID) REFERENCES SCHEDULE(ScheduleID)
 );
+
+CREATE TABLE NOTIFICATIONS (
+    NotificationID VARCHAR(100) NOT NULL,
+    NotificationFrom VARCHAR(100) NOT NULL,
+    NotificationTo VARCHAR(100) NOT NULL,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT NOT NULL,
+    Date VARCHAR(12) NOT NULL,
+    readStatus VARCHAR(6) NOT NULL,
+    PRIMARY KEY (NotificationID),
+    FOREIGN KEY (NotificationFrom) REFERENCES USER(UserID),
+    FOREIGN KEY (NotificationTo) REFERENCES USER(UserID)
+);

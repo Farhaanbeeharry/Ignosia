@@ -27,14 +27,14 @@ class _NewPasswordState extends State<NewPassword> {
             child: Row(
               children: [
                 SizedBox(
-                  width: 100.0,
+                  width: 160.0,
                 ),
                 SvgPicture.asset(
                   "assets/images/newPassword.svg",
                   width: 500.0,
                 ),
                 SizedBox(
-                  width: 100.0,
+                  width: 200.0,
                 ),
                 Form(
                   key: newPasswordController.newPasswordFormKey,

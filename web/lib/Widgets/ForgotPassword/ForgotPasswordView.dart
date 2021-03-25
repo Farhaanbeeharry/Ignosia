@@ -33,7 +33,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   width: 600.0,
                 ),
                 SizedBox(
-                  width: 100.0,
+                  width: 175.0,
                 ),
                 Form(
                   key: forgotPasswordController.forgotPasswordKey,

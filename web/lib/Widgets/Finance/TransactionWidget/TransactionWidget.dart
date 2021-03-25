@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:web/Widgets/DashboardTransactionWidget/DashboardTransactionWidgetController.dart';
+import 'package:web/Widgets/Finance/TransactionWidget/TransactionWidgetController.dart';
 
-class DashboardTransactionWidget extends StatefulWidget {
+class TransactionWidget extends StatefulWidget {
   final String title, description, type;
   final double amount;
 
-  DashboardTransactionWidget({this.title, this.description, this.type, this.amount});
+  TransactionWidget({this.title, this.description, this.type, this.amount});
 
   @override
-  _DashboardTransactionWidgetState createState() => _DashboardTransactionWidgetState();
+  _TransactionWidgetState createState() => _TransactionWidgetState();
 }
 
-class _DashboardTransactionWidgetState extends State<DashboardTransactionWidget> {
-  DashboardTransactionWidgetController dashboardTransactionWidgetController = new DashboardTransactionWidgetController();
+class _TransactionWidgetState extends State<TransactionWidget> {
+  TransactionWidgetController transactionWidgetController = new TransactionWidgetController();
   @override
   Widget build(BuildContext context) {
-    if (widget.type == "in") {
-      dashboardTransactionWidgetController.currentColor = dashboardTransactionWidgetController.inColor;
-    } else if (widget.type == "out") {
-      dashboardTransactionWidgetController.currentColor = dashboardTransactionWidgetController.outColor;
-    }
-
     return Column(
       children: [
         Container(
@@ -30,12 +24,22 @@ class _DashboardTransactionWidgetState extends State<DashboardTransactionWidget>
               Radius.circular(10.0),
             ),
           ),
-          width: 345.0,
+          width: 500.0,
           height: 80.0,
           child: Row(
             children: [
+              Container(
+                width: 15.0,
+                decoration: BoxDecoration(
+                  color: widget.type == "in" ? transactionWidgetController.inColor : transactionWidgetController.outColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                  ),
+                ),
+              ),
               SizedBox(
-                width: 20.0,
+                width: 15.0,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +58,11 @@ class _DashboardTransactionWidgetState extends State<DashboardTransactionWidget>
                 width: 100.0,
                 child: Text(
                   'Rs${widget.amount}',
-                  style: TextStyle(color: dashboardTransactionWidgetController.currentColor, fontSize: 20.0, fontFamily: 'StemMedium'),
+                  style: TextStyle(
+                    color: widget.type == "in" ? transactionWidgetController.inColor : transactionWidgetController.outColor,
+                    fontSize: 20.0,
+                    fontFamily: 'StemMedium',
+                  ),
                 ),
               ),
             ],
