@@ -101,6 +101,7 @@ CREATE TABLE BENEFICIARY (
     WorkToDate VARCHAR(12),
     NumberOfChildren VARCHAR(2) NOT NULL,
     Notes TEXT NOT NULL,
+    status VARCHAR(12) NOT NULL,
     PRIMARY KEY (BeneficiaryID),
     FOREIGN KEY (ScheduleID) REFERENCES SCHEDULE(ScheduleID)
 );

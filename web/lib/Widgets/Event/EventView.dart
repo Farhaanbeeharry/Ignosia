@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Widgets/Event/EventController.dart';
+import 'package:web/Widgets/Event/EventWidget/EventWidget.dart';
 
 class EventView extends StatefulWidget {
   @override
@@ -377,14 +378,30 @@ class _EventViewState extends State<EventView> {
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(15.0),
+                  padding: const EdgeInsets.symmetric(vertical: 35.0, horizontal: 40.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Events',
                         style: TextStyle(color: Colors.black, fontSize: 32.0, fontFamily: Stem.bold),
-                      )
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Container(
+                        height: 485.0,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              EventWidget(),
+                              EventWidget(),
+                              EventWidget(),
+                              EventWidget(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
