@@ -191,10 +191,12 @@ class _EventViewState extends State<EventView> {
                                         width: 160.0,
                                         height: 50.0,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0),
-                                            ),
-                                            color: Color(0xA86c63ff)),
+                                          border: Border.all(color: Color(0xFFbbbbbb)),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          color: Colors.white,
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 5.0),
                                           child: !eventController.isDateSelected
@@ -260,10 +262,12 @@ class _EventViewState extends State<EventView> {
                                         width: 160.0,
                                         height: 50.0,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0),
-                                            ),
-                                            color: Color(0xA86c63ff)),
+                                          border: Border.all(color: Color(0xFFbbbbbb)),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          color: Colors.white,
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 5.0),
                                           child: !eventController.isTimeSelected

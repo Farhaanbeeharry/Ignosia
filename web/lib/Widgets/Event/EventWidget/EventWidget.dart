@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
 
 class EventWidget extends StatefulWidget {
@@ -91,7 +92,6 @@ class _EventWidgetState extends State<EventWidget> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(25.0),
                     bottomRight: Radius.circular(25.0),
                   ),
                   color: Color(0xFF6c63ff),
@@ -100,6 +100,35 @@ class _EventWidgetState extends State<EventWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                              color: Colors.white,
+                            ),
+                            height: 25.0,
+                            width: 25.0,
+                            child: Icon(
+                              FontAwesomeIcons.times,
+                              color: Colors.red,
+                              size: 20.0,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     Text(
                       '23/05',
                       style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: Stem.regular),
