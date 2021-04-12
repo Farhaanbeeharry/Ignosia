@@ -37,6 +37,7 @@ dependencies:
   flutter_spinkit: ^3.1.0
   page_slider: ^0.0.2
   day_night_time_picker: ^1.0.1
+  material_dialogs: any
 
 dev_dependencies:
   flutter_test:
