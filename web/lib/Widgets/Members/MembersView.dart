@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Widgets/Members/MemberWidget/MemberWidgetView.dart';
 import 'package:web/Widgets/Members/MembersController.dart';
 
 class MembersView extends StatefulWidget {
@@ -315,6 +316,34 @@ class _MembersViewState extends State<MembersView> {
                       ),
                       SizedBox(
                         height: 20.0,
+                      ),
+                      Container(
+                        height: 470.0,
+                        width: MediaQuery.of(context).size.width * 0.32,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              MemberWidget(
+                                userType: "mobile",
+                              ),
+                              MemberWidget(
+                                userType: "mobile",
+                              ),
+                              MemberWidget(
+                                userType: "web",
+                              ),
+                              MemberWidget(
+                                userType: "mobile",
+                              ),
+                              MemberWidget(
+                                userType: "mobile",
+                              ),
+                              MemberWidget(
+                                userType: "web",
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
