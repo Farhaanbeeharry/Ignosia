@@ -4,18 +4,20 @@ USE IGNOSIA;
 
 CREATE TABLE USER (
     ID VARCHAR(100) NOT NULL,
-    FirstName VARCHAR(32) NOT NULL,
-    LastName VARCHAR(32) NOT NULL,
-    EmailAddress VARCHAR(64) NOT NULL,
-    Password VARCHAR(255) NOT NULL,
-    DateOfBirth VARCHAR(12) NOT NULL,
-    PhoneNumber VARCHAR(20) NOT NULL,
-    Location VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(32),
+    LastName VARCHAR(32),
+    EmailAddress VARCHAR(64),
+    Password VARCHAR(255),
+    DateOfBirth VARCHAR(12),
+    PhoneNumber VARCHAR(20),
+    Address VARCHAR(256),
     UserToken VARCHAR(255),
     DeviceToken VARCHAR(255),
-    AccountType VARCHAR(24) NOT NULL,
-    Status VARCHAR(14) NOT NULL,
-    PRIMARY KEY (UserID)
+    FirstTimeUser VARCHAR(10) NOT NULL,
+    AccountType VARCHAR(24),
+    ResetKey VARCHAR(10),
+    Status VARCHAR(14),
+    PRIMARY KEY (ID)
 );
 
 CREATE TABLE TRANSACTION (
@@ -27,8 +29,8 @@ CREATE TABLE TRANSACTION (
     Type VARCHAR(24) NOT NULL,
     Date VARCHAR(12) NOT NULL,
     Description TEXT NOT NULL,
-    PRIMARY KEY (TransactionID),
-    FOREIGN KEY (UserID) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (UserID) REFERENCES USER(ID)
 );
 
 CREATE TABLE REQUEST (
@@ -36,10 +38,12 @@ CREATE TABLE REQUEST (
     ReceivedByUserID VARCHAR(100) NOT NULL,
     Name VARCHAR(32) NOT NULL,
     PhoneNumber VARCHAR(20) NOT NULL,
-    Location VARCHAR(255) NOT NULL,
+    Location VARCHAR(100),
+    Latitude VARCHAR(20),
+    Longitude VARCHAR(20),
     Notes TEXT NOT NULL,
-    PRIMARY KEY (RequestID),
-    FOREIGN KEY (ReceivedByUserID) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (ReceivedByUserID) REFERENCES USER(ID)
 );
 
 CREATE TABLE SCHEDULE (
@@ -48,14 +52,17 @@ CREATE TABLE SCHEDULE (
     AssignedUserID VARCHAR(100) NOT NULL,
     ScheduleName VARCHAR(64) NOT NULL,
     Location VARCHAR(255) NOT NULL,
+    Latitude VARCHAR(20),
+    Longitude VARCHAR(20),
     Date VARCHAR(12) NOT NULL,
     Time VARCHAR(12) NOT NULL,
     Name VARCHAR(32) NOT NULL,
     PhoneNumber VARCHAR(20) NOT NULL,
     Notes TEXT NOT NULL,
     Status VARCHAR(32) NOT NULL,
-    PRIMARY KEY (ScheduleID),
-    FOREIGN KEY (CreatedByUserID) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (CreatedByUserID) REFERENCES USER(ID),
+    FOREIGN KEY (AssignedUserID) REFERENCES USER(ID)
 );
 
 CREATE TABLE EVENT (
@@ -68,8 +75,8 @@ CREATE TABLE EVENT (
     BenefittedPeople TEXT NOT NULL,
     Description TEXT NOT NULL,
     Cost VARCHAR(20) NOT NULL,
-    PRIMARY KEY (EventID),
-    FOREIGN KEY (CreatedByUserID) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (CreatedByUserID) REFERENCES USER(ID)
 );
 
 CREATE TABLE BENEFICIARY (
@@ -82,6 +89,8 @@ CREATE TABLE BENEFICIARY (
     NationalID VARCHAR(16) NOT NULL,
     DateOfBirth VARCHAR(12) NOT NULL,
     Location VARCHAR(255) NOT NULL,
+    Latitude VARCHAR(20),
+    Longitude VARCHAR(20),
     ResponsiblePartyName VARCHAR(32),
     ResponsiblePartyRelationship VARCHAR(32),
     QualificationYear VARCHAR(32) NOT NULL,
@@ -103,8 +112,8 @@ CREATE TABLE BENEFICIARY (
     NumberOfChildren VARCHAR(2) NOT NULL,
     Notes TEXT NOT NULL,
     status VARCHAR(12) NOT NULL,
-    PRIMARY KEY (BeneficiaryID),
-    FOREIGN KEY (ScheduleID) REFERENCES SCHEDULE(ScheduleID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (ScheduleID) REFERENCES SCHEDULE(ID)
 );
 
 CREATE TABLE NOTIFICATION (
@@ -115,9 +124,9 @@ CREATE TABLE NOTIFICATION (
     Description TEXT NOT NULL,
     Date VARCHAR(12) NOT NULL,
     readStatus VARCHAR(6) NOT NULL,
-    PRIMARY KEY (NotificationID),
-    FOREIGN KEY (NotificationFrom) REFERENCES USER(UserID),
-    FOREIGN KEY (NotificationTo) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (NotificationFrom) REFERENCES USER(ID),
+    FOREIGN KEY (NotificationTo) REFERENCES USER(ID)
 );
 
 CREATE TABLE BUG (
@@ -125,6 +134,6 @@ CREATE TABLE BUG (
     ReportedBy VARCHAR(100) NOT NULL,
     Description TEXT NOT NULL,
     Date VARCHAR(12) NOT NULL,
-    PRIMARY KEY (BugID),
-    FOREIGN KEY (ReportedBy) REFERENCES USER(UserID)
+    PRIMARY KEY (ID),
+    FOREIGN KEY (ReportedBy) REFERENCES USER(ID)
 );

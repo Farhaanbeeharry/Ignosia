@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                             validator: (password) {
                               if (password.isEmpty) {
                                 return "Password cannot be empty!";
-                              } else if (password.length <= 8) {
+                              } else if (password.length < 8) {
                                 return "Password too short!";
                               } else if (password.length > 32) {
                                 return "Password too long!";
@@ -163,18 +163,19 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 500.0,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    FocusScope.of(context).requestFocus(new FocusNode());
-                                    Navigator.pushNamed(context, '/SignUp');
-                                  },
-                                  child: Text(
-                                    "No account yet?",
-                                    style: TextStyle(color: Color(0XFF6C63FF), fontSize: 16.0, fontFamily: 'StemLight'),
-                                  ),
-                                ),
-                                Spacer(),
+                                // InkWell(
+                                //   onTap: () {
+                                //     FocusScope.of(context).requestFocus(new FocusNode());
+                                //     Navigator.pushNamed(context, '/SignUp');
+                                //   },
+                                //   child: Text(
+                                //     "No account yet?",
+                                //     style: TextStyle(color: Color(0XFF6C63FF), fontSize: 16.0, fontFamily: 'StemLight'),
+                                //   ),
+                                // ),
+                                // Spacer(),
                                 InkWell(
                                   onTap: () {
                                     FocusScope.of(context).requestFocus(new FocusNode());

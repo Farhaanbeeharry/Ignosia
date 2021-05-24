@@ -30,49 +30,363 @@ app.use(function(req, res, next) {
 
 });
 
-app.use("/API/login", function(req, res, next) {
+app.use("/API/web/login", function(req, res, next) {
 
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
 
-    checkValidLogIn(emailAddress, password).then(result => {
+    checkValidEmailAddress(emailAddress).then(result => {
 
         if (result == 1) {
-            res.status(200).json({
-                success: true,
-                error: "",
-                data: "",
-                msg: ""
-            });
-        } else if (result == 0) {
-
-            checkValidEmailAddress(emailAddress).then(result => {
+            checkAccountType(emailAddress).then(result => {
 
                 if (result == 1) {
-                    res.status(200).json({
-                        success: false,
-                        error: "Password does not match!",
-                        data: "",
-                        msg: ""
+                    checkValidLogIn(emailAddress, password).then(result => {
+
+                        if (result == 1) {
+                            getLoginData(emailAddress).then(result => {
+
+                                res.status(200).json({
+                                    success: true,
+                                    error: "",
+                                    data: result[0],
+                                    msg: ""
+                                });
+
+                            });
+                        } else if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Password does not match!",
+                                data: {},
+                                msg: ""
+                            });
+                        }
+
                     });
                 } else if (result == 0) {
                     res.status(200).json({
                         success: false,
-                        error: "Account does not exist!",
-                        data: "",
+                        error: "Account does not exist for web!",
+                        data: {},
+                        msg: ""
+                    });
+                }
+
+            });
+        } else if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Account does not exist!",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+
+
+
+});
+
+
+
+app.use("/API/web/forgotPassword", function(req, res, next) {
+
+
+    var emailAddress = req.body.emailAddress;
+
+    checkValidEmailAddress(emailAddress).then(result => {
+
+        if (result == 1) {
+
+            addResetKeyToUser(emailAddress).then(result => {
+
+
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Failed to generate reset key!",
+                        data: {},
+                        msg: ""
+                    });
+                } else {
+                    emailResetKey(emailAddress, result).then(result => {
+
+                        if (result == 1) {
+                            res.status(200).json({
+                                success: true,
+                                error: "",
+                                data: {},
+                                msg: ""
+                            });
+                        } else if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Failed to email your reset key!",
+                                data: {},
+                                msg: ""
+                            });
+                        }
+
+                    });
+                }
+
+            });
+
+        } else if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Account does not exist!",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+
+
+});
+app.use("/API/web/resetPassword", function(req, res, next) {
+
+    var resetKey = req.body.resetKey;
+    var password = req.body.password;
+    var emailAddress = req.body.emailAddress;
+
+    checkValidEmailAddress(emailAddress).then(result => {
+
+        if (result == 1) {
+
+            checkResetKey(emailAddress, resetKey).then(result => {
+
+                if (result == 1) {
+
+                    changePassword(emailAddress, password).then(result => {
+
+                        if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Failed to change your password!",
+                                data: {},
+                                msg: ""
+                            });
+                        } else if (result == 1) {
+
+                            setKeyToNull(emailAddress).then(result => {
+
+                                if (result == 1) {
+                                    res.status(200).json({
+                                        success: true,
+                                        error: "",
+                                        data: {},
+                                        msg: ""
+                                    });
+                                } else if (result == 0) {
+                                    res.status(200).json({
+                                        success: false,
+                                        error: "Failed to set reset key to null",
+                                        data: {},
+                                        msg: ""
+                                    });
+                                }
+                            });
+
+                        }
+
+
+                    });
+
+                } else if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Invalid reset key",
+                        data: {},
                         msg: ""
                     });
                 }
 
             });
 
+
+        } else if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Account does not exist!",
+                data: {},
+                msg: ""
+            });
         }
 
     });
 
 });
 
+app.use("/API/web/createMember", function(req, res, next) {
+
+    var ID = req.body.ID;
+    var rawPassword = req.body.rawPassword;
+    var password = req.body.password;
+    var emailAddress = req.body.emailAddress;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var phoneNumber = req.body.phoneNumber;
+    var accountType = req.body.accountType;
+
+    checkValidEmailAddress(emailAddress).then(result => {
+        if (result == 1) {
+            res.status(200).json({
+                success: false,
+                error: "Account with this email address already exists!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 0) {
+            createMember(ID, emailAddress, firstName, lastName, phoneNumber, accountType, password).then(result => {
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Failed to create member!",
+                        data: {},
+                        msg: ""
+                    });
+                } else if (result == 1) {
+                    sendNewMemberEmail(emailAddress, rawPassword).then(result => {
+                        if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Failed to send new member email!",
+                                data: {},
+                                msg: ""
+                            });
+                        } else if (result == 1) {
+                            res.status(200).json({
+                                success: true,
+                                error: "",
+                                data: {},
+                                msg: ""
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/signUp", function(req, res, next) {
+
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var emailAddress = req.body.emailAddress;
+    var phoneNumber = req.body.phoneNumber;
+    var password = req.body.password;
+    var address = req.body.address;
+    var dob = req.body.dob;
+
+    updateSignUpInfo(firstName, lastName, emailAddress, phoneNumber, password, address, dob).then(result => {
+
+        if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to update your data!",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+
+
+});
+
+
+async function checkAccountType(emailAddress) {
+    let sqlQuery = "SELECT EXISTS(SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "' AND AccountType = 'web') AS result;"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(result[0].result);
+            }
+        });
+
+    });
+}
+
+async function updateSignUpInfo(firstName, lastName, emailAddress, phoneNumber, password, address, dob) {
+
+    let sqlQuery = "UPDATE USER SET FirstName = '" + firstName + "', LastName = '" + lastName + "', PhoneNumber = '" + phoneNumber + "', Password = '" + password + "', Address = '" + address + "', DateOfBirth = '" + dob + "', FirstTimeUser = 'false'  WHERE EmailAddress = '" + emailAddress + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function getLoginData(emailAddress) {
+
+    let sqlQuery = "SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "';";
+
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+            } else {
+
+                resolve(result);
+            }
+        });
+
+    });
+
+}
+
+async function createMember(ID, emailAddress, firstName, lastName, phoneNumber, accountType, password) {
+
+
+    let sqlQuery = "INSERT INTO USER(ID, EmailAddress, FirstName, LastName, PhoneNumber, AccountType, Password, Status, FirstTimeUser, DateOfBirth, Address, UserToken, DeviceToken, ResetKey) VALUES ('" + ID + "', '" + emailAddress + "', '" + firstName + "', '" + lastName + "', '" + phoneNumber + "', '" + accountType + "', '" + password + "', 'active', 'true', 'null', 'null', 'null', 'null', 'null');"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+
+        });
+    });
+
+}
+
 async function checkValidLogIn(emailAddress, password) {
+
+
 
     let sqlQuery = "SELECT EXISTS(SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "' AND Password = '" + password + "') AS result;"
 
@@ -110,65 +424,6 @@ async function checkValidEmailAddress(emailAddress) {
 
 }
 
-
-app.use("/API/forgotPassword", function(req, res, next) {
-
-
-    var emailAddress = req.body.emailAddress;
-
-    checkValidEmailAddress(emailAddress).then(result => {
-
-        if (result == 1) {
-
-            addResetKeyToUser(emailAddress).then(result => {
-
-
-                if (result == 0) {
-                    res.status(200).json({
-                        success: false,
-                        error: "Failed to generate reset key!",
-                        data: "",
-                        msg: ""
-                    });
-                } else {
-                    emailResetKey(emailAddress, result).then(result => {
-
-                        if (result == 1) {
-                            res.status(200).json({
-                                success: true,
-                                error: "",
-                                data: "",
-                                msg: ""
-                            });
-                        } else if (result == 0) {
-                            res.status(200).json({
-                                success: false,
-                                error: "Failed to email your reset key!",
-                                data: "",
-                                msg: ""
-                            });
-                        }
-
-                    });
-                }
-
-            });
-
-        } else if (result == 0) {
-            res.status(200).json({
-                success: false,
-                error: "Account does not exist!",
-                data: "",
-                msg: ""
-            });
-        }
-
-    });
-
-
-
-});
-
 async function addResetKeyToUser(emailAddress) {
     var resetKey = generateRandomSixNumbers();
     let sqlQuery = "UPDATE USER SET ResetKey = '" + resetKey + "' WHERE EmailAddress = '" + emailAddress + "';";
@@ -186,6 +441,28 @@ async function addResetKeyToUser(emailAddress) {
     });
 }
 
+async function sendNewMemberEmail(emailAddress, password) {
+    var mailOptions = {
+        from: '"Support" <support@ignosia.com>',
+        to: emailAddress,
+        subject: 'Your Credentials',
+        html: '<h1>Welcome!</h1><h2>Your Credentials</h2><p>Email address: ' + emailAddress + '</p><p>Password: ' + password + '</p><p>Login to complete registration step.</p>',
+    };
+
+
+    return new Promise((resolve, reject) => {
+
+        transporter.sendMail(mailOptions, function(error, info) {
+
+            if (error) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
 
 async function emailResetKey(emailAddress, resetKey) {
     var mailOptions = {
@@ -208,88 +485,17 @@ async function emailResetKey(emailAddress, resetKey) {
         });
 
     });
+}
 
+function generatePassword() {
+    var password = "Password123";
+    return password;
 
 }
 
 function generateRandomSixNumbers() {
     return Math.floor(100000 + Math.random() * 900000);
 }
-
-
-app.use("/API/resetPassword", function(req, res, next) {
-
-    var resetKey = req.body.resetKey;
-    var password = req.body.password;
-    var emailAddress = req.body.emailAddress;
-
-    checkValidEmailAddress(emailAddress).then(result => {
-
-        if (result == 1) {
-
-            checkResetKey(emailAddress, resetKey).then(result => {
-
-                if (result == 1) {
-
-                    changePassword(emailAddress, password).then(result => {
-
-                        if (result == 0) {
-                            res.status(200).json({
-                                success: false,
-                                error: "Failed to change your password!",
-                                data: "",
-                                msg: ""
-                            });
-                        } else if (result == 1) {
-
-                            setKeyToNull(emailAddress).then(result => {
-
-                                if (result == 1) {
-                                    res.status(200).json({
-                                        success: true,
-                                        error: "",
-                                        data: "",
-                                        msg: ""
-                                    });
-                                } else if (result == 0) {
-                                    res.status(200).json({
-                                        success: false,
-                                        error: "Failed to set reset key to null",
-                                        data: "",
-                                        msg: ""
-                                    });
-                                }
-                            });
-
-                        }
-
-
-                    });
-
-                } else if (result == 0) {
-                    res.status(200).json({
-                        success: false,
-                        error: "Invalid reset key",
-                        data: "",
-                        msg: ""
-                    });
-                }
-
-            });
-
-
-        } else if (result == 0) {
-            res.status(200).json({
-                success: false,
-                error: "Account does not exist!",
-                data: "",
-                msg: ""
-            });
-        }
-
-    });
-
-});
 
 async function checkResetKey(emailAddress, resetKey) {
     let sqlQuery = "SELECT EXISTS(SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "' AND ResetKey = '" + resetKey + "') AS result;"

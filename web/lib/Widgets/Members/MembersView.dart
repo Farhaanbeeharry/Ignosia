@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
@@ -67,7 +68,7 @@ class _MembersViewState extends State<MembersView> {
                               style: TextStyle(color: Color(0xFF6c63ff), fontSize: 40.0, fontFamily: Stem.bold),
                             ),
                             Text(
-                              "The new member will receive an email with a link to\ndownload the application and his/her login credentials.",
+                              "The new member will receive an email with a link to\nthe application and his/her login credentials.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFF757575),
@@ -90,6 +91,7 @@ class _MembersViewState extends State<MembersView> {
                                         onChanged: (value) {
                                           memberController.createMemberKey.currentState.validate();
                                         },
+                                        controller: memberController.emailController,
                                         validator: (emailAddress) {
                                           if (emailAddress.isEmpty) {
                                             return "Email address cannot be empty!";
@@ -125,6 +127,7 @@ class _MembersViewState extends State<MembersView> {
                                               onChanged: (value) {
                                                 memberController.createMemberKey.currentState.validate();
                                               },
+                                              controller: memberController.firstNameController,
                                               validator: (firstName) {
                                                 if (firstName.isEmpty) {
                                                   return "First name cannot be empty!";
@@ -157,6 +160,7 @@ class _MembersViewState extends State<MembersView> {
                                               onChanged: (value) {
                                                 memberController.createMemberKey.currentState.validate();
                                               },
+                                              controller: memberController.lastNameController,
                                               validator: (lastName) {
                                                 if (lastName.isEmpty) {
                                                   return "Last name cannot be empty!";
@@ -187,37 +191,105 @@ class _MembersViewState extends State<MembersView> {
                                       SizedBox(
                                         height: 10.0,
                                       ),
-                                      TextFormField(
-                                        onChanged: (value) {
-                                          memberController.createMemberKey.currentState.validate();
-                                        },
-                                        validator: (phoneNumber) {
-                                          if (phoneNumber.isEmpty) {
-                                            return "Phone number cannot be empty!";
-                                          } else if (phoneNumber.length > 8) {
-                                            return "Phone number is too long!";
-                                          } else if (phoneNumber.length < 7) {
-                                            return "Phone number is too short!";
-                                          } else if (!isNumeric(phoneNumber)) {
-                                            return "Invalid phone number!";
-                                          }
-                                          return null;
-                                        },
-                                        style: Common.labelTextStyle,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(top: 50.0),
-                                          prefixIcon: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                            child: Icon(FontAwesomeIcons.phone),
-                                          ),
-                                          labelText: 'Phone number',
-                                          labelStyle: Common.labelTextStyle,
-                                          border: new OutlineInputBorder(
-                                            borderRadius: const BorderRadius.all(
-                                              const Radius.circular(15.0),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 215.0,
+                                            child: TextFormField(
+                                              onChanged: (value) {
+                                                memberController.createMemberKey.currentState.validate();
+                                              },
+                                              controller: memberController.phoneNumberController,
+                                              validator: (phoneNumber) {
+                                                if (phoneNumber.isEmpty) {
+                                                  return "Phone number cannot be empty!";
+                                                } else if (phoneNumber.length > 8) {
+                                                  return "Phone number is too long!";
+                                                } else if (phoneNumber.length < 7) {
+                                                  return "Phone number is too short!";
+                                                } else if (!isNumeric(phoneNumber)) {
+                                                  return "Invalid phone number!";
+                                                }
+                                                return null;
+                                              },
+                                              style: Common.labelTextStyle,
+                                              decoration: InputDecoration(
+                                                contentPadding: EdgeInsets.only(top: 50.0),
+                                                prefixIcon: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                                  child: Icon(FontAwesomeIcons.phone),
+                                                ),
+                                                labelText: 'Phone number',
+                                                labelStyle: Common.labelTextStyle,
+                                                border: new OutlineInputBorder(
+                                                  borderRadius: const BorderRadius.all(
+                                                    const Radius.circular(15.0),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              FocusScope.of(context).requestFocus(new FocusNode());
+
+                                              if (!memberController.webCheck) {
+                                                setState(() {
+                                                  memberController.webCheck = true;
+                                                  memberController.mobileCheck = false;
+                                                  memberController.selectedAccountType = "web";
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                                color: memberController.webCheck ? memberController.enabledCheckBoxContainer : memberController.disabledCheckBoxContainer,
+                                              ),
+                                              width: 100.0,
+                                              height: 55.0,
+                                              child: Icon(
+                                                FontAwesomeIcons.desktop,
+                                                color: memberController.webCheck ? memberController.enabledCheckBoxText : memberController.disabledCheckBoxText,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              FocusScope.of(context).requestFocus(new FocusNode());
+
+                                              if (!memberController.mobileCheck) {
+                                                setState(() {
+                                                  memberController.mobileCheck = true;
+                                                  memberController.webCheck = false;
+                                                  memberController.selectedAccountType = "mobile";
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                                color: memberController.mobileCheck ? memberController.enabledCheckBoxContainer : memberController.disabledCheckBoxContainer,
+                                              ),
+                                              width: 100.0,
+                                              height: 55.0,
+                                              child: Icon(
+                                                FontAwesomeIcons.mobileAlt,
+                                                color: memberController.mobileCheck ? memberController.enabledCheckBoxText : memberController.disabledCheckBoxText,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(
                                         height: 10.0,
@@ -270,7 +342,7 @@ class _MembersViewState extends State<MembersView> {
                                 height: 50.0,
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 child: TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     FocusScope.of(context).requestFocus(new FocusNode());
 
                                     if (memberController.createMemberKey.currentState.validate()) {
@@ -279,7 +351,28 @@ class _MembersViewState extends State<MembersView> {
                                           memberController.agreementColor = memberController.errorAgreement;
                                         });
                                       } else if (memberController.agreementBox) {
-                                        //create member here
+                                        setState(() {
+                                          memberController.createMemberBtnWidget = SpinKitWave(
+                                            color: Colors.white,
+                                            size: 25.0,
+                                          );
+                                        });
+                                        if (await memberController.createMember(memberController.emailController.text, memberController.firstNameController.text, memberController.lastNameController.text, memberController.phoneNumberController.text, memberController.selectedAccountType, context)) {
+                                          memberController.emailController.clear();
+                                          memberController.firstNameController.clear();
+                                          memberController.lastNameController.clear();
+                                          memberController.phoneNumberController.clear();
+                                          memberController.selectedAccountType = "web";
+                                          memberController.webCheck = true;
+                                          memberController.mobileCheck = false;
+                                          memberController.agreementBox = false;
+                                          setState(() {
+                                            memberController.createMemberBtnWidget = Text(
+                                              "Create member",
+                                              style: Common.buttonTextStyle,
+                                            );
+                                          });
+                                        }
                                       }
                                     }
                                   },

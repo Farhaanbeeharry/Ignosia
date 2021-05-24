@@ -5,6 +5,7 @@ import 'package:web/Common/API.dart';
 import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Encryptor.dart';
+import 'package:web/Model/LoginModel.dart';
 import 'package:web/Model/ResponseModel.dart';
 
 class LoginController {
@@ -21,8 +22,10 @@ class LoginController {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
+  //Login method
   Future<void> logIn(String emailAddress, String password, BuildContext context) async {
-    password = Encrypt().encryptPassword(password);
+    password = Encrypt().encryptPassword(password); //encrypt password
+
     emailAddress = emailAddress.toLowerCase();
 
     var body = {"emailAddress": emailAddress, "password": password};
@@ -30,7 +33,13 @@ class LoginController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
     if (response.success) {
-      Navigator.pushNamed(context, '/Homepage');
+      LoginModel data = LoginModel().fromJson(response.data);
+      if (data.firstTimeUser) {
+        Common.signUpPreData = data;
+        Navigator.pushNamed(context, '/SignUp');
+      } else {
+        Navigator.pushNamed(context, '/Homepage');
+      }
     } else if (!response.success) {
       AwesomeDialog(
         context: context,

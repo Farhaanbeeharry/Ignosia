@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
@@ -92,7 +93,7 @@ class _SignupViewState extends State<SignupView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Register',
+                              'Complete Registration',
                               style: TextStyle(fontSize: 40.0, fontFamily: 'StemMedium', color: Colors.black),
                             ),
                             SizedBox(
@@ -143,6 +144,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
+                                              initialValue: Common.signUpPreData.firstName,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -150,6 +152,7 @@ class _SignupViewState extends State<SignupView> {
                                                   child: Icon(FontAwesomeIcons.signature),
                                                 ),
                                                 labelText: 'First name',
+                                                enabled: false,
                                                 labelStyle: Common.labelTextStyle,
                                                 border: new OutlineInputBorder(
                                                   borderRadius: const BorderRadius.all(
@@ -174,6 +177,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
+                                              initialValue: Common.signUpPreData.emailAddress,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -181,6 +185,7 @@ class _SignupViewState extends State<SignupView> {
                                                   child: Icon(FontAwesomeIcons.at),
                                                 ),
                                                 labelText: 'Email address',
+                                                enabled: false,
                                                 labelStyle: Common.labelTextStyle,
                                                 border: new OutlineInputBorder(
                                                   borderRadius: const BorderRadius.all(
@@ -260,6 +265,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
+                                              controller: signupController.locationController,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -300,6 +306,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
+                                              initialValue: Common.signUpPreData.lastName,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -307,6 +314,7 @@ class _SignupViewState extends State<SignupView> {
                                                   child: Icon(FontAwesomeIcons.signature),
                                                 ),
                                                 labelText: 'Last name',
+                                                enabled: false,
                                                 labelStyle: Common.labelTextStyle,
                                                 border: new OutlineInputBorder(
                                                   borderRadius: const BorderRadius.all(
@@ -331,6 +339,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
+                                              initialValue: Common.signUpPreData.phoneNumber,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -338,6 +347,7 @@ class _SignupViewState extends State<SignupView> {
                                                   child: Icon(FontAwesomeIcons.phone),
                                                 ),
                                                 labelText: 'Phone number',
+                                                enabled: false,
                                                 labelStyle: Common.labelTextStyle,
                                                 border: new OutlineInputBorder(
                                                   borderRadius: const BorderRadius.all(
@@ -537,7 +547,7 @@ class _SignupViewState extends State<SignupView> {
                                     height: 50.0,
                                     width: ((MediaQuery.of(context).size.width - 800) / 2) - 30,
                                     child: TextButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         FocusScope.of(context).requestFocus(new FocusNode());
 
                                         if (signupController.signUpKey.currentState.validate()) {
@@ -546,17 +556,26 @@ class _SignupViewState extends State<SignupView> {
                                               signupController.agreementColor = signupController.errorAgreement;
                                             });
                                           } else if (signupController.agreementBox) {
-                                            //sign up code here
+                                            setState(() {
+                                              signupController.submitBtnWidget = SpinKitWave(
+                                                color: Colors.white,
+                                                size: 25.0,
+                                              );
+                                            });
+                                            await signupController.signUp(Common.signUpPreData.firstName, Common.signUpPreData.lastName, Common.signUpPreData.emailAddress, Common.signUpPreData.phoneNumber, signupController.passwordController.text, signupController.locationController.text, signupController.selectedDate, context);
+                                            setState(() {
+                                              signupController.submitBtnWidget = Text(
+                                                "Submit",
+                                                style: Common.buttonTextStyle,
+                                              );
+                                            });
                                           }
                                         }
 
                                         //Navigator.pushNamed(context, '/');
                                       },
                                       style: TextButton.styleFrom(backgroundColor: Color(0XFF6C63FF), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
-                                      child: Text(
-                                        "Sign up",
-                                        style: Common.buttonTextStyle,
-                                      ),
+                                      child: signupController.submitBtnWidget,
                                     ),
                                   ),
                                 ),

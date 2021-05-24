@@ -1,7 +1,7 @@
 class ResponseModel {
   bool success;
   String error;
-  String data;
+  dynamic data;
   String msg;
 
   ResponseModel({this.success, this.error, this.data, this.msg});

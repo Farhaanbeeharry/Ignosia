@@ -36,7 +36,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Members',
+                      'Beneficiary',
                       style: TextStyle(fontSize: 48.0, color: Color(0XFF36317F), fontFamily: 'StemBold'),
                     ),
                     Padding(
