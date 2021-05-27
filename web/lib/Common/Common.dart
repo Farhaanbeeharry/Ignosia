@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:web/Model/LoginModel.dart';
+import 'package:web/Model/UserModel.dart';
 
 class Common {
+  static List<Widget> memberWidgetList = new List<Widget>();
+  static List<UserModel> memberList = new List<UserModel>();
+
   static String resetEmailAddress = "";
 
   static TextStyle labelTextStyle = new TextStyle(
@@ -32,7 +35,7 @@ class Common {
 
   static String generatePassword(int length) => String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(rnd.nextInt(_chars.length))));
 
-  static LoginModel signUpPreData;
+  static UserModel signUpPreData;
 }
 
 class PasswordStrength {

@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
-import 'package:web/Widgets/Members/MemberWidget/MemberWidgetView.dart';
 import 'package:web/Widgets/Members/MembersController.dart';
 
 class MembersView extends StatefulWidget {
@@ -14,6 +13,33 @@ class MembersView extends StatefulWidget {
 
 class _MembersViewState extends State<MembersView> {
   MembersController memberController = new MembersController();
+
+  callSetState() {
+    setState(() {});
+  }
+
+  loadMemberList() async {
+    setState(() {
+      memberController.memberListRefreshIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await memberController.getMemberList(callSetState);
+    setState(() {
+      memberController.memberListRefreshIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadMemberList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +264,7 @@ class _MembersViewState extends State<MembersView> {
                                                 setState(() {
                                                   memberController.webCheck = true;
                                                   memberController.mobileCheck = false;
+                                                  memberController.hybridCheck = false;
                                                   memberController.selectedAccountType = "web";
                                                 });
                                               }
@@ -250,7 +277,7 @@ class _MembersViewState extends State<MembersView> {
                                                 ),
                                                 color: memberController.webCheck ? memberController.enabledCheckBoxContainer : memberController.disabledCheckBoxContainer,
                                               ),
-                                              width: 100.0,
+                                              width: 68.0,
                                               height: 55.0,
                                               child: Icon(
                                                 FontAwesomeIcons.desktop,
@@ -259,7 +286,7 @@ class _MembersViewState extends State<MembersView> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 10.0,
+                                            width: 5.0,
                                           ),
                                           InkWell(
                                             onTap: () {
@@ -269,6 +296,7 @@ class _MembersViewState extends State<MembersView> {
                                                 setState(() {
                                                   memberController.mobileCheck = true;
                                                   memberController.webCheck = false;
+                                                  memberController.hybridCheck = false;
                                                   memberController.selectedAccountType = "mobile";
                                                 });
                                               }
@@ -281,11 +309,54 @@ class _MembersViewState extends State<MembersView> {
                                                 ),
                                                 color: memberController.mobileCheck ? memberController.enabledCheckBoxContainer : memberController.disabledCheckBoxContainer,
                                               ),
-                                              width: 100.0,
+                                              width: 68.0,
                                               height: 55.0,
                                               child: Icon(
                                                 FontAwesomeIcons.mobileAlt,
                                                 color: memberController.mobileCheck ? memberController.enabledCheckBoxText : memberController.disabledCheckBoxText,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              FocusScope.of(context).requestFocus(new FocusNode());
+
+                                              if (!memberController.hybridCheck) {
+                                                setState(() {
+                                                  memberController.mobileCheck = false;
+                                                  memberController.webCheck = false;
+                                                  memberController.hybridCheck = true;
+                                                  memberController.selectedAccountType = "hybrid";
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0),
+                                                ),
+                                                color: memberController.hybridCheck ? memberController.enabledCheckBoxContainer : memberController.disabledCheckBoxContainer,
+                                              ),
+                                              width: 68.0,
+                                              height: 55.0,
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 12.5,
+                                                  ),
+                                                  Icon(
+                                                    FontAwesomeIcons.desktop,
+                                                    color: memberController.hybridCheck ? memberController.enabledCheckBoxText : memberController.disabledCheckBoxText,
+                                                  ),
+                                                  Icon(
+                                                    FontAwesomeIcons.mobileAlt,
+                                                    color: memberController.hybridCheck ? memberController.enabledCheckBoxText : memberController.disabledCheckBoxText,
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
@@ -365,6 +436,7 @@ class _MembersViewState extends State<MembersView> {
                                           memberController.selectedAccountType = "web";
                                           memberController.webCheck = true;
                                           memberController.mobileCheck = false;
+                                          memberController.hybridCheck = false;
                                           memberController.agreementBox = false;
                                           setState(() {
                                             memberController.createMemberBtnWidget = Text(
@@ -403,9 +475,30 @@ class _MembersViewState extends State<MembersView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Members list",
-                        style: TextStyle(color: Color(0xFF6c63ff), fontSize: 40.0, fontFamily: Stem.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "Members list",
+                            style: TextStyle(color: Color(0xFF6c63ff), fontSize: 40.0, fontFamily: Stem.bold),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              loadMemberList();
+                            },
+                            child: Container(
+                              width: 70.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFe1e1e1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              child: memberController.memberListRefreshIcon,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 20.0,
@@ -415,26 +508,7 @@ class _MembersViewState extends State<MembersView> {
                         width: MediaQuery.of(context).size.width * 0.32,
                         child: SingleChildScrollView(
                           child: Column(
-                            children: [
-                              MemberWidget(
-                                userType: "mobile",
-                              ),
-                              MemberWidget(
-                                userType: "mobile",
-                              ),
-                              MemberWidget(
-                                userType: "web",
-                              ),
-                              MemberWidget(
-                                userType: "mobile",
-                              ),
-                              MemberWidget(
-                                userType: "mobile",
-                              ),
-                              MemberWidget(
-                                userType: "web",
-                              ),
-                            ],
+                            children: Common.memberWidgetList,
                           ),
                         ),
                       ),

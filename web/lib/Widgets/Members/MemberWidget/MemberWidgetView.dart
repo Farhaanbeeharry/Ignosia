@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/UserModel.dart';
 import 'package:web/Widgets/Members/MemberWidget/MemberWidgetController.dart';
 
 class MemberWidget extends StatefulWidget {
-  final String userType;
+  final UserModel memberData;
+  final Function callSetState;
 
-  MemberWidget({this.userType});
+  MemberWidget({this.memberData, this.callSetState});
 
   @override
   _MemberWidgetState createState() => _MemberWidgetState();
@@ -14,6 +16,31 @@ class MemberWidget extends StatefulWidget {
 
 class _MemberWidgetState extends State<MemberWidget> {
   MemberWidgetController memberWidgetController = new MemberWidgetController();
+
+  Widget getUserDeviceIcon() {
+    if (widget.memberData.webUser == 'true' && widget.memberData.mobileUser == 'true') {
+      return Row(
+        children: [
+          Icon(
+            FontAwesomeIcons.desktop,
+            color: Color(0xFF6c63ff),
+            size: 20.0,
+          ),
+          Icon(
+            FontAwesomeIcons.mobileAlt,
+            color: Color(0xFF6c63ff),
+            size: 20.0,
+          ),
+        ],
+      );
+    } else {
+      return Icon(
+        widget.memberData.webUser == "true" ? FontAwesomeIcons.desktop : FontAwesomeIcons.mobileAlt,
+        color: Color(0xFF6c63ff),
+        size: 20.0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +69,7 @@ class _MemberWidgetState extends State<MemberWidget> {
                         Row(
                           children: [
                             Text(
-                              'Farhaan Beeharry',
+                              widget.memberData.firstName + " " + widget.memberData.lastName,
                               style: TextStyle(
                                 fontSize: 24.0,
                                 color: Colors.black,
@@ -52,18 +79,14 @@ class _MemberWidgetState extends State<MemberWidget> {
                             SizedBox(
                               width: 10.0,
                             ),
-                            Icon(
-                              widget.userType == "mobile" ? FontAwesomeIcons.mobileAlt : FontAwesomeIcons.desktop,
-                              color: Color(0xFF6c63ff),
-                              size: 20.0,
-                            ),
+                            getUserDeviceIcon(),
                           ],
                         ),
                         SizedBox(
                           height: 7.5,
                         ),
                         Text(
-                          'farhaanbeeharry.ms@gmail.com',
+                          widget.memberData.emailAddress,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -74,7 +97,7 @@ class _MemberWidgetState extends State<MemberWidget> {
                           height: 5.0,
                         ),
                         Text(
-                          '57076881',
+                          widget.memberData.phoneNumber,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -86,25 +109,44 @@ class _MemberWidgetState extends State<MemberWidget> {
                   ),
                 ),
                 Spacer(),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10.0),
-                        bottomRight: Radius.circular(10.0),
+                widget.memberData.status == "admin"
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
+                          ),
+                          color: Color(0xFF6c63ff),
+                        ),
+                        width: 60.0,
+                        height: 120.0,
+                        child: Icon(
+                          FontAwesomeIcons.userLock,
+                          color: Colors.white,
+                          size: 28.0,
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          memberWidgetController.deleteMember(widget.memberData.iD, widget.callSetState);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0),
+                            ),
+                            color: Color(0xFF6c63ff),
+                          ),
+                          width: 60.0,
+                          height: 120.0,
+                          child: Icon(
+                            FontAwesomeIcons.trash,
+                            color: Colors.white,
+                            size: 28.0,
+                          ),
+                        ),
                       ),
-                      color: Color(0xFF6c63ff),
-                    ),
-                    width: 60.0,
-                    height: 120.0,
-                    child: Icon(
-                      FontAwesomeIcons.trash,
-                      color: Colors.white,
-                      size: 28.0,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

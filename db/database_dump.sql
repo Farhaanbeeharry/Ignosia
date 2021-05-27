@@ -14,7 +14,8 @@ CREATE TABLE USER (
     UserToken VARCHAR(255),
     DeviceToken VARCHAR(255),
     FirstTimeUser VARCHAR(10) NOT NULL,
-    AccountType VARCHAR(24),
+    WebUser VARCHAR(7) NOT NULL,
+    MobileUser VARCHAR(7) NOT NULL,
     ResetKey VARCHAR(10),
     Status VARCHAR(14),
     PRIMARY KEY (ID)

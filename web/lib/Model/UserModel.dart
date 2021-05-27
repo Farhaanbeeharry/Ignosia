@@ -1,4 +1,4 @@
-class LoginModel {
+class UserModel {
   String iD;
   String firstName;
   String lastName;
@@ -10,13 +10,14 @@ class LoginModel {
   String userToken;
   String deviceToken;
   bool firstTimeUser;
-  String accountType;
+  String webUser;
+  String mobileUser;
   String resetKey;
   String status;
 
-  LoginModel({this.iD, this.firstName, this.lastName, this.emailAddress, this.password, this.dateOfBirth, this.phoneNumber, this.address, this.userToken, this.deviceToken, this.firstTimeUser, this.accountType, this.resetKey, this.status});
+  UserModel({this.iD, this.firstName, this.lastName, this.emailAddress, this.password, this.dateOfBirth, this.phoneNumber, this.address, this.userToken, this.deviceToken, this.firstTimeUser, this.webUser, this.mobileUser, this.resetKey, this.status});
 
-  LoginModel fromJson(Map<String, dynamic> json) {
+  UserModel fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
@@ -28,7 +29,8 @@ class LoginModel {
     userToken = json['UserToken'];
     deviceToken = json['DeviceToken'];
     firstTimeUser = json['FirstTimeUser'].toString().toString() == 'true';
-    accountType = json['AccountType'];
+    webUser = json['WebUser'];
+    mobileUser = json['MobileUser'];
     resetKey = json['ResetKey'];
     status = json['Status'];
     return this;
@@ -47,7 +49,8 @@ class LoginModel {
     data['UserToken'] = this.userToken;
     data['DeviceToken'] = this.deviceToken;
     data['FirstTimeUser'] = this.firstTimeUser;
-    data['AccountType'] = this.accountType;
+    data['WebUser'] = this.webUser;
+    data['MobileUser'] = this.mobileUser;
     data['ResetKey'] = this.resetKey;
     data['Status'] = this.status;
     return data;

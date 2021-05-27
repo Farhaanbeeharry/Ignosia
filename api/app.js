@@ -5,6 +5,7 @@ const bodyParser = require("body-parser"); //requiring module 'body-parser' to b
 const app = express(); //defining express
 const nodeMailer = require('nodemailer');
 const { response } = require("express");
+const e = require("express");
 
 var transporter = nodeMailer.createTransport({
     name: 'www.ignosia.com',
@@ -40,7 +41,7 @@ app.use("/API/web/login", function(req, res, next) {
         if (result == 1) {
             checkAccountType(emailAddress).then(result => {
 
-                if (result == 1) {
+                if (result == 'true') {
                     checkValidLogIn(emailAddress, password).then(result => {
 
                         if (result == 1) {
@@ -97,7 +98,7 @@ app.use("/API/web/forgotPassword", function(req, res, next) {
 
     var emailAddress = req.body.emailAddress;
 
-    checkValidEmailAddress(emailAddress).then(result => {
+    checkValidEmailAddressAndRegistered(emailAddress).then(result => {
 
         if (result == 1) {
 
@@ -138,7 +139,7 @@ app.use("/API/web/forgotPassword", function(req, res, next) {
         } else if (result == 0) {
             res.status(200).json({
                 success: false,
-                error: "Account does not exist!",
+                error: "Account does not exist or not registered!",
                 data: {},
                 msg: ""
             });
@@ -232,7 +233,8 @@ app.use("/API/web/createMember", function(req, res, next) {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var phoneNumber = req.body.phoneNumber;
-    var accountType = req.body.accountType;
+    var webUser = req.body.webUser;
+    var mobileUser = req.body.mobileUser;
 
     checkValidEmailAddress(emailAddress).then(result => {
         if (result == 1) {
@@ -243,7 +245,7 @@ app.use("/API/web/createMember", function(req, res, next) {
                 msg: ""
             });
         } else if (result == 0) {
-            createMember(ID, emailAddress, firstName, lastName, phoneNumber, accountType, password).then(result => {
+            createMember(ID, emailAddress, firstName, lastName, phoneNumber, webUser, mobileUser, password).then(result => {
                 if (result == 0) {
                     res.status(200).json({
                         success: false,
@@ -310,9 +312,54 @@ app.use("/API/web/signUp", function(req, res, next) {
 
 });
 
+app.use("/API/web/getMemberList", function(req, res, next) {
 
-async function checkAccountType(emailAddress) {
-    let sqlQuery = "SELECT EXISTS(SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "' AND AccountType = 'web') AS result;"
+    getMemberList().then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to update your data!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "Failed to update your data!",
+                data: result,
+                msg: ""
+            });
+        }
+
+    });
+
+
+});
+
+
+
+async function checkValidEmailAddressAndRegistered(emailAddress) {
+
+    let sqlQuery = "SELECT EXISTS(SELECT * FROM USER WHERE EmailAddress = '" + emailAddress + "' AND FirstTimeUser = 'false') AS result;"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+            } else {
+                result = JSON.stringify(result[0].result);
+                resolve(result);
+            }
+        });
+
+    });
+
+}
+
+async function getMemberList() {
+    let sqlQuery = "SELECT * FROM User";
 
     return new Promise((resolve, reject) => {
 
@@ -320,7 +367,23 @@ async function checkAccountType(emailAddress) {
             if (err) {
                 resolve(0);
             } else {
-                resolve(result[0].result);
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function checkAccountType(emailAddress) {
+    let sqlQuery = "SELECT WebUser FROM User WHERE EmailAddress='" + emailAddress + "';"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(result[0].WebUser);
             }
         });
 
@@ -364,10 +427,10 @@ async function getLoginData(emailAddress) {
 
 }
 
-async function createMember(ID, emailAddress, firstName, lastName, phoneNumber, accountType, password) {
+async function createMember(ID, emailAddress, firstName, lastName, phoneNumber, webUser, mobileUser, password) {
 
 
-    let sqlQuery = "INSERT INTO USER(ID, EmailAddress, FirstName, LastName, PhoneNumber, AccountType, Password, Status, FirstTimeUser, DateOfBirth, Address, UserToken, DeviceToken, ResetKey) VALUES ('" + ID + "', '" + emailAddress + "', '" + firstName + "', '" + lastName + "', '" + phoneNumber + "', '" + accountType + "', '" + password + "', 'active', 'true', 'null', 'null', 'null', 'null', 'null');"
+    let sqlQuery = "INSERT INTO USER(ID, EmailAddress, FirstName, LastName, PhoneNumber, WebUser, MobileUser, Password, Status, FirstTimeUser, DateOfBirth, Address, UserToken, DeviceToken, ResetKey) VALUES ('" + ID + "', '" + emailAddress + "', '" + firstName + "', '" + lastName + "', '" + phoneNumber + "', '" + webUser + "', '" + mobileUser + "', '" + password + "', 'active', 'true', 'null', 'null', 'null', 'null', 'null');"
 
     return new Promise((resolve, reject) => {
 

@@ -6,6 +6,7 @@ class ApiUrl {
   static const String resetPassword = 'resetPassword';
   static const String createMember = 'createMember';
   static const String signUp = 'signUp';
+  static const String getMemberList = 'getMemberList';
 
   static String getURL(String url) {
     return baseURL + url.toString();

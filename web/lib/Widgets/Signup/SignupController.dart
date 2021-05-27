@@ -38,7 +38,18 @@ class SignupController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.signUp), body);
 
     if (response.success) {
-      Navigator.pushNamed(context, '/Homepage');
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.SUCCES,
+        btnOkColor: Color(0xFF00ca71),
+        title: "Registration Successful",
+        width: MediaQuery.of(context).size.width * 0.4,
+        dismissOnTouchOutside: false,
+        desc: response.error,
+        btnOkOnPress: () {
+          Navigator.pushNamed(context, '/Homepage');
+        },
+      ).show();
     } else {
       AwesomeDialog(
         context: context,

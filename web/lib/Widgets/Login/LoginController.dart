@@ -5,8 +5,8 @@ import 'package:web/Common/API.dart';
 import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Encryptor.dart';
-import 'package:web/Model/LoginModel.dart';
 import 'package:web/Model/ResponseModel.dart';
+import 'package:web/Model/UserModel.dart';
 
 class LoginController {
   Widget obscureTextIcon = Icon(FontAwesomeIcons.eye);
@@ -33,7 +33,7 @@ class LoginController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
     if (response.success) {
-      LoginModel data = LoginModel().fromJson(response.data);
+      UserModel data = UserModel().fromJson(response.data);
       if (data.firstTimeUser) {
         Common.signUpPreData = data;
         Navigator.pushNamed(context, '/SignUp');
