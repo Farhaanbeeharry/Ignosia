@@ -44,7 +44,7 @@ class MembersController {
     color: Color(0xFF6c63ff),
   );
 
-  Future<bool> createMember(String emailAddress, String firstName, String lastName, String phoneNumber, String accountType, BuildContext context) async {
+  Future<bool> createMember(Function callSetState, String emailAddress, String firstName, String lastName, String phoneNumber, String accountType, BuildContext context) async {
     emailAddress = emailAddress.toLowerCase();
     var uuid = Uuid();
     String id = uuid.v1();
@@ -66,8 +66,12 @@ class MembersController {
         width: MediaQuery.of(context).size.width * 0.4,
         dismissOnTouchOutside: true,
         desc: "An email has been sent to the user with the login credentials!",
-        btnOkOnPress: () {},
-        onDissmissCallback: () {},
+        btnOkOnPress: () {
+          callSetState();
+        },
+        onDissmissCallback: () {
+          callSetState();
+        },
       ).show();
       return true;
     } else {
@@ -111,6 +115,19 @@ class MembersController {
           UserModel member = UserModel().fromJson(response.data[i]);
           Common.memberList.add(member);
         }
+
+        UserModel tempUser;
+        int indexRef;
+        for (int i = 0; i < Common.memberList.length; i++) {
+          if (Common.memberList[i].status == "admin") {
+            tempUser = Common.memberList[i];
+            indexRef = i;
+          }
+        }
+
+        Common.memberList.removeAt(indexRef);
+        Common.memberList.insert(0, tempUser);
+
 
         for (var member in Common.memberList) {
           Common.memberWidgetList.add(MemberWidget(memberData: member, callSetState: callSetState));

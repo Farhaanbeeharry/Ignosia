@@ -198,7 +198,8 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextButton(
                               onPressed: () {
                                 FocusScope.of(context).requestFocus(new FocusNode());
-
+                                loginController.emailController.text = 'admin@ignosia.com';
+                                loginController.passwordController.text = 'Password123@';
                                 if (loginController.loginFormKey.currentState.validate()) {
                                   setState(() {
                                     loginController.loginBtnWidget = SpinKitWave(

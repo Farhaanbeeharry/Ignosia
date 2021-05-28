@@ -144,7 +144,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
-                                              initialValue: Common.signUpPreData.firstName,
+                                              initialValue: Common.loggedInData.firstName,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -177,7 +177,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
-                                              initialValue: Common.signUpPreData.emailAddress,
+                                              initialValue: Common.loggedInData.emailAddress,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -306,7 +306,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
-                                              initialValue: Common.signUpPreData.lastName,
+                                              initialValue: Common.loggedInData.lastName,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -339,7 +339,7 @@ class _SignupViewState extends State<SignupView> {
                                                 return null;
                                               },
                                               style: Common.labelTextStyle,
-                                              initialValue: Common.signUpPreData.phoneNumber,
+                                              initialValue: Common.loggedInData.phoneNumber,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(top: 50.0),
                                                 prefixIcon: Padding(
@@ -562,7 +562,7 @@ class _SignupViewState extends State<SignupView> {
                                                 size: 25.0,
                                               );
                                             });
-                                            await signupController.signUp(Common.signUpPreData.firstName, Common.signUpPreData.lastName, Common.signUpPreData.emailAddress, Common.signUpPreData.phoneNumber, signupController.passwordController.text, signupController.locationController.text, signupController.selectedDate, context);
+                                            await signupController.signUp(Common.loggedInData.firstName, Common.loggedInData.lastName, Common.loggedInData.emailAddress, Common.loggedInData.phoneNumber, signupController.passwordController.text, signupController.locationController.text, signupController.selectedDate, context);
                                             setState(() {
                                               signupController.submitBtnWidget = Text(
                                                 "Submit",

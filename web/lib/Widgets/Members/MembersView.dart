@@ -69,7 +69,7 @@ class _MembersViewState extends State<MembersView> {
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        'Sunday, 21 March 2021',
+                        Common.displayDate,
                         style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
                       ),
                     ),
@@ -428,7 +428,7 @@ class _MembersViewState extends State<MembersView> {
                                             size: 25.0,
                                           );
                                         });
-                                        if (await memberController.createMember(memberController.emailController.text, memberController.firstNameController.text, memberController.lastNameController.text, memberController.phoneNumberController.text, memberController.selectedAccountType, context)) {
+                                        if (await memberController.createMember(callSetState, memberController.emailController.text, memberController.firstNameController.text, memberController.lastNameController.text, memberController.phoneNumberController.text, memberController.selectedAccountType, context)) {
                                           memberController.emailController.clear();
                                           memberController.firstNameController.clear();
                                           memberController.lastNameController.clear();
@@ -444,6 +444,7 @@ class _MembersViewState extends State<MembersView> {
                                               style: Common.buttonTextStyle,
                                             );
                                           });
+                                          loadMemberList();
                                         }
                                       }
                                     }

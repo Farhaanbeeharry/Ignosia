@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Model/UserModel.dart';
 import 'package:web/Widgets/Members/MemberWidget/MemberWidgetController.dart';
@@ -15,6 +16,10 @@ class MemberWidget extends StatefulWidget {
 }
 
 class _MemberWidgetState extends State<MemberWidget> {
+  callWidgetSetState() {
+    setState(() {});
+  }
+
   MemberWidgetController memberWidgetController = new MemberWidgetController();
 
   Widget getUserDeviceIcon() {
@@ -60,7 +65,7 @@ class _MemberWidgetState extends State<MemberWidget> {
             child: Row(
               children: [
                 Container(
-                  width: 300.0,
+                  width: 350.0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
                     child: Column(
@@ -109,7 +114,7 @@ class _MemberWidgetState extends State<MemberWidget> {
                   ),
                 ),
                 Spacer(),
-                widget.memberData.status == "admin"
+                widget.memberData.status == "admin" || Common.loggedInData.status != "admin"
                     ? Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -128,7 +133,7 @@ class _MemberWidgetState extends State<MemberWidget> {
                       )
                     : InkWell(
                         onTap: () {
-                          memberWidgetController.deleteMember(widget.memberData.iD, widget.callSetState);
+                          memberWidgetController.showDeleteWarning(widget.memberData.iD, widget.memberData.firstName + " " + widget.memberData.lastName, widget.memberData.emailAddress, widget.memberData.phoneNumber, widget.callSetState, callWidgetSetState, context);
                         },
                         child: Container(
                           decoration: BoxDecoration(

@@ -39,6 +39,7 @@ dependencies:
   day_night_time_picker: ^1.0.1
   material_dialogs: any
   uuid: any
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

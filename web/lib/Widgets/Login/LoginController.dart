@@ -33,9 +33,10 @@ class LoginController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
     if (response.success) {
+      Common.setDate();
       UserModel data = UserModel().fromJson(response.data);
+      Common.loggedInData = data;
       if (data.firstTimeUser) {
-        Common.signUpPreData = data;
         Navigator.pushNamed(context, '/SignUp');
       } else {
         Navigator.pushNamed(context, '/Homepage');

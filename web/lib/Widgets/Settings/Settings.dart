@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:validators/validators.dart';
@@ -43,7 +44,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        'Sunday, 21 March 2021',
+                        Common.displayDate,
                         style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
                       ),
                     ),
@@ -88,6 +89,7 @@ class _SettingsState extends State<Settings> {
                                       height: 25.0,
                                     ),
                                     TextFormField(
+                                      controller: settingsController.bugController,
                                       validator: (bugDesription) {
                                         if (bugDesription.isEmpty) {
                                           return "Explain the bug to continue!";
@@ -117,10 +119,16 @@ class _SettingsState extends State<Settings> {
                                       height: 55.0,
                                       width: MediaQuery.of(context).size.width * 0.25,
                                       child: TextButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           FocusScope.of(context).requestFocus(new FocusNode());
 
-                                          if (settingsController.bugKey.currentState.validate()) {}
+                                          if (settingsController.bugKey.currentState.validate()) {
+                                            await settingsController.reportBug(settingsController.bugController.text, context);
+                                          }
+
+                                          setState(() {
+                                            settingsController.bugController.clear();
+                                          });
                                         },
                                         style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                                         child: settingsController.bugBtnWidget,
@@ -173,6 +181,7 @@ class _SettingsState extends State<Settings> {
                                         onChanged: (value) {
                                           settingsController.userSettingsKey.currentState.validate();
                                         },
+                                        controller: settingsController.firstNameController,
                                         validator: (firstName) {
                                           if (firstName.isEmpty) {
                                             return "First name cannot be empty!";
@@ -204,6 +213,7 @@ class _SettingsState extends State<Settings> {
                                         onChanged: (value) {
                                           settingsController.userSettingsKey.currentState.validate();
                                         },
+                                        controller: settingsController.lastNameController,
                                         validator: (lastName) {
                                           if (lastName.isEmpty) {
                                             return "Last name cannot be empty!";
@@ -293,6 +303,7 @@ class _SettingsState extends State<Settings> {
                                         }
                                         return null;
                                       },
+                                      controller: settingsController.confirmPasswordController,
                                       style: Common.labelTextStyle,
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.only(top: 50.0),
@@ -329,6 +340,7 @@ class _SettingsState extends State<Settings> {
                                       onChanged: (value) {
                                         settingsController.userSettingsKey.currentState.validate();
                                       },
+                                      controller: settingsController.locationController,
                                       validator: (location) {
                                         if (location.isEmpty) {
                                           return "Location cannot be empty!";
@@ -360,6 +372,7 @@ class _SettingsState extends State<Settings> {
                                       onChanged: (value) {
                                         settingsController.userSettingsKey.currentState.validate();
                                       },
+                                      controller: settingsController.emailController,
                                       validator: (emailAddress) {
                                         if (emailAddress.isEmpty) {
                                           return "Email address cannot be empty!";
@@ -397,10 +410,36 @@ class _SettingsState extends State<Settings> {
                           height: 55.0,
                           width: MediaQuery.of(context).size.width * 0.25,
                           child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               FocusScope.of(context).requestFocus(new FocusNode());
 
-                              if (settingsController.userSettingsKey.currentState.validate()) {}
+                              if (settingsController.userSettingsKey.currentState.validate()) {
+                                setState(() {
+                                  settingsController.saveSettingsBtnWidget = SpinKitWave(
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  );
+                                });
+
+                                await settingsController.updateUserSettings(settingsController.firstNameController.text, settingsController.lastNameController.text, settingsController.passwordController.text, settingsController.locationController.text, settingsController.emailController.text, context);
+
+                                setState(() {
+                                  settingsController.saveSettingsBtnWidget = Text(
+                                    "Save settings",
+                                    style: Common.buttonTextStyle,
+                                  );
+                                  settingsController.firstNameController.clear();
+                                  settingsController.lastNameController.clear();
+                                  settingsController.passwordController.clear();
+                                  settingsController.confirmPasswordController.clear();
+                                  settingsController.locationController.clear();
+                                  settingsController.emailController.clear();
+                                  settingsController.passwordObscureTextCheck = true;
+                                  settingsController.passwordObscureTextIcon = Icon(FontAwesomeIcons.eye);
+                                  settingsController.confirmPasswordObscureTextCheck = true;
+                                  settingsController.confirmPasswordObscureTextIcon = Icon(FontAwesomeIcons.eye);
+                                });
+                              }
                             },
                             style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                             child: settingsController.saveSettingsBtnWidget,

@@ -91,8 +91,6 @@ app.use("/API/web/login", function(req, res, next) {
 
 });
 
-
-
 app.use("/API/web/forgotPassword", function(req, res, next) {
 
 
@@ -150,6 +148,7 @@ app.use("/API/web/forgotPassword", function(req, res, next) {
 
 
 });
+
 app.use("/API/web/resetPassword", function(req, res, next) {
 
     var resetKey = req.body.resetKey;
@@ -337,7 +336,164 @@ app.use("/API/web/getMemberList", function(req, res, next) {
 
 });
 
+app.use("/API/web/deleteMember", function(req, res, next) {
 
+    var id = req.body.memberID;
+
+    deleteMember(id).then(result => {
+
+        if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "Failed to delete member with ID " + id + "!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to delete member with ID " + id + "!",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+
+});
+
+app.use("/API/web/reportBug", function(req, res, next) {
+
+    var id = req.body.id;
+    var reportedBy = req.body.reportedBy;
+    var bug = req.body.bug;
+    var date = req.body.date;
+
+    reportBug(id, reportedBy, bug, date).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+});
+
+app.use("/API/web/updateUserData", function(req, res, next) {
+
+    var id = req.body.id;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var password = req.body.password;
+    var location = req.body.location;
+    var emailAddress = req.body.emailAddress;
+
+    updateUserData(id, firstName, lastName, password, location, emailAddress).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+});
+
+app.use("/API/web/newTransaction", function(req, res, next) {
+
+    var id = req.body.id;
+    var userID = req.body.userID;
+    var name = req.body.name;
+    var description = req.body.description;
+    var amount = req.body.amount;
+    var date = req.body.date;
+    var type = req.body.type;
+    var method = req.body.method;
+
+    console.log(req.body);
+
+    res.status(200).json({
+        success: true,
+        error: "",
+        data: {},
+        msg: ""
+    });
+
+});
+
+async function updateUserData(id, firstName, lastName, password, location, emailAddress) {
+    let sqlQuery = "UPDATE User SET FirstName = '" + firstName + "', LastName = '" + lastName + "', Password = '" + password + "', Address = '" + location + "', EmailAddress = '" + emailAddress + "' WHERE ID = '" + id + "'";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+
+async function reportBug(id, reportedBy, bug, date) {
+    let sqlQuery = "INSERT INTO Bug (ID, ReportedBy, Description, Date, Solved) VALUES ('" + id + "', '" + reportedBy + "', '" + bug + "', '" + date + "', 'false');";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function deleteMember(id) {
+    let sqlQuery = "DELETE FROM User WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+
+                resolve(1);
+            }
+        });
+
+    });
+}
 
 async function checkValidEmailAddressAndRegistered(emailAddress) {
 

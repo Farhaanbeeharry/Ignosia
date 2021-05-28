@@ -1,9 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:web/Model/UserModel.dart';
 
 class Common {
+  static DateTime currentDate;
+  static String displayDate;
+
   static List<Widget> memberWidgetList = new List<Widget>();
   static List<UserModel> memberList = new List<UserModel>();
 
@@ -35,7 +39,24 @@ class Common {
 
   static String generatePassword(int length) => String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(rnd.nextInt(_chars.length))));
 
-  static UserModel signUpPreData;
+  static UserModel loggedInData;
+
+  static setDate() {
+    List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    currentDate = new DateTime.now();
+    String todayDay = DateFormat('EEEE').format(currentDate);
+
+    String shownDate = todayDay + ", " + currentDate.day.toString() + " " + months[currentDate.month - 1] + " " + currentDate.year.toString();
+
+    displayDate = shownDate;
+  }
+
+  static String getDate() {
+    String now = new DateTime.now().toString();
+    String date = now[8] + now[9] + "/" + now[5] + now[6] + "/" + now[0] + now[1] + now[2] + now[3];
+    return date;
+  }
 }
 
 class PasswordStrength {

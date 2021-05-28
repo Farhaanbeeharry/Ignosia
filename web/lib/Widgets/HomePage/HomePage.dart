@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Widgets/Analytics/Analytics.dart';
 import 'package:web/Widgets/Beneficiary/BeneficiaryView.dart';
 import 'package:web/Widgets/Cases/CasesView.dart';
@@ -54,6 +57,18 @@ class _HomepageState extends State<Homepage> {
   }
 
   final PageController sliderController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (Common.loggedInData == null) {
+      Timer.run(() {
+        Navigator.pushNamed(context, '/Login');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -680,7 +695,7 @@ class _HomepageState extends State<Homepage> {
                           if (!homepageController.selectedNavBar['settings']) {
                             changeAllToUnselected();
                             homepageController.selectedNavBar['settings'] = true;
-                            sliderController.animateToPage(9, duration: new Duration(milliseconds: 300), curve: Curves.elasticIn);
+                            sliderController.animateToPage(9, duration: new Duration(milliseconds: 300), curve: Curves.linear);
 
                             setState(() {
                               homepageController.currentSettingsBox = homepageController.selectedBox;
@@ -793,13 +808,13 @@ class _HomepageState extends State<Homepage> {
                     physics: new NeverScrollableScrollPhysics(),
                     controller: sliderController,
                     children: <Widget>[
-                      MembersView(),
+                      Finance(),
                       Dashboard(),
                       CaseView(),
                       ScheduleView(),
                       ValidatorView(),
-                      Finance(),
                       EventView(),
+                      MembersView(),
                       BeneficiaryView(),
                       Analytics(),
                       Settings(),

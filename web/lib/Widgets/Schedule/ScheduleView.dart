@@ -42,7 +42,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        'Sunday, 21 March 2021',
+                        Common.displayDate,
                         style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
                       ),
                     ),

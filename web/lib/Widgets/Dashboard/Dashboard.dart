@@ -11,6 +11,13 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Common.setDate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.8) - 60,
@@ -32,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(left: 4.0),
                 child: Text(
-                  'Sunday, 21 March 2021',
+                  Common.displayDate,
                   style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
                 ),
               ),
