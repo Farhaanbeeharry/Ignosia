@@ -5,7 +5,6 @@ import 'package:validators/validators.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Widgets/Finance/FinanceController.dart';
-import 'package:web/Widgets/Finance/TransactionWidget/TransactionWidget.dart';
 
 class Finance extends StatefulWidget {
   @override
@@ -17,6 +16,33 @@ class _FinanceState extends State<Finance> {
 
   callSetState() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTransactionList();
+  }
+
+  loadTransaction() async {
+    await getTransactionList();
+  }
+
+  getTransactionList() async {
+    setState(() {
+      financeController.refreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await financeController.getTransactionList(callSetState, loadTransaction);
+    setState(() {
+      financeController.refreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
   }
 
   @override
@@ -64,7 +90,7 @@ class _FinanceState extends State<Finance> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(30.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25.0),
                         child: Form(
                           key: financeController.newTransactionKey,
                           child: Column(
@@ -78,7 +104,7 @@ class _FinanceState extends State<Finance> {
                                 height: 10.0,
                               ),
                               Container(
-                                height: 340.0,
+                                height: 350.0,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -234,7 +260,15 @@ class _FinanceState extends State<Finance> {
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 15.0,
+                                        height: 12.0,
+                                      ),
+                                      Container(
+                                        color: Colors.black38,
+                                        height: 1.0,
+                                        width: 250.0,
+                                      ),
+                                      SizedBox(
+                                        height: 12.0,
                                       ),
                                       Row(
                                         children: [
@@ -346,8 +380,8 @@ class _FinanceState extends State<Finance> {
                                         );
                                       });
 
-                                      await financeController.newTransaction(financeController.nameController.text, financeController.descriptionController.text, financeController.amountController.text, context);
-
+                                      await financeController.newTransaction(financeController.nameController.text, financeController.descriptionController.text, financeController.amountController.text, context, callSetState);
+                                      getTransactionList();
                                       setState(() {
                                         financeController.saveTransactionBtn = Text(
                                           'Save transaction',
@@ -391,91 +425,39 @@ class _FinanceState extends State<Finance> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Transactions',
-                        style: TextStyle(fontSize: 32.0, color: Colors.black, fontFamily: Stem.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "Transactions",
+                            style: TextStyle(color: Color(0xFF6c63ff), fontSize: 40.0, fontFamily: Stem.bold),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              getTransactionList();
+                            },
+                            child: Container(
+                              width: 70.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFe1e1e1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              child: financeController.refreshBtnIcon,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 16.0,
                       ),
                       Container(
-                        height: 485.0,
+                        height: 470.0,
                         child: SingleChildScrollView(
                           child: Column(
-                            children: [
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "in",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "in",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "in",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "out",
-                                amount: 300,
-                              ),
-                              TransactionWidget(
-                                title: 'Payment',
-                                description: 'To Mr. Hishaam',
-                                type: "in",
-                                amount: 300,
-                              ),
-                            ],
+                            children: Common.transactionWidgetList,
                           ),
                         ),
                       )

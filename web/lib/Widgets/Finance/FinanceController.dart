@@ -1,13 +1,21 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web/Common/API.dart';
 import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Model/ResponseModel.dart';
+import 'package:web/Model/TransactionModel.dart';
+import 'package:web/Widgets/Finance/TransactionWidget/TransactionWidget.dart';
 
 class FinanceController {
+  Widget refreshBtnIcon = Icon(
+    FontAwesomeIcons.syncAlt,
+    color: Color(0xFF6c63ff),
+  );
+
   final newTransactionKey = GlobalKey<FormState>();
 
   Widget saveTransactionBtn = Text(
@@ -32,11 +40,11 @@ class FinanceController {
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController amountController = new TextEditingController();
 
-  Future<void> newTransaction(String name, String description, String amount, BuildContext context) async {
+  Future<void> newTransaction(String name, String description, String amount, BuildContext context, Function callSetState) async {
     var uuid = Uuid();
     String id = uuid.v1();
 
-    String date = Common.getDate();
+    String date = DateTime.now().toString();
 
     String type = incomeBool ? "income" : "expense";
     String method = "";
@@ -54,6 +62,7 @@ class FinanceController {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.newTransaction), body);
 
     if (response.success) {
+      callSetState();
       AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,
@@ -74,6 +83,78 @@ class FinanceController {
         desc: response.error,
         btnOkOnPress: () {},
       ).show();
+    }
+  }
+
+  Future<void> getTransactionList(Function callSetState, Function loadTransaction) async {
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getTransactionList), {});
+    bool emptyListCheck = true;
+
+    for (var datum in response.data) {
+      TransactionModel transaction = TransactionModel().fromJson(datum);
+      if (transaction.deleted == "false") emptyListCheck = false;
+    }
+
+    if (response.success) {
+      Common.transactionWidgetList.clear();
+
+      if (emptyListCheck) {
+        Common.transactionWidgetList.add(Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'No transaction found!',
+              style: TextStyle(
+                fontFamily: Stem.light,
+                color: Color(0xFF9e9e9e),
+                fontSize: 18.0,
+              ),
+            ),
+          ],
+        ));
+      } else {
+        Common.transactionList.clear();
+        for (int i = 0; i < response.data.length; i++) {
+          TransactionModel transaction = TransactionModel().fromJson(response.data[i]);
+          Common.transactionList.add(transaction);
+        }
+
+        TransactionModel tempTransaction;
+
+        for (int i = 1; i < Common.transactionList.length; i++) {
+          for (int j = i; j > 0; j--) {
+            if (DateTime.parse(Common.transactionList[j].date).compareTo(DateTime.parse(Common.transactionList[j - 1].date)) > 0) {
+              tempTransaction = Common.transactionList[j];
+              Common.transactionList[j] = Common.transactionList[j - 1];
+              Common.transactionList[j - 1] = tempTransaction;
+            }
+          }
+        }
+
+        for (var transaction in Common.transactionList) {
+          if (transaction.deleted == "false") {
+            Common.transactionWidgetList.add(TransactionWidget(
+              data: transaction,
+              refresh: loadTransaction,
+            ));
+          }
+        }
+      }
+    } else {
+      Common.transactionWidgetList.clear();
+      Common.transactionWidgetList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Failed to fetch transaction list! Click \'Refresh\' to try again.',
+            style: TextStyle(
+              fontFamily: Stem.light,
+              color: Colors.red,
+              fontSize: 15.0,
+            ),
+          ),
+        ],
+      ));
     }
   }
 }

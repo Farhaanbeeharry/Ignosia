@@ -438,14 +438,15 @@ class _MembersViewState extends State<MembersView> {
                                           memberController.mobileCheck = false;
                                           memberController.hybridCheck = false;
                                           memberController.agreementBox = false;
-                                          setState(() {
-                                            memberController.createMemberBtnWidget = Text(
-                                              "Create member",
-                                              style: Common.buttonTextStyle,
-                                            );
-                                          });
+
                                           loadMemberList();
                                         }
+                                        setState(() {
+                                          memberController.createMemberBtnWidget = Text(
+                                            "Create member",
+                                            style: Common.buttonTextStyle,
+                                          );
+                                        });
                                       }
                                     }
                                   },

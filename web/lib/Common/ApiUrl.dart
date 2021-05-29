@@ -11,6 +11,8 @@ class ApiUrl {
   static const String reportBug = 'reportBug';
   static const String updateUserData = 'updateUserData';
   static const String newTransaction = 'newTransaction';
+  static const String getTransactionList = 'getTransactionList';
+  static const String deleteTransaction = 'deleteTransaction';
 
   static String getURL(String url) {
     return baseURL + url.toString();

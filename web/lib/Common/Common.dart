@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Model/UserModel.dart';
 
 class Common {
@@ -10,6 +11,9 @@ class Common {
 
   static List<Widget> memberWidgetList = new List<Widget>();
   static List<UserModel> memberList = new List<UserModel>();
+
+  static List<Widget> transactionWidgetList = new List<Widget>();
+  static List<TransactionModel> transactionList = new List<TransactionModel>();
 
   static String resetEmailAddress = "";
 
@@ -41,9 +45,9 @@ class Common {
 
   static UserModel loggedInData;
 
-  static setDate() {
-    List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  static List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  static setDate() {
     currentDate = new DateTime.now();
     String todayDay = DateFormat('EEEE').format(currentDate);
 
@@ -56,6 +60,23 @@ class Common {
     String now = new DateTime.now().toString();
     String date = now[8] + now[9] + "/" + now[5] + now[6] + "/" + now[0] + now[1] + now[2] + now[3];
     return date;
+  }
+
+  static String convertDate(String date) {
+    String month = date[5] + date[6];
+    int index = int.parse(month);
+    String displayDate = date[8] + date[9] + " " + months[index - 1] + " " + date[0] + date[1] + date[2] + date[3];
+    return displayDate;
+  }
+
+  static String capitaliseOnlyFirstLetter(String text) {
+    String output = "";
+
+    for (int i = 0; i < text.length; i++) {
+      i == 0 ? output += text[i].toUpperCase() : output += text[i].toLowerCase();
+    }
+
+    return output;
   }
 }
 

@@ -434,19 +434,109 @@ app.use("/API/web/newTransaction", function(req, res, next) {
     var type = req.body.type;
     var method = req.body.method;
 
-    console.log(req.body);
+    addNewTransaction(id, userID, name, description, amount, date, type, method).then(result => {
 
-    res.status(200).json({
-        success: true,
-        error: "",
-        data: {},
-        msg: ""
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+
     });
 
 });
 
+app.use("/API/web/getTransactionList", function(req, res, next) {
+
+    getTransactionList().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/deleteTransaction", function(req, res, next) {
+
+    var id = req.body.id;
+    deleteTransaction(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete transaction with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
+async function deleteTransaction(id) {
+    let sqlQuery = "UPDATE TRANSACTION SET Deleted = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function addNewTransaction(id, userID, name, description, amount, date, type, method) {
+    let sqlQuery = "INSERT INTO TRANSACTION (ID, UserID, Name, Description, Amount, Date, Type, Method, Deleted) VALUES ('" + id + "', '" + userID + "', '" + name + "', '" + description + "', '" + amount + "', '" + date + "', '" + type + "', '" + method + "', 'false');";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
 async function updateUserData(id, firstName, lastName, password, location, emailAddress) {
-    let sqlQuery = "UPDATE User SET FirstName = '" + firstName + "', LastName = '" + lastName + "', Password = '" + password + "', Address = '" + location + "', EmailAddress = '" + emailAddress + "' WHERE ID = '" + id + "'";
+    let sqlQuery = "UPDATE User SET FirstName = '" + firstName + "', LastName = '" + lastName + "', Password = '" + password + "', Address = '" + location + "', EmailAddress = '" + emailAddress + "' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 
@@ -512,6 +602,22 @@ async function checkValidEmailAddressAndRegistered(emailAddress) {
 
     });
 
+}
+
+async function getTransactionList() {
+    let sqlQuery = "SELECT * FROM Transaction";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
 }
 
 async function getMemberList() {
