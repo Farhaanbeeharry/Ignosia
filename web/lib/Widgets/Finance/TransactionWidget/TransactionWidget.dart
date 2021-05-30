@@ -5,8 +5,9 @@ import 'package:web/Widgets/Finance/TransactionWidget/TransactionWidgetControlle
 class TransactionWidget extends StatefulWidget {
   final TransactionModel data;
   final Function refresh;
+  final Function refreshBalance;
 
-  TransactionWidget({this.data, this.refresh});
+  TransactionWidget({this.data, this.refresh, this.refreshBalance});
 
   @override
   _TransactionWidgetState createState() => _TransactionWidgetState();
@@ -24,7 +25,7 @@ class _TransactionWidgetState extends State<TransactionWidget> {
       children: [
         InkWell(
           onTap: () {
-            transactionWidgetController.openDetails(widget.data, context, widget.refresh, callWidgetSetState);
+            transactionWidgetController.openDetails(widget.data, context, widget.refresh, widget.refreshBalance, callWidgetSetState);
           },
           child: Container(
             decoration: BoxDecoration(

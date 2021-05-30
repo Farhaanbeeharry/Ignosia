@@ -12,8 +12,9 @@ class DetailedTransactionWidget extends StatefulWidget {
   final String displayDate;
   final Icon methodIcon;
   final Function refresh;
+  final Function refreshBalance;
 
-  DetailedTransactionWidget({this.data, this.displayDate, this.methodIcon, this.refresh});
+  DetailedTransactionWidget({this.data, this.displayDate, this.methodIcon, this.refresh, this.refreshBalance});
 
   @override
   _DetailedTransactionWidgetState createState() => _DetailedTransactionWidgetState();
@@ -212,7 +213,7 @@ class _DetailedTransactionWidgetState extends State<DetailedTransactionWidget> {
                                     );
                                   });
 
-                                  await detailedTransactionController.deleteTransaction(widget.data.id, context, widget.refresh);
+                                  await detailedTransactionController.deleteTransaction(widget.data.id, context, widget.refresh, widget.refreshBalance);
 
                                   setState(() {
                                     deleteBtnWidget = Icon(

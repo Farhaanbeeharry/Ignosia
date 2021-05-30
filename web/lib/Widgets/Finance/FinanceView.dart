@@ -23,10 +23,27 @@ class _FinanceState extends State<Finance> {
     // TODO: implement initState
     super.initState();
     getTransactionList();
+    getBalance();
   }
 
   loadTransaction() async {
     await getTransactionList();
+  }
+
+  getBalance() async {
+    setState(() {
+      financeController.balanceRefreshBtn = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await financeController.getBalance();
+    setState(() {
+      financeController.balanceRefreshBtn = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
   }
 
   getTransactionList() async {
@@ -36,7 +53,7 @@ class _FinanceState extends State<Finance> {
         size: 25.0,
       );
     });
-    await financeController.getTransactionList(callSetState, loadTransaction);
+    await financeController.getTransactionList(callSetState, loadTransaction, getBalance);
     setState(() {
       financeController.refreshBtnIcon = Icon(
         FontAwesomeIcons.syncAlt,
@@ -66,16 +83,67 @@ class _FinanceState extends State<Finance> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Finance',
-                      style: TextStyle(fontSize: 48.0, color: Color(0XFF36317F), fontFamily: 'StemBold'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Text(
-                        Common.displayDate,
-                        style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Finance',
+                              style: TextStyle(fontSize: 48.0, color: Color(0XFF36317F), fontFamily: 'StemBold'),
+                            ),
+                            Text(
+                              Common.displayDate,
+                              style: TextStyle(fontSize: 20.0, color: Color(0xFFa3b0cb), fontFamily: 'StemRegular'),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Container(
+                          width: 260.0,
+                          height: 85.0,
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Balance',
+                                      style: TextStyle(fontFamily: Stem.medium, color: Color(0xFF6c63ff), fontSize: 22.0),
+                                    ),
+                                    financeController.balanceWidget
+                                  ],
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    getBalance();
+                                  },
+                                  child: Container(
+                                    width: 50.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFe1e1e1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
+                                      ),
+                                    ),
+                                    child: financeController.balanceRefreshBtn,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 20.0,
@@ -98,7 +166,7 @@ class _FinanceState extends State<Finance> {
                             children: [
                               Text(
                                 'New transaction',
-                                style: TextStyle(fontSize: 32.0, color: Colors.black, fontFamily: Stem.bold),
+                                style: TextStyle(fontSize: 32.0, color: Color(0xFF6c63ff), fontFamily: Stem.bold),
                               ),
                               SizedBox(
                                 height: 10.0,
@@ -177,6 +245,8 @@ class _FinanceState extends State<Finance> {
                                                 if (amount.isEmpty) {
                                                   return "Amount cannot be empty!";
                                                 } else if (!isNumeric(amount)) {
+                                                  return "Invalid amount!";
+                                                } else if (int.parse(amount) <= 0) {
                                                   return "Invalid amount!";
                                                 } else
                                                   return null;
@@ -382,6 +452,7 @@ class _FinanceState extends State<Finance> {
 
                                       await financeController.newTransaction(financeController.nameController.text, financeController.descriptionController.text, financeController.amountController.text, context, callSetState);
                                       getTransactionList();
+                                      getBalance();
                                       setState(() {
                                         financeController.saveTransactionBtn = Text(
                                           'Save transaction',

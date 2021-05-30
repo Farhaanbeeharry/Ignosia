@@ -11,7 +11,14 @@ import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Widgets/Finance/TransactionWidget/TransactionWidget.dart';
 
 class FinanceController {
+  Widget balanceWidget = Container();
+  Color balanceTextColor = Colors.black;
+
   Widget refreshBtnIcon = Icon(
+    FontAwesomeIcons.syncAlt,
+    color: Color(0xFF6c63ff),
+  );
+  Widget balanceRefreshBtn = Icon(
     FontAwesomeIcons.syncAlt,
     color: Color(0xFF6c63ff),
   );
@@ -39,6 +46,27 @@ class FinanceController {
   TextEditingController nameController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController amountController = new TextEditingController();
+
+  Future<void> getBalance() async {
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getBalance), {});
+    if (response.success) {
+      if (response.data['status'] == 'neutral')
+        balanceTextColor = Colors.black;
+      else if (response.data['status'] == 'profit')
+        balanceTextColor = Colors.green;
+      else if (response.data['status'] == 'loss') balanceTextColor = Colors.red;
+
+      balanceWidget = Text(
+        response.data['status'] == 'loss' ? "-Rs${response.data['balance'].abs().toString()}" : "Rs${response.data['balance']}",
+        style: TextStyle(fontSize: 24.0, color: balanceTextColor, fontFamily: Stem.bold),
+      );
+    } else {
+      balanceWidget = Text(
+        "Failed to load balance!",
+        style: TextStyle(fontSize: 16.0, color: Colors.black26, fontFamily: Stem.medium),
+      );
+    }
+  }
 
   Future<void> newTransaction(String name, String description, String amount, BuildContext context, Function callSetState) async {
     var uuid = Uuid();
@@ -86,7 +114,7 @@ class FinanceController {
     }
   }
 
-  Future<void> getTransactionList(Function callSetState, Function loadTransaction) async {
+  Future<void> getTransactionList(Function callSetState, Function loadTransaction, Function getBalance) async {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getTransactionList), {});
     bool emptyListCheck = true;
 
@@ -97,7 +125,6 @@ class FinanceController {
 
     if (response.success) {
       Common.transactionWidgetList.clear();
-
       if (emptyListCheck) {
         Common.transactionWidgetList.add(Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -114,9 +141,10 @@ class FinanceController {
         ));
       } else {
         Common.transactionList.clear();
+
         for (int i = 0; i < response.data.length; i++) {
           TransactionModel transaction = TransactionModel().fromJson(response.data[i]);
-          Common.transactionList.add(transaction);
+          if (transaction.deleted == 'false') Common.transactionList.add(transaction);
         }
 
         TransactionModel tempTransaction;
@@ -133,10 +161,7 @@ class FinanceController {
 
         for (var transaction in Common.transactionList) {
           if (transaction.deleted == "false") {
-            Common.transactionWidgetList.add(TransactionWidget(
-              data: transaction,
-              refresh: loadTransaction,
-            ));
+            Common.transactionWidgetList.add(TransactionWidget(data: transaction, refresh: loadTransaction, refreshBalance: getBalance));
           }
         }
       }

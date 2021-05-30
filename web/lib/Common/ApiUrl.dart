@@ -13,6 +13,10 @@ class ApiUrl {
   static const String newTransaction = 'newTransaction';
   static const String getTransactionList = 'getTransactionList';
   static const String deleteTransaction = 'deleteTransaction';
+  static const String getBalance = 'getBalance';
+  static const String createEvent = 'createEvent';
+  static const String getEventList = 'getEventList';
+  static const String deleteEvent = 'deleteEvent';
 
   static String getURL(String url) {
     return baseURL + url.toString();

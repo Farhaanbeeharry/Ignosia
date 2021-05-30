@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/EventModel.dart';
+import 'package:web/Widgets/Event/EventWidget/EventWidgetController.dart';
 
 class EventWidget extends StatefulWidget {
+  final EventModel data;
+  final Function getEventList;
+
+  EventWidget({this.data, this.getEventList});
+
   @override
   _EventWidgetState createState() => _EventWidgetState();
 }
 
 class _EventWidgetState extends State<EventWidget> {
+  EventWidgetController eventWidgetController = new EventWidgetController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,40 +53,33 @@ class _EventWidgetState extends State<EventWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Event name',
+                          widget.data.eventName,
                           style: TextStyle(color: Colors.black, fontSize: 24.0, fontFamily: Stem.bold),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 7.5,
+                      height: 10,
                     ),
                     Text(
-                      'Will be distributing briani for dinner',
-                      style: TextStyle(color: Colors.black, fontSize: 14.0, fontFamily: Stem.medium),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Sponsored by Adidas',
+                      'Sponsored by ${widget.data.eventSponsor}',
                       style: TextStyle(color: Colors.black, fontSize: 14.0, fontFamily: Stem.light),
                     ),
                     SizedBox(
                       height: 2.5,
                     ),
                     Text(
-                      'Created for youngsters',
+                      'Created for ${widget.data.benefittedPeople}',
                       style: TextStyle(color: Colors.black, fontSize: 14.0, fontFamily: Stem.light),
                     ),
                     SizedBox(
-                      height: 5.0,
+                      height: 15.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Cost = Rs 10000',
+                          'Cost = Rs${widget.data.cost}',
                           style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: Stem.medium),
                         ),
                       ],
@@ -92,7 +92,7 @@ class _EventWidgetState extends State<EventWidget> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(25.0),
+                    bottomRight: Radius.circular(15.0),
                   ),
                   color: Color(0xFF6c63ff),
                 ),
@@ -100,45 +100,19 @@ class _EventWidgetState extends State<EventWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                              color: Colors.white,
-                            ),
-                            height: 25.0,
-                            width: 25.0,
-                            child: Icon(
-                              FontAwesomeIcons.times,
-                              color: Colors.red,
-                              size: 20.0,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                      ],
-                    ),
                     SizedBox(
-                      height: 10.0,
+                      height: 8.0,
                     ),
                     Text(
-                      '23/05',
+                      widget.data.date[0] + widget.data.date[1] + widget.data.date[2] + widget.data.date[3] + widget.data.date[4],
                       style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: Stem.regular),
                     ),
                     Text(
-                      '2021',
+                      widget.data.date[6] + widget.data.date[7] + widget.data.date[8] + widget.data.date[9],
                       style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: Stem.regular),
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 8.0,
                     ),
                     Container(
                       color: Colors.white,
@@ -146,11 +120,35 @@ class _EventWidgetState extends State<EventWidget> {
                       width: 40.0,
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 8.0,
                     ),
                     Text(
-                      '19:00',
+                      widget.data.time,
                       style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: Stem.regular),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        eventWidgetController.viewEvent(widget.data, widget.getEventList, context);
+                      },
+                      child: Container(
+                        width: 60.0,
+                        height: 25.0,
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.only(top: 3.0),
+                          child: Text(
+                            'View',
+                            style: TextStyle(
+                              fontFamily: Stem.medium,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        )),
+                      ),
                     ),
                   ],
                 ),

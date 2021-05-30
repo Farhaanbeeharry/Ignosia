@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:web/Model/EventModel.dart';
 import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Model/UserModel.dart';
 
@@ -14,6 +15,9 @@ class Common {
 
   static List<Widget> transactionWidgetList = new List<Widget>();
   static List<TransactionModel> transactionList = new List<TransactionModel>();
+
+  static List<Widget> eventWidgetList = new List<Widget>();
+  static List<EventModel> eventList = new List<EventModel>();
 
   static String resetEmailAddress = "";
 
@@ -50,8 +54,9 @@ class Common {
   static setDate() {
     currentDate = new DateTime.now();
     String todayDay = DateFormat('EEEE').format(currentDate);
+    String today = todayDay[0] + todayDay[1] + todayDay[2];
 
-    String shownDate = todayDay + ", " + currentDate.day.toString() + " " + months[currentDate.month - 1] + " " + currentDate.year.toString();
+    String shownDate = today + ", " + currentDate.day.toString() + " " + months[currentDate.month - 1] + " " + currentDate.year.toString();
 
     displayDate = shownDate;
   }

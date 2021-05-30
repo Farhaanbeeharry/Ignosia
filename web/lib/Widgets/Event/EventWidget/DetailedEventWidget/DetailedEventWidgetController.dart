@@ -5,31 +5,29 @@ import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Model/ResponseModel.dart';
 
-class DetailedTransactionController {
-  Future<void> deleteTransaction(String id, BuildContext context, Function refreshList, Function refreshBalance) async {
+class DetailedEventController {
+  Future<void> deleteEvent(String id, BuildContext context, Function refreshEventList) async {
     var body = {"id": id};
 
-    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.deleteTransaction), body);
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.deleteEvent), body);
     if (response.success) {
       int value;
-      for (int i = 0; i < Common.transactionList.length; i++) {
-        if (Common.transactionList[i].id == id) {
+      for (int i = 0; i < Common.eventList.length; i++) {
+        if (Common.eventList[i].id == id) {
           value = i;
           break;
         }
       }
-
-      Common.transactionList.removeAt(value);
-      Common.transactionWidgetList.removeAt(value);
-      refreshList();
-      refreshBalance();
+      Common.eventList.removeAt(value);
+      Common.eventWidgetList.removeAt(value);
+      refreshEventList();
       AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,
-        title: "Transaction deleted!",
+        title: "Event deleted!",
         width: MediaQuery.of(context).size.width * 0.4,
         dismissOnTouchOutside: false,
-        desc: "Transaction with ID '$id' has been deleted successfully!",
+        desc: "Event with ID '$id' has been deleted successfully!",
         btnOkOnPress: () {
           Navigator.pop(context);
         },
@@ -39,7 +37,7 @@ class DetailedTransactionController {
         context: context,
         dialogType: DialogType.ERROR,
         btnOkColor: Color(0xFFd93e47),
-        title: "Failed to delete transaction!",
+        title: "Failed to delete event!",
         width: MediaQuery.of(context).size.width * 0.4,
         dismissOnTouchOutside: true,
         desc: response.error,

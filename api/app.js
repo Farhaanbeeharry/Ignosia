@@ -464,7 +464,7 @@ app.use("/API/web/getTransactionList", function(req, res, next) {
             res.status(200).json({
                 success: false,
                 error: "",
-                data: {},
+                data: [],
                 msg: ""
             });
         } else {
@@ -502,6 +502,236 @@ app.use("/API/web/deleteTransaction", function(req, res, next) {
     });
 
 });
+
+app.use("/API/web/getBalance", function(req, res, next) {
+
+
+    var balance = 0;
+    var status = "neutral";
+
+    getBalance().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to fetch current balance!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            for (let i = 0; i < result.length; i++) {
+                result[i]['Type'] == 'income' ? balance += parseInt(result[i]['Amount']) : balance -= parseInt(result[i]['Amount']);
+            }
+
+            if (balance < 0) {
+                status = "loss";
+            } else if (balance == 0) {
+                status = "neutral";
+            } else if (balance > 0) {
+                status = "profit";
+            }
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {
+                    "balance": balance,
+                    "status": status
+                },
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/createEvent", function(req, res, next) {
+
+    var id = req.body.ID;
+    var createdBy = req.body.createdBy;
+    var eventName = req.body.eventName;
+    var sponsorName = req.body.sponsorName;
+    var createdFor = req.body.createdFor;
+    var cost = req.body.cost;
+    var date = req.body.date;
+    var time = req.body.time;
+    var description = req.body.description;
+
+    createEvent(id, createdBy, eventName, sponsorName, createdFor, cost, date, time, description).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to create event!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/getEventList", function(req, res, next) {
+
+    getEventList().then(result => {
+
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+
+app.use("/API/web/deleteEvent", function(req, res, next) {
+
+    var id = req.body.id;
+    deleteEvent(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete event with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/getDashboardData", function(req, res, next) {
+
+    getDashboardData().then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to get dashboard's data",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+async function getDashboardData() {
+    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM User) as members, (SELECT COUNT(ID) FROM Request) as cases, (SELECT COUNT(ID) FROM Beneficiary) as beneficiaries, (SELECT COUNT(ID) FROM Event) as events";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+
+                resolve(-1);
+            } else {
+
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function deleteEvent(id) {
+    let sqlQuery = "UPDATE Event SET Deleted = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function getEventList() {
+    let sqlQuery = "SELECT Event.ID, Event.CreatedByUserID, Event.EventName, Event.EventSponsor, Event.Date, Event.Time, Event.BenefittedPeople, Event.Description, Event.Cost, Event.Deleted, User.FirstName, User.LastName FROM Event INNER JOIN User ON Event.CreatedByUserID = User.ID  WHERE Deleted = 'false' ";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function createEvent(id, createdBy, eventName, sponsorName, createdFor, cost, date, time, description) {
+    let sqlQuery = "INSERT INTO Event (ID, CreatedByUserID, EventName, EventSponsor, Date, Time, BenefittedPeople, Description, Cost, Deleted) VALUES ('" + id + "', '" + createdBy + "', '" + eventName + "', '" + sponsorName + "', '" + date + "', '" + time + "', '" + createdFor + "', '" + description + "', '" + cost + "', 'false');"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+
+        });
+    });
+}
+
+
+async function getBalance() {
+    let sqlQuery = "SELECT Amount, Type FROM Transaction WHERE Deleted = 'false';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
 
 async function deleteTransaction(id) {
     let sqlQuery = "UPDATE TRANSACTION SET Deleted = 'true' WHERE ID = '" + id + "';";

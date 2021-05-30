@@ -18,19 +18,14 @@ class TransactionWidgetController {
       return Icon(FontAwesomeIcons.mobile);
   }
 
-  openDetails(TransactionModel data, BuildContext context, Function callSetState, Function callWidgetSetState) {
+  openDetails(TransactionModel data, BuildContext context, Function callSetState, Function refreshBalance, Function callWidgetSetState) {
     String displayDate = Common.convertDate(data.date);
 
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
-        return DetailedTransactionWidget(
-          data: data,
-          displayDate: displayDate,
-          methodIcon: getMethodIcon(data.method),
-          refresh: callSetState,
-        );
+        return DetailedTransactionWidget(data: data, displayDate: displayDate, methodIcon: getMethodIcon(data.method), refresh: callSetState, refreshBalance: refreshBalance);
       },
     );
   }

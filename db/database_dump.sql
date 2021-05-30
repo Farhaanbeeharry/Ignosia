@@ -77,6 +77,7 @@ CREATE TABLE EVENT (
     BenefittedPeople TEXT NOT NULL,
     Description TEXT NOT NULL,
     Cost VARCHAR(20) NOT NULL,
+    Deleted VARCHAR(10) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (CreatedByUserID) REFERENCES USER(ID)
 );
@@ -111,6 +112,7 @@ CREATE TABLE BENEFICIARY (
     MobilePhone VARCHAR(20) NOT NULL,
     WorkFromDate VARCHAR(12),
     WorkToDate VARCHAR(12),
+    Salary VARCHAR(10),
     NumberOfChildren VARCHAR(2) NOT NULL,
     Notes TEXT NOT NULL,
     status VARCHAR(12) NOT NULL,

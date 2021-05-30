@@ -148,6 +148,32 @@ class _BeneficiaryDetailedWidgetState extends State<BeneficiaryDetailedWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
+                        'Salary: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          fontFamily: Stem.light,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Rs12345',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontFamily: Stem.medium,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         'Responsible party name: ',
                         style: TextStyle(
                           color: Colors.black,
