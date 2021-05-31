@@ -19,6 +19,9 @@ class Common {
   static List<Widget> eventWidgetList = new List<Widget>();
   static List<EventModel> eventList = new List<EventModel>();
 
+  static List<Widget> recentTransactionWidgetList = new List<Widget>();
+  static List<TransactionModel> recentTransactionList = new List<TransactionModel>();
+
   static String resetEmailAddress = "";
 
   static TextStyle labelTextStyle = new TextStyle(
@@ -82,6 +85,37 @@ class Common {
     }
 
     return output;
+  }
+
+  static int compareDate(String from, String to) {
+    int fromDay = int.parse(from[0] + from[1]);
+    int fromMonth = int.parse(from[3] + from[4]);
+    int fromYear = int.parse(from[6] + from[7] + from[8] + from[9]);
+    int fromHour = int.parse(from[10] + from[11]);
+    int fromMinute = int.parse(from[13] + from[14]);
+    DateTime dateFrom = new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute);
+
+    int toDay = int.parse(to[0] + to[1]);
+    int toMonth = int.parse(to[3] + to[4]);
+    int toYear = int.parse(to[6] + to[7] + to[8] + to[9]);
+    int toHour = int.parse(to[10] + to[11]);
+    int toMinute = int.parse(to[13] + to[14]);
+    DateTime dateTo = new DateTime(toYear, toMonth, toDay, toHour, toMinute);
+
+    return dateFrom.compareTo(dateTo);
+  }
+
+  static bool checkFutureDate(String rawDate) {
+    int fromDay = int.parse(rawDate[0] + rawDate[1]);
+    int fromMonth = int.parse(rawDate[3] + rawDate[4]);
+    int fromYear = int.parse(rawDate[6] + rawDate[7] + rawDate[8] + rawDate[9]);
+    int fromHour = int.parse(rawDate[10] + rawDate[11]);
+    int fromMinute = int.parse(rawDate[13] + rawDate[14]);
+    DateTime date = new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute);
+    if (date.compareTo(DateTime.now()) == 1) {
+      return true;
+    } else
+      return false;
   }
 }
 

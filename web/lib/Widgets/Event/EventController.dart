@@ -81,7 +81,7 @@ class EventController {
 
     for (var datum in response.data) {
       EventModel event = EventModel().fromJson(datum);
-      if (event.deleted == "false") emptyListCheck = false;
+      if (Common.checkFutureDate(event.date + event.time)) emptyListCheck = false;
     }
 
     if (response.success) {
@@ -91,7 +91,7 @@ class EventController {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'No event found!',
+              'No upcoming event found!',
               style: TextStyle(
                 fontFamily: Stem.light,
                 color: Color(0xFF9e9e9e),
@@ -105,20 +105,20 @@ class EventController {
 
         for (int i = 0; i < response.data.length; i++) {
           EventModel event = EventModel().fromJson(response.data[i]);
-          if (event.deleted == 'false') Common.eventList.add(event);
+          if (Common.checkFutureDate(event.date + event.time)) Common.eventList.add(event);
         }
 
-        // EventModel tempTransaction;
-        //
-        // for (int i = 1; i < Common.eventList.length; i++) {
-        //   for (int j = i; j > 0; j--) {
-        //     if (DateTime.parse(Common.eventList[j].date).compareTo(DateTime.parse(Common.eventList[j - 1].date)) > 0) {
-        //       tempTransaction = Common.eventList[j];
-        //       Common.eventList[j] = Common.eventList[j - 1];
-        //       Common.eventList[j - 1] = tempTransaction;
-        //     }
-        //   }
-        // }
+        EventModel tempTransaction;
+
+        for (int i = 1; i < Common.eventList.length; i++) {
+          for (int j = i; j > 0; j--) {
+            if (Common.compareDate(Common.eventList[j].date + Common.eventList[j].time, Common.eventList[j - 1].date + Common.eventList[j - 1].time) == -1) {
+              tempTransaction = Common.eventList[j];
+              Common.eventList[j] = Common.eventList[j - 1];
+              Common.eventList[j - 1] = tempTransaction;
+            }
+          }
+        }
 
         for (var event in Common.eventList) {
           if (event.deleted == "false") {

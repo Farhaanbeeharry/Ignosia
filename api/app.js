@@ -649,8 +649,31 @@ app.use("/API/web/getDashboardData", function(req, res, next) {
 
 });
 
+app.use("/API/web/getRecentTransactionData", function(req, res, next) {
+
+    getDashboardransactionList().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to get transaction list",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
 async function getDashboardData() {
-    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM User) as members, (SELECT COUNT(ID) FROM Request) as cases, (SELECT COUNT(ID) FROM Beneficiary) as beneficiaries, (SELECT COUNT(ID) FROM Event) as events";
+    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM User) as members, (SELECT COUNT(ID) FROM Request) as cases, (SELECT COUNT(ID) FROM Beneficiary) as beneficiaries, (SELECT COUNT(ID) FROM Event WHERE Deleted = 'false') as events";
 
     return new Promise((resolve, reject) => {
 
@@ -832,6 +855,22 @@ async function checkValidEmailAddressAndRegistered(emailAddress) {
 
     });
 
+}
+
+async function getDashboardransactionList() {
+    let sqlQuery = "SELECT * FROM Transaction WHERE Deleted = 'false';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
 }
 
 async function getTransactionList() {

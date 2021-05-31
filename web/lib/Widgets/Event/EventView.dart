@@ -503,7 +503,7 @@ class _EventViewState extends State<EventView> {
                       Row(
                         children: [
                           Text(
-                            "Events",
+                            "Upcoming Events",
                             style: TextStyle(color: Color(0xFF6c63ff), fontSize: 40.0, fontFamily: Stem.bold),
                           ),
                           Spacer(),

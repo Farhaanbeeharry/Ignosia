@@ -17,6 +17,8 @@ class ApiUrl {
   static const String createEvent = 'createEvent';
   static const String getEventList = 'getEventList';
   static const String deleteEvent = 'deleteEvent';
+  static const String getDashboardData = 'getDashboardData';
+  static const String getRecentTransactionData = 'getRecentTransactionData';
 
   static String getURL(String url) {
     return baseURL + url.toString();

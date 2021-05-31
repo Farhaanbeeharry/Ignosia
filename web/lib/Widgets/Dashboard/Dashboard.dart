@@ -1,20 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
-import 'package:web/Widgets/Dashboard/DashboardTransactionWidget/DashboardTransactionWidget.dart';
+import 'package:web/Widgets/Dashboard/DashboardController.dart';
 
 class Dashboard extends StatefulWidget {
+  final Function moveToFinancePage;
+
+  Dashboard({this.moveToFinancePage});
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  DashboardController dashboardController = new DashboardController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadData();
     Common.setDate();
+  }
+
+  callSetState() {
+    setState(() {});
+  }
+
+  loadData() async {
+    await loadDashboardData();
+  }
+
+  loadDashboardData() async {
+    setState(() {
+      dashboardController.loadingWidget = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    if (await dashboardController.getRecentTransactionData(callSetState) && await dashboardController.getDashboardData(callSetState)) {
+      setState(() {
+        dashboardController.loadingWidget = Container();
+      });
+    } else {
+      setState(() {
+        dashboardController.loadingWidget = Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                loadData();
+              },
+              child: Container(
+                width: 50.0,
+                height: 50.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15.0),
+                  ),
+                ),
+                child: Icon(
+                  FontAwesomeIcons.syncAlt,
+                  color: Color(0xFF6c63ff),
+                ),
+              ),
+            )
+          ],
+        );
+      });
+    }
   }
 
   @override
@@ -32,9 +89,24 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Dashboard',
-                style: TextStyle(fontSize: 48.0, color: Color(0XFF36317F), fontFamily: 'StemBold'),
+              Row(
+                children: [
+                  Text(
+                    'Dashboard',
+                    style: TextStyle(fontSize: 48.0, color: Color(0XFF36317F), fontFamily: 'StemBold'),
+                  ),
+                  SizedBox(
+                    width: 15.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 7.5),
+                    child: Container(
+                      width: 50.0,
+                      height: 50.0,
+                      child: dashboardController.loadingWidget,
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 4.0),
@@ -97,7 +169,7 @@ class _DashboardState extends State<Dashboard> {
                                             'Members',
                                             style: TextStyle(fontSize: 16.0, color: Color(0xFFa3b0cb), fontFamily: 'StemBold'),
                                           ),
-                                          Text('1', style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
+                                          Text(dashboardController.memberData, style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
                                         ],
                                       ),
                                     )
@@ -148,7 +220,7 @@ class _DashboardState extends State<Dashboard> {
                                             'Cases',
                                             style: TextStyle(fontSize: 16.0, color: Color(0xFFa3b0cb), fontFamily: 'StemBold'),
                                           ),
-                                          Text('25', style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
+                                          Text(dashboardController.caseData, style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
                                         ],
                                       ),
                                     )
@@ -199,7 +271,7 @@ class _DashboardState extends State<Dashboard> {
                                             'Beneficiaries',
                                             style: TextStyle(fontSize: 16.0, color: Color(0xFFa3b0cb), fontFamily: 'StemBold'),
                                           ),
-                                          Text('54', style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
+                                          Text(dashboardController.beneficiaryData, style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
                                         ],
                                       ),
                                     )
@@ -250,7 +322,7 @@ class _DashboardState extends State<Dashboard> {
                                             'Events',
                                             style: TextStyle(fontSize: 16.0, color: Color(0xFFa3b0cb), fontFamily: 'StemBold'),
                                           ),
-                                          Text('8', style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
+                                          Text(dashboardController.eventData, style: TextStyle(fontSize: 18.0, color: Colors.black, fontFamily: 'StemMedium'))
                                         ],
                                       ),
                                     ),
@@ -298,7 +370,7 @@ class _DashboardState extends State<Dashboard> {
                             style: TextStyle(
                               fontFamily: 'StemMedium',
                               fontSize: 26.0,
-                              color: Colors.black,
+                              color: Color(0xFF6c63ff),
                             ),
                           ),
                           SizedBox(
@@ -306,32 +378,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           Container(
                             child: Column(
-                              children: [
-                                DashboardTransactionWidget(
-                                  title: 'Contribution',
-                                  description: 'From Mr. Farhaan',
-                                  type: "in",
-                                  amount: 900,
-                                ),
-                                DashboardTransactionWidget(
-                                  title: 'Payment',
-                                  description: 'To Mr. Hishaam',
-                                  type: "out",
-                                  amount: 300,
-                                ),
-                                DashboardTransactionWidget(
-                                  title: 'Contribution',
-                                  description: 'From Mr. Zaffar',
-                                  type: "in",
-                                  amount: 50,
-                                ),
-                                DashboardTransactionWidget(
-                                  title: 'Contribution',
-                                  description: 'From Mr. Zaffar',
-                                  type: "in",
-                                  amount: 50,
-                                ),
-                              ],
+                              children: Common.recentTransactionWidgetList,
                             ),
                           ),
                           Spacer(),
@@ -341,6 +388,7 @@ class _DashboardState extends State<Dashboard> {
                             child: TextButton(
                                 onPressed: () {
                                   FocusScope.of(context).requestFocus(new FocusNode());
+                                  widget.moveToFinancePage();
                                 },
                                 style: TextButton.styleFrom(backgroundColor: Color(0xFF3f3d56), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                                 child: Text(

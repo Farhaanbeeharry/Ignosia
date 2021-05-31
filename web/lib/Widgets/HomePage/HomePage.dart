@@ -22,6 +22,20 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   HomepageController homepageController = HomepageController();
+  final PageController sliderController = PageController(initialPage: 0);
+
+  moveToFinancePage() {
+    if (!homepageController.selectedNavBar['finance']) {
+      changeAllToUnselected();
+      homepageController.selectedNavBar['finance'] = true;
+      sliderController.animateToPage(4, duration: new Duration(milliseconds: 300), curve: Curves.linear);
+
+      setState(() {
+        homepageController.currentFinanceBox = homepageController.selectedBox;
+        homepageController.currentFinanceText = homepageController.selectedText;
+      });
+    }
+  }
 
   void changeAllToUnselected() {
     homepageController.selectedNavBar['dashboard'] = false;
@@ -55,8 +69,6 @@ class _HomepageState extends State<Homepage> {
     homepageController.currentSettingsBox = homepageController.unselectedBox;
     homepageController.currentSettingsText = homepageController.unselectedText;
   }
-
-  final PageController sliderController = PageController(initialPage: 0);
 
   @override
   void initState() {
@@ -753,6 +765,7 @@ class _HomepageState extends State<Homepage> {
                           }
                         },
                         onTap: () {
+                          Common.loggedInData = null;
                           Navigator.pushNamed(context, '/Login');
                         },
                         child: Container(
@@ -808,7 +821,7 @@ class _HomepageState extends State<Homepage> {
                     physics: new NeverScrollableScrollPhysics(),
                     controller: sliderController,
                     children: <Widget>[
-                      Dashboard(),
+                      Dashboard(moveToFinancePage: moveToFinancePage),
                       CaseView(),
                       ScheduleView(),
                       ValidatorView(),
