@@ -503,6 +503,30 @@ app.use("/API/web/deleteTransaction", function(req, res, next) {
 
 });
 
+app.use("/API/web/deleteCase", function(req, res, next) {
+
+    var id = req.body.id;
+    deleteCase(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete case with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
 app.use("/API/web/getBalance", function(req, res, next) {
 
 
@@ -577,10 +601,65 @@ app.use("/API/web/createEvent", function(req, res, next) {
 
 });
 
+app.use("/API/web/createCase", function(req, res, next) {
+
+    var id = req.body.id;
+    var createdBy = req.body.createdByUserID;
+    var dateCreated = req.body.dateCreated;
+    var name = req.body.name;
+    var phoneNumber = req.body.phoneNumber;
+    var location = req.body.location;
+    var latitude = req.body.latitude;
+    var longitude = req.body.longitude;
+    var notes = req.body.notes;
+
+    createCase(id, createdBy, dateCreated, name, phoneNumber, location, latitude, longitude, notes).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to create event!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
 app.use("/API/web/getEventList", function(req, res, next) {
 
     getEventList().then(result => {
 
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/getCaseList", function(req, res, next) {
+
+    getCaseList().then(result => {
 
         if (result == -1) {
             res.status(200).json({
@@ -722,6 +801,23 @@ async function getEventList() {
     });
 }
 
+async function getCaseList() {
+    let sqlQuery = "SELECT Request.ReceivedByUserID,  Request.ID, Request.DateReceived, Request.Name, Request.PhoneNumber, Request.Location, Request.Latitude, Request.Longitude, Request.Notes, Request.Deleted, Request.Scheduled, User.FirstName, User.LastName FROM Request INNER JOIN User ON Request.ReceivedByUserID = User.ID  WHERE Deleted = 'false' ";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
 async function createEvent(id, createdBy, eventName, sponsorName, createdFor, cost, date, time, description) {
     let sqlQuery = "INSERT INTO Event (ID, CreatedByUserID, EventName, EventSponsor, Date, Time, BenefittedPeople, Description, Cost, Deleted) VALUES ('" + id + "', '" + createdBy + "', '" + eventName + "', '" + sponsorName + "', '" + date + "', '" + time + "', '" + createdFor + "', '" + description + "', '" + cost + "', 'false');"
 
@@ -739,6 +835,22 @@ async function createEvent(id, createdBy, eventName, sponsorName, createdFor, co
     });
 }
 
+async function createCase(id, createdBy, dateCreated, name, phoneNumber, location, latitude, longitude, notes) {
+    let sqlQuery = "INSERT INTO Request (ID, ReceivedByUserID, DateReceived, Name, PhoneNumber, Location, Latitude, Longitude, Notes, Deleted, Scheduled) VALUES ('" + id + "', '" + createdBy + "', '" + dateCreated + "', '" + name + "', '" + phoneNumber + "', '" + location + "', '" + latitude + "', '" + longitude + "', '" + notes + "', 'false', 'false');"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+
+        });
+    });
+}
 
 async function getBalance() {
     let sqlQuery = "SELECT Amount, Type FROM Transaction WHERE Deleted = 'false';";
@@ -758,6 +870,22 @@ async function getBalance() {
 
 async function deleteTransaction(id) {
     let sqlQuery = "UPDATE TRANSACTION SET Deleted = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function deleteCase(id) {
+    let sqlQuery = "UPDATE Request SET Deleted = 'true' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 

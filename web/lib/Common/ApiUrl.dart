@@ -19,6 +19,9 @@ class ApiUrl {
   static const String deleteEvent = 'deleteEvent';
   static const String getDashboardData = 'getDashboardData';
   static const String getRecentTransactionData = 'getRecentTransactionData';
+  static const String createCase = 'createCase';
+  static const String getCaseList = 'getCaseList';
+  static const String deleteCase = 'deleteCase';
 
   static String getURL(String url) {
     return baseURL + url.toString();

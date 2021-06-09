@@ -38,12 +38,15 @@ CREATE TABLE TRANSACTION (
 CREATE TABLE REQUEST (
     ID VARCHAR(100) NOT NULL,
     ReceivedByUserID VARCHAR(100) NOT NULL,
+    DateReceived VARCHAR(64) NOT NULL,
     Name VARCHAR(32) NOT NULL,
     PhoneNumber VARCHAR(20) NOT NULL,
     Location VARCHAR(100),
     Latitude VARCHAR(20),
     Longitude VARCHAR(20),
     Notes TEXT NOT NULL,
+    Deleted VARCHAR(7) NOT NULL,
+    Scheduled VARCHAR(7) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (ReceivedByUserID) REFERENCES USER(ID)
 );

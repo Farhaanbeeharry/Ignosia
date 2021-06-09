@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:web/Model/CaseModel.dart';
 import 'package:web/Model/EventModel.dart';
 import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Model/UserModel.dart';
@@ -21,6 +22,9 @@ class Common {
 
   static List<Widget> recentTransactionWidgetList = new List<Widget>();
   static List<TransactionModel> recentTransactionList = new List<TransactionModel>();
+
+  static List<Widget> caseWidgetList = new List<Widget>();
+  static List<CaseModel> caseList = new List<CaseModel>();
 
   static String resetEmailAddress = "";
 
@@ -100,6 +104,24 @@ class Common {
     int toYear = int.parse(to[6] + to[7] + to[8] + to[9]);
     int toHour = int.parse(to[10] + to[11]);
     int toMinute = int.parse(to[13] + to[14]);
+    DateTime dateTo = new DateTime(toYear, toMonth, toDay, toHour, toMinute);
+
+    return dateFrom.compareTo(dateTo);
+  }
+
+  static int compareDateFromDateFormat(String from, String to) {
+    int fromDay = int.parse(from[8] + from[9]);
+    int fromMonth = int.parse(from[5] + from[6]);
+    int fromYear = int.parse(from[0] + from[1] + from[2] + from[3]);
+    int fromHour = int.parse(from[11] + from[12]);
+    int fromMinute = int.parse(from[14] + from[15]);
+    DateTime dateFrom = new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute);
+
+    int toDay = int.parse(to[8] + to[9]);
+    int toMonth = int.parse(to[5] + to[6]);
+    int toYear = int.parse(to[0] + to[1] + to[2] + to[3]);
+    int toHour = int.parse(to[11] + to[12]);
+    int toMinute = int.parse(to[14] + to[15]);
     DateTime dateTo = new DateTime(toYear, toMonth, toDay, toHour, toMinute);
 
     return dateFrom.compareTo(dateTo);
