@@ -306,8 +306,12 @@ class _CaseViewState extends State<CaseView> {
                           Container(
                             width: 175.0,
                             child: TextFormField(
-                              onChanged: (value) {
-                                print('changed: ' + value);
+                              onChanged: (value) async {
+                                if (value.isEmpty) {
+                                  await loadData();
+                                } else {
+                                  await caseController.displayResult(value, callSetState);
+                                }
                               },
                               validator: (emailAddress) {
                                 return null;

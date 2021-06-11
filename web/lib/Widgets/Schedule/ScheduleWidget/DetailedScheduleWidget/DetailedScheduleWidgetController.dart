@@ -4,21 +4,20 @@ import 'package:web/Common/API.dart';
 import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Model/ResponseModel.dart';
 
-class DetailedCaseController {
-  Future<void> deleteCase(String id, BuildContext context, Function refresh, Function refreshCaseList) async {
+class DetailedScheduleWidgetController {
+  Future<void> deleteSchedule(String id, BuildContext context, Function refreshScheduleList) async {
     var body = {"id": id};
 
-    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.deleteCase), body);
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.deleteSchedule), body);
     if (response.success) {
-      refresh();
-      refreshCaseList();
+      refreshScheduleList();
       AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,
-        title: "Case deleted!",
+        title: "Schedule deleted!",
         width: MediaQuery.of(context).size.width * 0.4,
         dismissOnTouchOutside: false,
-        desc: "Case with ID '$id' has been deleted successfully!",
+        desc: "Schedule with ID '$id' has been deleted successfully!",
         btnOkOnPress: () {
           Navigator.pop(context);
         },
@@ -28,7 +27,7 @@ class DetailedCaseController {
         context: context,
         dialogType: DialogType.ERROR,
         btnOkColor: Color(0xFFd93e47),
-        title: "Failed to delete case!",
+        title: "Failed to delete schedule!",
         width: MediaQuery.of(context).size.width * 0.4,
         dismissOnTouchOutside: true,
         desc: response.error,

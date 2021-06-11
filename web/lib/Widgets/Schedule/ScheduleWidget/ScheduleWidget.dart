@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/ScheduleModel.dart';
+import 'package:web/Widgets/Schedule/ScheduleWidget/ScheduleWidgetController.dart';
 
 class ScheduleWidget extends StatefulWidget {
+  final ScheduleModel data;
+  final Function callSetState;
+  final Function loadScheduleData;
+
+  ScheduleWidget({this.data, this.callSetState, this.loadScheduleData});
+
   @override
   _ScheduleWidgetState createState() => _ScheduleWidgetState();
 }
 
 class _ScheduleWidgetState extends State<ScheduleWidget> {
+  ScheduleWidgetController scheduleWidgetController = new ScheduleWidgetController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,26 +46,26 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
-                      width: 266.0,
+                      width: 341.0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Mr J. Dormipartou',
+                            widget.data.name,
                             style: TextStyle(color: Colors.black, fontSize: 26.0, fontFamily: Stem.bold),
                           ),
                           SizedBox(
                             height: 3.0,
                           ),
                           Text(
-                            'Assigned to Mr Farhaan Beeharry',
+                            'Assigned to ' + widget.data.assignedToFirstName + " " + widget.data.assignedToLastName,
                             style: TextStyle(fontSize: 16.0, fontFamily: Stem.regular),
                           ),
                           SizedBox(
                             height: 4.0,
                           ),
                           Text(
-                            'at 15:00 on 13/03/2021',
+                            'at ${widget.data.time} on ${widget.data.date}',
                             style: TextStyle(fontSize: 14.0, fontFamily: Stem.light),
                           )
                         ],
@@ -64,26 +74,13 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                   ),
                 ),
                 Spacer(),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF6c63ff),
-                    ),
-                    width: 70.0,
-                    child: Icon(
-                      FontAwesomeIcons.externalLinkAlt,
-                      size: 32.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
                 SizedBox(
                   width: 5.0,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    scheduleWidgetController.openDetails(widget.data, context, widget.loadScheduleData);
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -95,7 +92,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                     ),
                     width: 70.0,
                     child: Icon(
-                      FontAwesomeIcons.trashAlt,
+                      FontAwesomeIcons.externalLinkAlt,
                       size: 32.0,
                       color: Colors.white,
                     ),

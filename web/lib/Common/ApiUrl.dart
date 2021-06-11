@@ -22,6 +22,10 @@ class ApiUrl {
   static const String createCase = 'createCase';
   static const String getCaseList = 'getCaseList';
   static const String deleteCase = 'deleteCase';
+  static const String getScheduleList = 'getScheduleList';
+  static const String deleteSchedule = 'deleteSchedule';
+  static const String getMobileUsersList = 'getMobileUsersList';
+  static const String addSchedule = 'addSchedule';
 
   static String getURL(String url) {
     return baseURL + url.toString();

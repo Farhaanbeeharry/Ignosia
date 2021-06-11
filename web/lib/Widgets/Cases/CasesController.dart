@@ -70,7 +70,7 @@ class CaseController {
 
     for (var datum in response.data) {
       CaseModel caseData = CaseModel().fromJson(datum);
-      if (caseData.deleted == 'false') emptyListCheck = false;
+      if (caseData.deleted == 'false' && caseData.scheduled == 'false') emptyListCheck = false;
     }
 
     if (response.success) {
@@ -110,7 +110,7 @@ class CaseController {
         }
 
         for (var caseData in Common.caseList) {
-          if (caseData.deleted == "false") {
+          if (caseData.deleted == "false" && caseData.scheduled == "false") {
             Common.caseWidgetList.add(CaseWidget(data: caseData, getCaseList: loadData));
           }
         }
@@ -131,5 +131,33 @@ class CaseController {
         ],
       ));
     }
+  }
+
+  displayResult(String value, Function callSetState) {
+    Common.caseWidgetList.clear();
+
+    for (var datum in Common.caseList) {
+      if (datum.name.toLowerCase().contains(value.toLowerCase()) || datum.location.toLowerCase().contains(value.toLowerCase()) || datum.phoneNumber.toLowerCase().contains(value.toLowerCase())) {
+        Common.caseWidgetList.add(CaseWidget(data: datum, getCaseList: callSetState));
+      }
+    }
+    if (Common.caseWidgetList.isEmpty) {
+      Common.caseWidgetList.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'No case found!',
+              style: TextStyle(
+                fontFamily: Stem.light,
+                color: Color(0xFF9e9e9e),
+                fontSize: 18.0,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    callSetState();
   }
 }

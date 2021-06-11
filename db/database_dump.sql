@@ -55,6 +55,7 @@ CREATE TABLE SCHEDULE (
     ID VARCHAR(100) NOT NULL,
     CreatedByUserID VARCHAR(100) NOT NULL,
     AssignedUserID VARCHAR(100) NOT NULL,
+    CaseID VARCHAR(100) NOT NULL,
     ScheduleName VARCHAR(64) NOT NULL,
     Location VARCHAR(255) NOT NULL,
     Latitude VARCHAR(20),
@@ -65,6 +66,8 @@ CREATE TABLE SCHEDULE (
     PhoneNumber VARCHAR(20) NOT NULL,
     Notes TEXT NOT NULL,
     Status VARCHAR(32) NOT NULL,
+    Deleted VARCHAR(10) NOT NULL,
+    CarriedOut VARCHAR(10) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (CreatedByUserID) REFERENCES USER(ID),
     FOREIGN KEY (AssignedUserID) REFERENCES USER(ID)
@@ -145,3 +148,5 @@ CREATE TABLE BUG (
     PRIMARY KEY (ID),
     FOREIGN KEY (ReportedBy) REFERENCES USER(ID)
 );
+
+INSERT INTO USER(ID, FirstName, LastName, EmailAddress, Password, DateOfBirth, PhoneNumber, Address, UserToken, DeviceToken, FirstTimeUser, WebUser, MobileUser, ResetKey, Status) VALUES('5153d1c0-bcf1-11eb-997c-d9fd0a38fcfe', 'Admin', 'Ignosia', 'admin@ignosia.com', 'jPSzC9Uv++2cepFUloAkgw==', '30/07/2021','57076881', 'Port-Louis', 'null', 'null', 'false', 'true', 'true', 'null', 'admin');

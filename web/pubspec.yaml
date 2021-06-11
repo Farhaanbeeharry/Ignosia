@@ -40,6 +40,7 @@ dependencies:
   material_dialogs: any
   uuid: any
   intl: ^0.17.0
+  dropdown_search: ^0.6.1
 
 dev_dependencies:
   flutter_test:

@@ -1,13 +1,27 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/CaseModel.dart';
+import 'package:web/Widgets/Schedule/CaseScheduleWidget/CaseScheduleWidgetController.dart';
 
 class CaseScheduleWidget extends StatefulWidget {
+  final CaseModel data;
+  final BuildContext context;
+  final Function refreshData;
+  final Function clearInputs;
+
+  CaseScheduleWidget({this.data, this.context, this.refreshData, this.clearInputs});
+
   @override
   _CaseScheduleWidgetState createState() => _CaseScheduleWidgetState();
 }
 
 class _CaseScheduleWidgetState extends State<CaseScheduleWidget> {
+  CaseScheduleController caseScheduleController = new CaseScheduleController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,23 +50,26 @@ class _CaseScheduleWidgetState extends State<CaseScheduleWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Mr J. Dormi-enplass',
+                          widget.data.name,
                           style: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: Stem.bold),
                         ),
                         SizedBox(
                           height: 5.0,
                         ),
                         Text(
-                          'Rte des pamplemousses, port louis',
+                          widget.data.location,
                           style: TextStyle(fontSize: 16.0, color: Colors.black, fontFamily: Stem.medium),
                         ),
                         Text(
-                          '59495577',
+                          widget.data.phoneNumber,
                           style: TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: Stem.regular),
                         ),
-                        Text(
-                          'Boug la ine met foss nom.. call li!',
-                          style: TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: Stem.regular),
+                        Container(
+                          width: 300.0,
+                          child: Text(
+                            widget.data.notes,
+                            style: TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: Stem.regular),
+                          ),
                         ),
                       ],
                     ),
@@ -60,7 +77,36 @@ class _CaseScheduleWidgetState extends State<CaseScheduleWidget> {
                 ),
                 Spacer(),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    if (SetSchedule.selectedUserID == "null" || SetSchedule.selectedTime == "null" || SetSchedule.selectedDate == "null") {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.ERROR,
+                        btnOkColor: Color(0xFFd93e47),
+                        title: "Failed to create schedule!",
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        dismissOnTouchOutside: true,
+                        desc: "Please fill all the information!",
+                        btnOkOnPress: () {},
+                      ).show();
+                    } else {
+                      setState(() {
+                        caseScheduleController.refreshBtnIcon = SpinKitWave(
+                          color: Colors.white,
+                          size: 25.0,
+                        );
+                      });
+
+                      await caseScheduleController.addSchedule(widget.data, widget.context, widget.refreshData, widget.clearInputs);
+                      setState(() {
+                        caseScheduleController.refreshBtnIcon = Icon(
+                          FontAwesomeIcons.save,
+                          size: 36.0,
+                          color: Colors.white,
+                        );
+                      });
+                    }
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -71,11 +117,7 @@ class _CaseScheduleWidgetState extends State<CaseScheduleWidget> {
                       ),
                     ),
                     width: 70.0,
-                    child: Icon(
-                      FontAwesomeIcons.save,
-                      size: 36.0,
-                      color: Colors.white,
-                    ),
+                    child: caseScheduleController.refreshBtnIcon,
                   ),
                 ),
               ],

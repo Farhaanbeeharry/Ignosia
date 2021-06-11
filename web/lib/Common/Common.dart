@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:web/Model/CaseModel.dart';
 import 'package:web/Model/EventModel.dart';
+import 'package:web/Model/ScheduleModel.dart';
 import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Model/UserModel.dart';
 
@@ -25,6 +26,12 @@ class Common {
 
   static List<Widget> caseWidgetList = new List<Widget>();
   static List<CaseModel> caseList = new List<CaseModel>();
+
+  static List<Widget> scheduleCaseWidgetList = new List<Widget>();
+  static List<CaseModel> scheduleCaseList = new List<CaseModel>();
+
+  static List<Widget> scheduleWidgetList = new List<Widget>();
+  static List<ScheduleModel> scheduleList = new List<ScheduleModel>();
 
   static String resetEmailAddress = "";
 
@@ -74,8 +81,16 @@ class Common {
     return date;
   }
 
+  static String convertNormalDate(String date) {
+    String month = date[3] + date[4];
+    int index = int.parse(month);
+    String displayDate = date[0] + date[1] + " " + months[index - 1] + " " + date[6] + date[7] + date[8] + date[9];
+    return displayDate;
+  }
+
   static String convertDate(String date) {
     String month = date[5] + date[6];
+    print(month);
     int index = int.parse(month);
     String displayDate = date[8] + date[9] + " " + months[index - 1] + " " + date[0] + date[1] + date[2] + date[3];
     return displayDate;
@@ -200,4 +215,12 @@ class Generator {
 
     return generatedPassword;
   }
+}
+
+class SetSchedule {
+  static String selectedDate = "null";
+  static String selectedTime = "null";
+  static List<UserModel> mobileUsers = new List<UserModel>();
+  static List<String> stringMobileUsers = new List<String>();
+  static String selectedUserID = "null";
 }

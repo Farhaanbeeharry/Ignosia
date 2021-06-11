@@ -456,9 +456,84 @@ app.use("/API/web/newTransaction", function(req, res, next) {
 
 });
 
+app.use("/API/web/addSchedule", function(req, res, next) {
+
+    var id = req.body.id;
+    var createdByUserId = req.body.createdByUserId;
+    var assignedUserId = req.body.assignedUserId;
+    var caseID = req.body.caseID
+    var scheduleName = req.body.scheduleName;
+    var location = req.body.location;
+    var date = req.body.date;
+    var time = req.body.time;
+    var name = req.body.name;
+    var phoneNumber = req.body.phoneNumber;
+    var notes = req.body.notes;
+
+    addSchedule(id, createdByUserId, assignedUserId, caseID, scheduleName, location, date, time, name, phoneNumber, notes).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+
+            setCaseScheduled(caseID).then(result => {
+
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "An error occured while setting case as scheduled!",
+                        data: {},
+                        msg: ""
+                    });
+                } else {
+                    res.status(200).json({
+                        success: true,
+                        error: "",
+                        data: {},
+                        msg: ""
+                    });
+                }
+
+            });
+
+        }
+
+    });
+
+});
+
 app.use("/API/web/getTransactionList", function(req, res, next) {
 
     getTransactionList().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+
+app.use("/API/web/getMobileUsersList", function(req, res, next) {
+
+    getMobileUsersList().then(result => {
 
         if (result == -1) {
             res.status(200).json({
@@ -498,6 +573,58 @@ app.use("/API/web/deleteTransaction", function(req, res, next) {
                 data: {},
                 msg: ""
             });
+        }
+    });
+
+});
+
+app.use("/API/web/deleteSchedule", function(req, res, next) {
+
+    var id = req.body.id;
+    deleteSchedule(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete schedule with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            getCaseID(id).then(result => {
+                if (result == -1) {
+                    res.status(200).json({
+                        success: false,
+                        error: "",
+                        data: [],
+                        msg: ""
+                    });
+                } else {
+
+                    setCaseUnscheduled(result).then(result => {
+                        if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "An error occured while setting case as scheduled!",
+                                data: {},
+                                msg: ""
+                            });
+                        } else {
+                            res.status(200).json({
+                                success: true,
+                                error: "",
+                                data: {},
+                                msg: ""
+                            });
+                        }
+                    });
+
+                }
+            });
+
+
+
         }
     });
 
@@ -680,6 +807,28 @@ app.use("/API/web/getCaseList", function(req, res, next) {
 
 });
 
+app.use("/API/web/getScheduleList", function(req, res, next) {
+
+    getScheduleList().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
 
 app.use("/API/web/deleteEvent", function(req, res, next) {
 
@@ -752,7 +901,7 @@ app.use("/API/web/getRecentTransactionData", function(req, res, next) {
 });
 
 async function getDashboardData() {
-    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM User) as members, (SELECT COUNT(ID) FROM Request) as cases, (SELECT COUNT(ID) FROM Beneficiary) as beneficiaries, (SELECT COUNT(ID) FROM Event WHERE Deleted = 'false') as events";
+    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM User) as members, (SELECT COUNT(ID) FROM Request WHERE Scheduled = 'false') as cases, (SELECT COUNT(ID) FROM Beneficiary) as beneficiaries, (SELECT COUNT(ID) FROM Event WHERE Deleted = 'false') as events";
 
     return new Promise((resolve, reject) => {
 
@@ -771,6 +920,38 @@ async function getDashboardData() {
 
 async function deleteEvent(id) {
     let sqlQuery = "UPDATE Event SET Deleted = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function setCaseUnscheduled(id) {
+    let sqlQuery = "UPDATE Request SET Scheduled = 'false' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function setCaseScheduled(id) {
+    let sqlQuery = "UPDATE Request SET Scheduled = 'true' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 
@@ -804,6 +985,39 @@ async function getEventList() {
 async function getCaseList() {
     let sqlQuery = "SELECT Request.ReceivedByUserID,  Request.ID, Request.DateReceived, Request.Name, Request.PhoneNumber, Request.Location, Request.Latitude, Request.Longitude, Request.Notes, Request.Deleted, Request.Scheduled, User.FirstName, User.LastName FROM Request INNER JOIN User ON Request.ReceivedByUserID = User.ID  WHERE Deleted = 'false' ";
 
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function getCaseID(id) {
+    let sqlQuery = "SELECT * FROM Schedule WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result[0].CaseID);
+            }
+        });
+
+    });
+}
+
+async function getScheduleList() {
+    let sqlQuery = "SELECT Schedule.ID, Schedule.CreatedByUserID, Schedule.AssignedUserID, Schedule.ScheduleName, Schedule.Location, Schedule.Latitude, Schedule.Longitude, Schedule.Date, Schedule.Time, Schedule.Name, Schedule.PhoneNumber, Schedule.Notes, Schedule.Status, Schedule.Deleted, Schedule.CarriedOut, CreatedBy.FirstName AS CreatedByFirstName, CreatedBy.LastName AS CreatedByLastName, AssignedTo.FirstName AS AssignedToFirstName, AssignedTo.LastName AS AssignedToLastName FROM Schedule INNER JOIN User AS CreatedBy ON Schedule.CreatedByUserID = CreatedBy.ID INNER JOIN User AS AssignedTo ON Schedule.AssignedUserID = AssignedTo.ID WHERE Deleted = 'false' AND CarriedOut ='false';";
     return new Promise((resolve, reject) => {
 
         pool.query(sqlQuery, (err, result) => {
@@ -884,6 +1098,22 @@ async function deleteTransaction(id) {
     });
 }
 
+async function deleteSchedule(id) {
+    let sqlQuery = "UPDATE Schedule SET Deleted = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
 async function deleteCase(id) {
     let sqlQuery = "UPDATE Request SET Deleted = 'true' WHERE ID = '" + id + "';";
 
@@ -902,6 +1132,22 @@ async function deleteCase(id) {
 
 async function addNewTransaction(id, userID, name, description, amount, date, type, method) {
     let sqlQuery = "INSERT INTO TRANSACTION (ID, UserID, Name, Description, Amount, Date, Type, Method, Deleted) VALUES ('" + id + "', '" + userID + "', '" + name + "', '" + description + "', '" + amount + "', '" + date + "', '" + type + "', '" + method + "', 'false');";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function addSchedule(id, createdByUserId, assignedUserId, caseID, scheduleName, location, date, time, name, phoneNumber, notes) {
+    let sqlQuery = "INSERT INTO Schedule (ID, CreatedByUserID, AssignedUserID, CaseID, ScheduleName, Location, Latitude, Longitude, Date, Time, Name, PhoneNumber, Notes, Status, Deleted, CarriedOut) VALUES ('" + id + "', '" + createdByUserId + "', '" + assignedUserId + "', '" + caseID + "', '" + scheduleName + "', '" + location + "', 'null', 'null', '" + date + "', '" + time + "', '" + name + "', '" + phoneNumber + "', '" + notes + "', 'null', 'false', 'false');";
 
     return new Promise((resolve, reject) => {
 
@@ -1003,6 +1249,22 @@ async function getDashboardransactionList() {
 
 async function getTransactionList() {
     let sqlQuery = "SELECT * FROM Transaction";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function getMobileUsersList() {
+    let sqlQuery = "SELECT * FROM User WHERE MobileUser = 'true' AND FirstTimeUser = 'false' AND (Status = 'active' OR Status = 'admin');";
 
     return new Promise((resolve, reject) => {
 

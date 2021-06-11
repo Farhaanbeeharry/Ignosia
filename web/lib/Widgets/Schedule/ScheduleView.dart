@@ -1,10 +1,10 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
-import 'package:web/Widgets/Schedule/CaseScheduleWidget/CaseScheduleWidget.dart';
 import 'package:web/Widgets/Schedule/ScheduleController.dart';
-import 'package:web/Widgets/Schedule/ScheduleWidget/ScheduleWidget.dart';
 
 class ScheduleView extends StatefulWidget {
   @override
@@ -13,6 +13,76 @@ class ScheduleView extends StatefulWidget {
 
 class _ScheduleViewState extends State<ScheduleView> {
   ScheduleController scheduleController = new ScheduleController();
+
+  callSetState() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loadData();
+  }
+
+  clearInputs() {
+    scheduleController.selectedDate = 'Choose date';
+    scheduleController.isTimeSelected = false;
+    SetSchedule.selectedUserID = "null";
+    SetSchedule.selectedDate = "null";
+    SetSchedule.selectedTime = "null";
+  }
+
+  loadData() async {
+    setState(() {
+      scheduleController.caseRefreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await loadScheduleData();
+    await scheduleController.getMembersList();
+    await loadCaseData();
+    setState(() {
+      scheduleController.caseRefreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
+  }
+
+  loadCaseData() async {
+    setState(() {
+      scheduleController.caseRefreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await scheduleController.getScheduleCaseList(callSetState, context, loadData, clearInputs);
+    setState(() {
+      scheduleController.caseRefreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
+  }
+
+  loadScheduleData() async {
+    setState(() {
+      scheduleController.refreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await scheduleController.getScheduleList(callSetState, loadData);
+    setState(() {
+      scheduleController.refreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +134,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                               children: [
                                 Text(
                                   'Schedules',
-                                  style: TextStyle(fontSize: 36.0, color: Color(0xFF3f3d56), fontFamily: 'StemMedium'),
+                                  style: TextStyle(fontSize: 36.0, color: Color(0xFF6c63ff), fontFamily: 'StemMedium'),
                                 ),
                                 SizedBox(
                                   width: 30.0,
@@ -72,6 +142,13 @@ class _ScheduleViewState extends State<ScheduleView> {
                                 Container(
                                   width: 175.0,
                                   child: TextFormField(
+                                    onChanged: (value) async {
+                                      if (value.isEmpty) {
+                                        await loadScheduleData();
+                                      } else {
+                                        await scheduleController.displayResult(value, callSetState, loadScheduleData);
+                                      }
+                                    },
                                     validator: (emailAddress) {
                                       return null;
                                     },
@@ -112,24 +189,18 @@ class _ScheduleViewState extends State<ScheduleView> {
                                 Spacer(),
                                 InkWell(
                                   onTap: () {
-                                    FocusScope.of(context).requestFocus(new FocusNode());
+                                    loadScheduleData();
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                    child: Container(
-                                      width: 45.0,
-                                      height: 40.0,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        color: Color(0xFF6c63ff),
-                                      ),
-                                      child: Icon(
-                                        FontAwesomeIcons.undoAlt,
-                                        color: Colors.white,
+                                  child: Container(
+                                    width: 70.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFe1e1e1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
                                       ),
                                     ),
+                                    child: scheduleController.refreshBtnIcon,
                                   ),
                                 ),
                               ],
@@ -142,13 +213,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                               height: MediaQuery.of(context).size.height * 0.5,
                               child: SingleChildScrollView(
                                 child: Column(
-                                  children: [
-                                    ScheduleWidget(),
-                                    ScheduleWidget(),
-                                    ScheduleWidget(),
-                                    ScheduleWidget(),
-                                    ScheduleWidget(),
-                                  ],
+                                  children: Common.scheduleWidgetList,
                                 ),
                               ),
                             )
@@ -215,7 +280,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                   final DateTime picked = await showDatePicker(
                                     context: context,
                                     initialDate: scheduleController.dateToday, // Refer step 1
-                                    firstDate: DateTime.now(),
+                                    firstDate: scheduleController.dateToday,
                                     lastDate: DateTime(DateTime.now().year + 2),
                                   );
                                   String dateRAW;
@@ -227,6 +292,7 @@ class _ScheduleViewState extends State<ScheduleView> {
 
                                     setState(() {
                                       scheduleController.selectedDate = displayDate;
+                                      SetSchedule.selectedDate = displayDate;
                                     });
                                   }
                                 },
@@ -251,24 +317,21 @@ class _ScheduleViewState extends State<ScheduleView> {
                           Container(
                             width: 200.0,
                             height: 60.0,
-                            child: TextFormField(
-                              validator: (emailAddress) {
-                                return null;
-                              },
-                              style: Common.labelTextStyle,
-                              decoration: InputDecoration(
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(15.0),
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.only(top: 50.0),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                  child: Icon(FontAwesomeIcons.signature),
-                                ),
-                                labelText: 'Assign to...',
-                                labelStyle: Common.labelTextStyle,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                showSelectedItem: true,
+                                items: SetSchedule.stringMobileUsers,
+                                label: "Assign to...",
+                                onChanged: (value) {
+                                  List<String> name = value.split(" ");
+                                  for (var user in SetSchedule.mobileUsers) {
+                                    if (user.firstName == name[0] && user.lastName == name[1]) {
+                                      SetSchedule.selectedUserID = user.iD;
+                                    }
+                                  }
+                                },
                               ),
                             ),
                           ),
@@ -331,6 +394,7 @@ class _ScheduleViewState extends State<ScheduleView> {
 
                                   setState(() {
                                     scheduleController.isTimeSelected = true;
+                                    SetSchedule.selectedTime = scheduleController.displayTime;
                                   });
                                 },
                                 child: Container(
@@ -352,19 +416,37 @@ class _ScheduleViewState extends State<ScheduleView> {
                           ),
                           Spacer(),
                           Container(
-                            width: 200.0,
+                            width: 130.0,
                             height: 60.0,
                             child: TextButton(
                               onPressed: () {
                                 FocusScope.of(context).requestFocus(new FocusNode());
-
-                                //Navigator.pushNamed(context, '/');
+                                setState(() {
+                                  clearInputs();
+                                });
                               },
                               style: TextButton.styleFrom(backgroundColor: Color(0XFF6C63FF), shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0))),
                               child: Text(
                                 "Clear inputs",
                                 style: Common.buttonTextStyle,
                               ),
+                            ),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              loadCaseData();
+                            },
+                            child: Container(
+                              width: 60.0,
+                              height: 60.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFe1e1e1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              child: scheduleController.caseRefreshBtnIcon,
                             ),
                           ),
                         ],
@@ -384,13 +466,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  CaseScheduleWidget(),
-                                  CaseScheduleWidget(),
-                                  CaseScheduleWidget(),
-                                  CaseScheduleWidget(),
-                                  CaseScheduleWidget(),
-                                ],
+                                children: Common.scheduleCaseWidgetList,
                               ),
                               SizedBox(
                                 height: 10.0,
