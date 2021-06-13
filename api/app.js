@@ -829,6 +829,54 @@ app.use("/API/web/getScheduleList", function(req, res, next) {
     });
 
 });
+app.use("/API/web/getBeneficiaryFromSchedule", function(req, res, next) {
+
+
+    var scheduleID = req.body.scheduleID;
+
+    getBeneficiaryFromSchedule(scheduleID).then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/getCarriedOutSchedules", function(req, res, next) {
+
+    getCarriedOutSchedules().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
 
 app.use("/API/web/deleteEvent", function(req, res, next) {
 
@@ -1018,6 +1066,38 @@ async function getCaseID(id) {
 
 async function getScheduleList() {
     let sqlQuery = "SELECT Schedule.ID, Schedule.CreatedByUserID, Schedule.AssignedUserID, Schedule.ScheduleName, Schedule.Location, Schedule.Latitude, Schedule.Longitude, Schedule.Date, Schedule.Time, Schedule.Name, Schedule.PhoneNumber, Schedule.Notes, Schedule.Status, Schedule.Deleted, Schedule.CarriedOut, CreatedBy.FirstName AS CreatedByFirstName, CreatedBy.LastName AS CreatedByLastName, AssignedTo.FirstName AS AssignedToFirstName, AssignedTo.LastName AS AssignedToLastName FROM Schedule INNER JOIN User AS CreatedBy ON Schedule.CreatedByUserID = CreatedBy.ID INNER JOIN User AS AssignedTo ON Schedule.AssignedUserID = AssignedTo.ID WHERE Deleted = 'false' AND CarriedOut ='false';";
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function getBeneficiaryFromSchedule(scheduleID) {
+    let sqlQuery = "SELECT * FROM Beneficiary WHERE ScheduleID = '" + scheduleID + "' AND Validated = 'false' AND Rejected = 'false';";
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+async function getCarriedOutSchedules() {
+    let sqlQuery = "SELECT * FROM Schedule WHERE Deleted = 'false' AND CarriedOut ='true';";
     return new Promise((resolve, reject) => {
 
         pool.query(sqlQuery, (err, result) => {

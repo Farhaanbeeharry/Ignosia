@@ -26,6 +26,8 @@ class ApiUrl {
   static const String deleteSchedule = 'deleteSchedule';
   static const String getMobileUsersList = 'getMobileUsersList';
   static const String addSchedule = 'addSchedule';
+  static const String getCarriedOutSchedules = 'getCarriedOutSchedules';
+  static const String getBeneficiaryFromSchedule = 'getBeneficiaryFromSchedule';
 
   static String getURL(String url) {
     return baseURL + url.toString();

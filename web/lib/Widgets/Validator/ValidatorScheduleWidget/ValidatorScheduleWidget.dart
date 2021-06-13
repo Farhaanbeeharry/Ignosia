@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/ScheduleModel.dart';
+import 'package:web/Widgets/Validator/ValidatorScheduleWidget/ValidatorScheduleWidgetController.dart';
 
 class ValidatorScheduleWidget extends StatefulWidget {
+  final ScheduleModel data;
+  final Function callValidatorSetState;
+
+  ValidatorScheduleWidget({this.data, this.callValidatorSetState});
+
   @override
   _ValidatorScheduleWidgetState createState() => _ValidatorScheduleWidgetState();
 }
 
 class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
+  ValidatorScheduleController validatorScheduleController = new ValidatorScheduleController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,7 +49,7 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                           height: 10.0,
                         ),
                         Text(
-                          'Mr Farhaan Beeharry',
+                          widget.data.name,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 24.0,
@@ -56,7 +66,7 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                               style: TextStyle(color: Colors.black, fontSize: 16.0, fontFamily: Stem.light),
                             ),
                             Text(
-                              '23/05/2021',
+                              widget.data.date,
                               style: TextStyle(color: Colors.black, fontSize: 16.0, fontFamily: Stem.medium),
                             ),
                             Text(
@@ -64,7 +74,7 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                               style: TextStyle(color: Colors.black, fontSize: 16.0, fontFamily: Stem.light),
                             ),
                             Text(
-                              '15:00',
+                              widget.data.time,
                               style: TextStyle(color: Colors.black, fontSize: 16.0, fontFamily: Stem.medium),
                             ),
                           ],
@@ -75,7 +85,22 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                 ),
                 Spacer(),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    setState(() {
+                      validatorScheduleController.btnIcon = SpinKitWave(
+                        color: Colors.white,
+                        size: 25.0,
+                      );
+                    });
+                    await validatorScheduleController.getBeneficiaries(widget.data.iD, widget.callValidatorSetState);
+                    setState(() {
+                      validatorScheduleController.btnIcon = Icon(
+                        FontAwesomeIcons.angleDoubleRight,
+                        size: 42.0,
+                        color: Colors.white,
+                      );
+                    });
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -87,11 +112,7 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                     ),
                     width: 70.0,
                     height: 70.0,
-                    child: Icon(
-                      FontAwesomeIcons.angleDoubleRight,
-                      size: 42.0,
-                      color: Colors.white,
-                    ),
+                    child: validatorScheduleController.btnIcon,
                   ),
                 ),
                 SizedBox(

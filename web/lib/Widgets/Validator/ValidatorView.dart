@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
-import 'package:web/Widgets/Validator/BeneficiaryValidator/BeneficiaryValidatorView.dart';
-import 'package:web/Widgets/Validator/ValidatorScheduleWidget/ValidatorScheduleWidget.dart';
+import 'package:web/Widgets/Validator/EmptyBeneficiaryScheduleWidget/EmptyBeneficiaryScheduleWidget.dart';
+import 'package:web/Widgets/Validator/ValidatorController.dart';
 
 class ValidatorView extends StatefulWidget {
   @override
@@ -10,8 +12,34 @@ class ValidatorView extends StatefulWidget {
 }
 
 class _ValidatorViewState extends State<ValidatorView> {
-  refresh() {
+  ValidatorController validatorController = new ValidatorController();
+
+  callSetState() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Common.validatorBeneficiaryWidgetList = [EmptyBeneficiaryScheduleWidget()];
+    loadData();
+  }
+
+  loadData() async {
+    setState(() {
+      validatorController.refreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await validatorController.loadSchedules(loadData);
+    setState(() {
+      validatorController.refreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
   }
 
   @override
@@ -69,26 +97,45 @@ class _ValidatorViewState extends State<ValidatorView> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Schedules',
-                                    style: TextStyle(
-                                      fontSize: 32.0,
-                                      color: Colors.black,
-                                      fontFamily: Stem.bold,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Schedules',
+                                        style: TextStyle(
+                                          fontSize: 32.0,
+                                          color: Color(0xFF6c63ff),
+                                          fontFamily: Stem.bold,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          loadData();
+                                        },
+                                        child: Container(
+                                          width: 70.0,
+                                          height: 50.0,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFe1e1e1),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0),
+                                            ),
+                                          ),
+                                          child: validatorController.refreshBtnIcon,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
                                     height: 15.0,
                                   ),
                                   Container(
-                                    height: MediaQuery.of(context).size.height * 0.51,
+                                    height: MediaQuery.of(context).size.height * 0.50,
                                     width: MediaQuery.of(context).size.width * 0.3,
                                     child: SingleChildScrollView(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          ValidatorScheduleWidget(),
-                                        ],
+                                        children: Common.carriedOutScheduleWidgetList,
                                       ),
                                     ),
                                   ),
@@ -117,13 +164,17 @@ class _ValidatorViewState extends State<ValidatorView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Beneficiaries',
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          color: Colors.black,
-                          fontFamily: Stem.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            'Beneficiaries',
+                            style: TextStyle(
+                              fontSize: 32.0,
+                              color: Color(0xFF6c63ff),
+                              fontFamily: Stem.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 15.0,
@@ -133,10 +184,7 @@ class _ValidatorViewState extends State<ValidatorView> {
                         height: MediaQuery.of(context).size.height * 0.64,
                         child: SingleChildScrollView(
                           child: Column(
-                            children: [
-                              // EmptyBeneficiaryScheduleWidget(),
-                              BeneficiaryValidatorView(),
-                            ],
+                            children: Common.validatorBeneficiaryWidgetList,
                           ),
                         ),
                       )

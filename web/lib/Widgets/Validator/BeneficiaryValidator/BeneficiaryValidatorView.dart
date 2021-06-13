@@ -2,8 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/BeneficiaryModel.dart';
 
 class BeneficiaryValidatorView extends StatefulWidget {
+  final BeneficiaryModel data;
+
+  BeneficiaryValidatorView({this.data});
+
   @override
   _BeneficiaryValidatorViewState createState() => _BeneficiaryValidatorViewState();
 }

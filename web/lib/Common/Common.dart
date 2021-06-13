@@ -1,12 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:web/Common/API.dart';
+import 'package:web/Common/ApiUrl.dart';
+import 'package:web/Model/BeneficiaryModel.dart';
 import 'package:web/Model/CaseModel.dart';
 import 'package:web/Model/EventModel.dart';
+import 'package:web/Model/ResponseModel.dart';
 import 'package:web/Model/ScheduleModel.dart';
 import 'package:web/Model/TransactionModel.dart';
 import 'package:web/Model/UserModel.dart';
+import 'package:web/Widgets/Validator/BeneficiaryValidator/BeneficiaryValidatorView.dart';
+import 'package:web/Widgets/Validator/EmptyBeneficiaryScheduleWidget/EmptyBeneficiaryScheduleWidget.dart';
+
+import 'Stem.dart';
 
 class Common {
   static DateTime currentDate;
@@ -32,6 +42,12 @@ class Common {
 
   static List<Widget> scheduleWidgetList = new List<Widget>();
   static List<ScheduleModel> scheduleList = new List<ScheduleModel>();
+
+  static List<Widget> carriedOutScheduleWidgetList = new List<Widget>();
+  static List<ScheduleModel> carriedOutScheduleList = new List<ScheduleModel>();
+
+  static List<Widget> validatorBeneficiaryWidgetList = [EmptyBeneficiaryScheduleWidget()];
+  static List<BeneficiaryModel> validatorBeneficiaryList = new List<BeneficiaryModel>();
 
   static String resetEmailAddress = "";
 
@@ -223,4 +239,120 @@ class SetSchedule {
   static List<UserModel> mobileUsers = new List<UserModel>();
   static List<String> stringMobileUsers = new List<String>();
   static String selectedUserID = "null";
+}
+
+class Beneficiaries {
+  static void getFromSchedules(String scheduleID, Function callValidatorSetState) async {
+    var body = {"scheduleID": scheduleID};
+
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getBeneficiaryFromSchedule), body);
+
+    bool emptyListCheck = true;
+
+    for (var datum in response.data) {
+      BeneficiaryModel beneficiaryData = BeneficiaryModel().fromJson(datum);
+      if (beneficiaryData.validated == 'false' && beneficiaryData.rejected == 'false') emptyListCheck = false;
+    }
+
+    if (response.success) {
+      Common.validatorBeneficiaryWidgetList.clear();
+      if (emptyListCheck) {
+        Common.validatorBeneficiaryWidgetList.add(Container(
+          height: 450.0,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "assets/images/complete.svg",
+                width: 200.0,
+              ),
+              SizedBox(
+                height: 25.0,
+              ),
+              Text(
+                "All beneficiaries checked...",
+                style: TextStyle(color: Color(0xFF6c63ff), fontSize: 30.0, fontFamily: Stem.bold),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                "Do you want to mark schedule as completed?",
+                style: TextStyle(color: Colors.black, fontSize: 18.0, fontFamily: Stem.regular),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF6c63ff),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                  ),
+                  width: 225.0,
+                  height: 50.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.check,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(fontSize: 22.0, color: Colors.white, fontFamily: Stem.medium),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+      } else {
+        Common.validatorBeneficiaryList.clear();
+
+        for (int i = 0; i < response.data.length; i++) {
+          BeneficiaryModel beneficiary = BeneficiaryModel().fromJson(response.data[i]);
+          if (beneficiary.rejected == 'false' && beneficiary.validated == 'false') Common.validatorBeneficiaryList.add(beneficiary);
+        }
+
+        for (var beneficiary in Common.validatorBeneficiaryList) {
+          if (beneficiary.rejected == 'false' && beneficiary.validated == 'false') {
+            Common.validatorBeneficiaryWidgetList.add(BeneficiaryValidatorView(data: beneficiary));
+          }
+        }
+      }
+    } else {
+      Common.validatorBeneficiaryWidgetList.clear();
+      Common.validatorBeneficiaryWidgetList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Failed to fetch case list! Click \'Refresh\' to try again.',
+            style: TextStyle(
+              fontFamily: Stem.light,
+              color: Colors.red,
+              fontSize: 15.0,
+            ),
+          ),
+        ],
+      ));
+    }
+    callValidatorSetState();
+  }
 }
