@@ -28,6 +28,8 @@ class ApiUrl {
   static const String addSchedule = 'addSchedule';
   static const String getCarriedOutSchedules = 'getCarriedOutSchedules';
   static const String getBeneficiaryFromSchedule = 'getBeneficiaryFromSchedule';
+  static const String markScheduleCompleted = 'markScheduleCompleted';
+  static const String alterBeneficiary = 'alterBeneficiary';
 
   static String getURL(String url) {
     return baseURL + url.toString();

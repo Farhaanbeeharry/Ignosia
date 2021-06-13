@@ -1,19 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Model/BeneficiaryModel.dart';
+import 'package:web/Widgets/Validator/BeneficiaryValidator/BeneficiaryValidatorController.dart';
 
 class BeneficiaryValidatorView extends StatefulWidget {
   final BeneficiaryModel data;
+  final Function callSetState;
 
-  BeneficiaryValidatorView({this.data});
+  final BuildContext secondaryContext;
+  final Function callValidatorSetState;
+  BeneficiaryValidatorView({this.data, this.callSetState, this.secondaryContext, this.callValidatorSetState});
 
   @override
   _BeneficiaryValidatorViewState createState() => _BeneficiaryValidatorViewState();
 }
 
 class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
+  BeneficiaryValidatorController beneficiaryValidatorController = new BeneficiaryValidatorController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +45,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Farhaan Beeharry',
+                    widget.data.firstName + " " + widget.data.lastName,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 26.0,
@@ -50,7 +58,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                   Row(
                     children: [
                       Text(
-                        'Male',
+                        widget.data.gender,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,
@@ -66,7 +74,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                         ),
                       ),
                       Text(
-                        '23 years old',
+                        Common.getAge(widget.data.dateOfBirth) + " years old",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,
@@ -87,7 +95,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                         ),
                       ),
                       Text(
-                        'B220598010250E',
+                        widget.data.nationalID,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,
@@ -110,7 +118,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                         ),
                       ),
                       Text(
-                        '22 May 1998',
+                        widget.data.dateOfBirth[0] + widget.data.dateOfBirth[1] + " " + Common.months[int.parse(widget.data.dateOfBirth[3] + widget.data.dateOfBirth[4]) - 1] + " " + widget.data.dateOfBirth[6] + widget.data.dateOfBirth[7] + widget.data.dateOfBirth[8] + widget.data.dateOfBirth[9],
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,
@@ -135,7 +143,33 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          '2 James Anderson Forrester street, Port-Louis',
+                          widget.data.location,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontFamily: Stem.medium,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Email: ',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          fontFamily: Stem.light,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.data.emailAddress,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -161,7 +195,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Rs12345',
+                          widget.data.salary == "0" ? "None" : "Rs" + widget.data.salary,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -187,7 +221,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Imteaz Beeharry',
+                          widget.data.responsiblePartyName,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -213,7 +247,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Father',
+                          widget.data.responsiblePartyRelationship,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -239,7 +273,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          '2021',
+                          widget.data.qualificationYear,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -265,7 +299,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Notre Dame de la Paix RCA School and Royal College Curepipe',
+                          widget.data.school,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -291,7 +325,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Middlesex University Mauritius',
+                          widget.data.university,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -317,7 +351,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'None',
+                          widget.data.skill,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -343,7 +377,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Mobile developer and network engineer',
+                          widget.data.workExperience,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -369,7 +403,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Mobile developer and network engineer',
+                          widget.data.workingCapabilities,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -395,7 +429,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'None',
+                          widget.data.currentWorkplace,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -421,7 +455,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'None',
+                          widget.data.currentWorkplaceRole,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -447,7 +481,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Single',
+                          widget.data.maritalStatus,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -473,7 +507,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'None',
+                          widget.data.policeRecord == 'false' ? "None" : widget.data.policeRecord,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -499,7 +533,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'No',
+                          widget.data.receivesPension == 'true' ? "Yes" : "No",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -525,7 +559,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'No',
+                          widget.data.socialAid == 'false' ? "No" : widget.data.socialAid,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -551,7 +585,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          '2149687',
+                          widget.data.homePhone,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -577,7 +611,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          '57076881',
+                          widget.data.mobilePhone,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -603,7 +637,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'May 2019',
+                          widget.data.workFromDate == "" ? "Has not worked" : widget.data.workFromDate,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -629,7 +663,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'August 2020',
+                          widget.data.workToDate == "" ? "Has not worked" : widget.data.workToDate,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -655,7 +689,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          '0',
+                          widget.data.numberOfChildren,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -681,7 +715,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                       ),
                       Expanded(
                         child: Text(
-                          'This is a test paragraph and data should be used only for testing purposes.',
+                          widget.data.notes == "" ? "None" : widget.data.notes,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -698,7 +732,37 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          setState(() {
+                            beneficiaryValidatorController.validateBtn = SpinKitWave(
+                              color: Colors.white,
+                              size: 25.0,
+                            );
+                          });
+                          await beneficiaryValidatorController.validateBeneficiary(widget.data.iD, widget.callSetState, widget.secondaryContext, widget.callValidatorSetState);
+                          setState(() {
+                            beneficiaryValidatorController.validateBtn = Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.checkCircle,
+                                  size: 26.0,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 7.5,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6.0, right: 2.0),
+                                  child: Text(
+                                    "Validate",
+                                    style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: Stem.medium),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -709,33 +773,44 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                           ),
                           width: 175.0,
                           height: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.checkCircle,
-                                size: 26.0,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 7.5,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6.0, right: 2.0),
-                                child: Text(
-                                  "Validate",
-                                  style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: Stem.medium),
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: beneficiaryValidatorController.validateBtn,
                         ),
                       ),
                       SizedBox(
                         width: 15.0,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          setState(() {
+                            beneficiaryValidatorController.rejectBtn = SpinKitWave(
+                              color: Colors.white,
+                              size: 25.0,
+                            );
+                          });
+                          await beneficiaryValidatorController.rejectBeneficiary(widget.data.iD, widget.callSetState, widget.secondaryContext, widget.callValidatorSetState);
+                          setState(() {
+                            beneficiaryValidatorController.rejectBtn = Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.timesCircle,
+                                  size: 26.0,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 7.5,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6.0, right: 2.0),
+                                  child: Text(
+                                    "Reject",
+                                    style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: Stem.medium),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -746,26 +821,7 @@ class _BeneficiaryValidatorViewState extends State<BeneficiaryValidatorView> {
                           ),
                           width: 175.0,
                           height: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.timesCircle,
-                                size: 26.0,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 7.5,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6.0, right: 2.0),
-                                child: Text(
-                                  "Reject",
-                                  style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: Stem.medium),
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: beneficiaryValidatorController.rejectBtn,
                         ),
                       ),
                     ],

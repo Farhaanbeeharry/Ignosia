@@ -423,6 +423,34 @@ app.use("/API/web/updateUserData", function(req, res, next) {
 
 });
 
+app.use("/API/web/alterBeneficiary", function(req, res, next) {
+
+    var id = req.body.id;
+    var validated = req.body.validated;
+    var rejected = req.body.rejected;
+
+    alterBeneficiary(id, validated, rejected).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to alter beneficiary with id '" + id + "'!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+
+    });
+
+});
+
 app.use("/API/web/newTransaction", function(req, res, next) {
 
     var id = req.body.id;
@@ -639,6 +667,30 @@ app.use("/API/web/deleteCase", function(req, res, next) {
             res.status(200).json({
                 success: false,
                 error: "An error occured while trying to delete case with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
+app.use("/API/web/markScheduleCompleted", function(req, res, next) {
+
+    var id = req.body.id;
+    markScheduleCompleted(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to mark schedule with ID '" + id + "' as completed!",
                 data: {},
                 msg: ""
             });
@@ -1097,7 +1149,7 @@ async function getBeneficiaryFromSchedule(scheduleID) {
 }
 
 async function getCarriedOutSchedules() {
-    let sqlQuery = "SELECT * FROM Schedule WHERE Deleted = 'false' AND CarriedOut ='true';";
+    let sqlQuery = "SELECT * FROM Schedule WHERE Deleted = 'false' AND CarriedOut ='true' AND Validated = 'false';";
     return new Promise((resolve, reject) => {
 
         pool.query(sqlQuery, (err, result) => {
@@ -1210,6 +1262,22 @@ async function deleteCase(id) {
     });
 }
 
+async function markScheduleCompleted(id) {
+    let sqlQuery = "UPDATE Schedule SET Validated = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
 async function addNewTransaction(id, userID, name, description, amount, date, type, method) {
     let sqlQuery = "INSERT INTO TRANSACTION (ID, UserID, Name, Description, Amount, Date, Type, Method, Deleted) VALUES ('" + id + "', '" + userID + "', '" + name + "', '" + description + "', '" + amount + "', '" + date + "', '" + type + "', '" + method + "', 'false');";
 
@@ -1227,7 +1295,7 @@ async function addNewTransaction(id, userID, name, description, amount, date, ty
 }
 
 async function addSchedule(id, createdByUserId, assignedUserId, caseID, scheduleName, location, date, time, name, phoneNumber, notes) {
-    let sqlQuery = "INSERT INTO Schedule (ID, CreatedByUserID, AssignedUserID, CaseID, ScheduleName, Location, Latitude, Longitude, Date, Time, Name, PhoneNumber, Notes, Status, Deleted, CarriedOut) VALUES ('" + id + "', '" + createdByUserId + "', '" + assignedUserId + "', '" + caseID + "', '" + scheduleName + "', '" + location + "', 'null', 'null', '" + date + "', '" + time + "', '" + name + "', '" + phoneNumber + "', '" + notes + "', 'null', 'false', 'false');";
+    let sqlQuery = "INSERT INTO Schedule (ID, CreatedByUserID, AssignedUserID, CaseID, ScheduleName, Location, Latitude, Longitude, Date, Time, Name, PhoneNumber, Notes, Status, Deleted, CarriedOut, Validated) VALUES ('" + id + "', '" + createdByUserId + "', '" + assignedUserId + "', '" + caseID + "', '" + scheduleName + "', '" + location + "', 'null', 'null', '" + date + "', '" + time + "', '" + name + "', '" + phoneNumber + "', '" + notes + "', 'null', 'false', 'false', 'false');";
 
     return new Promise((resolve, reject) => {
 
@@ -1244,6 +1312,22 @@ async function addSchedule(id, createdByUserId, assignedUserId, caseID, schedule
 
 async function updateUserData(id, firstName, lastName, password, location, emailAddress) {
     let sqlQuery = "UPDATE User SET FirstName = '" + firstName + "', LastName = '" + lastName + "', Password = '" + password + "', Address = '" + location + "', EmailAddress = '" + emailAddress + "' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function alterBeneficiary(id, validated, rejected) {
+    let sqlQuery = "UPDATE Beneficiary SET Validated = '" + validated + "', Rejected = '" + rejected + "' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 

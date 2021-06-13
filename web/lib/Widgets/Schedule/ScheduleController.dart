@@ -61,6 +61,7 @@ class ScheduleController {
 
     if (response.success) {
       Common.scheduleWidgetList.clear();
+      Common.scheduleList.clear();
       if (emptyListCheck) {
         Common.scheduleWidgetList.add(Row(
           mainAxisAlignment: MainAxisAlignment.start,

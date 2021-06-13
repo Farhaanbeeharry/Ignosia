@@ -10,7 +10,7 @@ class DetailedScheduleWidgetController {
 
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.deleteSchedule), body);
     if (response.success) {
-      refreshScheduleList();
+      await refreshScheduleList();
       AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,

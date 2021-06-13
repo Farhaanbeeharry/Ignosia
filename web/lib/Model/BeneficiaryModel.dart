@@ -34,8 +34,9 @@ class BeneficiaryModel {
   String status;
   String validated;
   String rejected;
+  String emailAddress;
 
-  BeneficiaryModel({this.iD, this.scheduleID, this.firstName, this.lastName, this.age, this.gender, this.nationalID, this.dateOfBirth, this.location, this.latitude, this.longitude, this.responsiblePartyName, this.responsiblePartyRelationship, this.qualificationYear, this.school, this.university, this.skill, this.workExperience, this.workingCapabilities, this.currentWorkplace, this.currentWorkplaceRole, this.maritalStatus, this.policeRecord, this.receivesPension, this.socialAid, this.homePhone, this.mobilePhone, this.workFromDate, this.workToDate, this.salary, this.numberOfChildren, this.notes, this.status, this.validated, this.rejected});
+  BeneficiaryModel({this.iD, this.scheduleID, this.firstName, this.lastName, this.age, this.gender, this.nationalID, this.dateOfBirth, this.location, this.latitude, this.longitude, this.responsiblePartyName, this.responsiblePartyRelationship, this.qualificationYear, this.school, this.university, this.skill, this.workExperience, this.workingCapabilities, this.currentWorkplace, this.currentWorkplaceRole, this.maritalStatus, this.policeRecord, this.receivesPension, this.socialAid, this.homePhone, this.mobilePhone, this.workFromDate, this.workToDate, this.salary, this.numberOfChildren, this.notes, this.status, this.validated, this.rejected, this.emailAddress});
 
   BeneficiaryModel fromJson(Map<String, dynamic> json) {
     this.iD = json['ID'];
@@ -73,6 +74,7 @@ class BeneficiaryModel {
     this.status = json['status'];
     this.validated = json['Validated'];
     this.rejected = json['Rejected'];
+    this.emailAddress = json['EmailAddress'];
     return this;
   }
 
@@ -113,6 +115,7 @@ class BeneficiaryModel {
     data['status'] = this.status;
     data['Validated'] = this.validated;
     data['Rejected'] = this.rejected;
+    data['EmailAddress'] = this.emailAddress;
     return data;
   }
 }

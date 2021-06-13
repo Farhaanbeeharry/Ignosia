@@ -23,7 +23,11 @@ class _ValidatorViewState extends State<ValidatorView> {
     // TODO: implement initState
     super.initState();
     Common.validatorBeneficiaryWidgetList = [EmptyBeneficiaryScheduleWidget()];
-    loadData();
+    loadSchedules();
+  }
+
+  loadSchedules() async {
+    await loadData();
   }
 
   loadData() async {
@@ -33,7 +37,7 @@ class _ValidatorViewState extends State<ValidatorView> {
         size: 25.0,
       );
     });
-    await validatorController.loadSchedules(loadData);
+    await validatorController.loadSchedules(loadSchedules, context, callSetState);
     setState(() {
       validatorController.refreshBtnIcon = Icon(
         FontAwesomeIcons.syncAlt,
@@ -109,8 +113,11 @@ class _ValidatorViewState extends State<ValidatorView> {
                                       ),
                                       Spacer(),
                                       InkWell(
-                                        onTap: () {
-                                          loadData();
+                                        onTap: () async {
+                                          Common.validatorBeneficiaryWidgetList = [EmptyBeneficiaryScheduleWidget()];
+                                          Common.selectedValidatorName = "";
+
+                                          await loadData();
                                         },
                                         child: Container(
                                           width: 70.0,
@@ -172,6 +179,17 @@ class _ValidatorViewState extends State<ValidatorView> {
                               fontSize: 32.0,
                               color: Color(0xFF6c63ff),
                               fontFamily: Stem.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text(
+                              Common.selectedValidatorName == "" ? "" : ' (${Common.selectedValidatorName})',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black,
+                                fontFamily: Stem.regular,
+                              ),
                             ),
                           ),
                         ],

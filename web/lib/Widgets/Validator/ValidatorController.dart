@@ -14,7 +14,7 @@ class ValidatorController {
     color: Color(0xFF6c63ff),
   );
 
-  Future<void> loadSchedules(Function callValidatorSetState) async {
+  Future<void> loadSchedules(Function callValidatorSetState, BuildContext context, Function callSetState) async {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getCarriedOutSchedules), {});
 
     bool emptyListCheck = true;
@@ -62,7 +62,7 @@ class ValidatorController {
 
         for (var scheduleData in Common.carriedOutScheduleList) {
           if (scheduleData.deleted == "false" && scheduleData.carriedOut == "true") {
-            Common.carriedOutScheduleWidgetList.add(ValidatorScheduleWidget(data: scheduleData, callValidatorSetState: callValidatorSetState));
+            Common.carriedOutScheduleWidgetList.add(ValidatorScheduleWidget(data: scheduleData, secondaryContext: context, callValidatorSetState: callValidatorSetState, refresh: callSetState));
           }
         }
       }

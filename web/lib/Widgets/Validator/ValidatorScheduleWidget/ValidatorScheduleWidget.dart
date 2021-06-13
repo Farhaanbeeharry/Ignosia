@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Model/ScheduleModel.dart';
 import 'package:web/Widgets/Validator/ValidatorScheduleWidget/ValidatorScheduleWidgetController.dart';
@@ -8,8 +9,10 @@ import 'package:web/Widgets/Validator/ValidatorScheduleWidget/ValidatorScheduleW
 class ValidatorScheduleWidget extends StatefulWidget {
   final ScheduleModel data;
   final Function callValidatorSetState;
+  final BuildContext secondaryContext;
+  final Function refresh;
 
-  ValidatorScheduleWidget({this.data, this.callValidatorSetState});
+  ValidatorScheduleWidget({this.data, this.callValidatorSetState, this.secondaryContext, this.refresh});
 
   @override
   _ValidatorScheduleWidgetState createState() => _ValidatorScheduleWidgetState();
@@ -92,7 +95,9 @@ class _ValidatorScheduleWidgetState extends State<ValidatorScheduleWidget> {
                         size: 25.0,
                       );
                     });
-                    await validatorScheduleController.getBeneficiaries(widget.data.iD, widget.callValidatorSetState);
+                    Common.selectedValidatorSchedule = widget.data.iD;
+                    Common.selectedValidatorName = widget.data.name;
+                    await validatorScheduleController.getBeneficiaries(widget.data.iD, widget.callValidatorSetState, widget.secondaryContext, widget.refresh);
                     setState(() {
                       validatorScheduleController.btnIcon = Icon(
                         FontAwesomeIcons.angleDoubleRight,

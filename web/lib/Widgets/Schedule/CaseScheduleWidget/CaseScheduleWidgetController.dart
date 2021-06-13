@@ -87,13 +87,15 @@ class CaseScheduleController {
     List<ScheduleModel> schedules = Common.scheduleList;
     bool check = true;
     for (var schedule in schedules) {
-      if (schedule.assignedUserID == id) {
-        if (schedule.date == SetSchedule.selectedDate) {
-          int scheduleHour = int.parse(schedule.time[0] + schedule.time[1]);
-          int selectedHour = int.parse(SetSchedule.selectedTime[0] + SetSchedule.selectedTime[1]);
-          if (selectedHour - scheduleHour > -4 && selectedHour - scheduleHour < 4) {
-            check = false;
-            break;
+      if (schedule.deleted == 'false') {
+        if (schedule.assignedUserID == id) {
+          if (schedule.date == SetSchedule.selectedDate) {
+            int scheduleHour = int.parse(schedule.time[0] + schedule.time[1]);
+            int selectedHour = int.parse(SetSchedule.selectedTime[0] + SetSchedule.selectedTime[1]);
+            if (selectedHour - scheduleHour > -4 && selectedHour - scheduleHour < 4) {
+              check = false;
+              break;
+            }
           }
         }
       }

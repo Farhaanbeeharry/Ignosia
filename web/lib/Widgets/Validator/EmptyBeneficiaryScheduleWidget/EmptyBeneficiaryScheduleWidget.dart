@@ -26,7 +26,7 @@ class _EmptyBeneficiaryScheduleWidgetState extends State<EmptyBeneficiarySchedul
             height: 25.0,
           ),
           Text(
-            "Empty list...",
+            "No schedule selected...",
             style: TextStyle(color: Color(0xFF6c63ff), fontSize: 32.0, fontFamily: Stem.bold),
           ),
           SizedBox(
