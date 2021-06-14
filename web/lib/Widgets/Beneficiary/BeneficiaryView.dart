@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Widgets/Beneficiary/BeneficiaryController.dart';
-import 'package:web/Widgets/Beneficiary/BeneficiarySummaryWidget/BeneficiarySummaryWidget.dart';
-
-import 'BeneficiaryDetailedWidget/BeneficiaryDetailedWidget.dart';
+import 'package:web/Widgets/Beneficiary/EmptyBeneficiaryWidget/EmptyBeneficiaryWidget.dart';
 
 class BeneficiaryView extends StatefulWidget {
   @override
@@ -14,6 +13,40 @@ class BeneficiaryView extends StatefulWidget {
 
 class _BeneficiaryViewState extends State<BeneficiaryView> {
   BeneficiaryController beneficiaryController = new BeneficiaryController();
+
+  callSetState() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Common.selectedBeneficiary = false;
+    Common.selectedBeneficiaryName = '';
+    loadBeneficiaryData();
+  }
+
+  loadBeneficiaryData() async {
+    await loadBeneficiaryList();
+  }
+
+  loadBeneficiaryList() async {
+    setState(() {
+      beneficiaryController.refreshBtnIcon = SpinKitWave(
+        color: Color(0xFF6c63ff),
+        size: 25.0,
+      );
+    });
+    await beneficiaryController.getBeneficiaryList(callSetState, loadBeneficiaryData, context);
+    setState(() {
+      beneficiaryController.refreshBtnIcon = Icon(
+        FontAwesomeIcons.syncAlt,
+        color: Color(0xFF6c63ff),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,7 +103,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                               children: [
                                 Text(
                                   'Beneficiaries',
-                                  style: TextStyle(fontSize: 28.0, color: Color(0xFF3f3d56), fontFamily: 'StemMedium'),
+                                  style: TextStyle(fontSize: 28.0, color: Color(0xFF6c63ff), fontFamily: 'StemMedium'),
                                 ),
                                 SizedBox(
                                   width: 20.0,
@@ -78,8 +111,12 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                 Container(
                                   width: 175.0,
                                   child: TextFormField(
-                                    validator: (emailAddress) {
-                                      return null;
+                                    onChanged: (value) async {
+                                      if (value.isEmpty) {
+                                        await loadBeneficiaryData();
+                                      } else {
+                                        await beneficiaryController.displayResult(value, callSetState);
+                                      }
                                     },
                                     style: Common.labelTextStyle,
                                     decoration: InputDecoration(
@@ -117,25 +154,19 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                 ),
                                 Spacer(),
                                 InkWell(
-                                  onTap: () {
-                                    FocusScope.of(context).requestFocus(new FocusNode());
+                                  onTap: () async {
+                                    await loadBeneficiaryData();
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                    child: Container(
-                                      width: 45.0,
-                                      height: 40.0,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        color: Color(0xFF6c63ff),
-                                      ),
-                                      child: Icon(
-                                        FontAwesomeIcons.undoAlt,
-                                        color: Colors.white,
+                                  child: Container(
+                                    width: 70.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFe1e1e1),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0),
                                       ),
                                     ),
+                                    child: beneficiaryController.refreshBtnIcon,
                                   ),
                                 ),
                               ],
@@ -151,7 +182,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                   padding: const EdgeInsets.only(right: 10.0),
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      children: [BeneficiarySummaryWidget()],
+                                      children: Common.beneficiaryWidgetList,
                                     ),
                                   ),
                                 ),
@@ -180,7 +211,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        beneficiaryController.defaultSelectedBeneficiary,
+                        Common.selectedBeneficiaryName,
                         style: TextStyle(color: Color(0xFF6c63ff), fontSize: 36.0, fontFamily: Stem.bold),
                       ),
                       SizedBox(
@@ -190,11 +221,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                         height: 470.0,
                         width: MediaQuery.of(context).size.width * 0.32,
                         child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              BeneficiaryDetailedWidget(),
-                            ],
-                          ),
+                          child: Common.selectedBeneficiary == false ? EmptyBeneficiaryWidget() : Common.beneficiaryWidget,
                         ),
                       ),
                     ],

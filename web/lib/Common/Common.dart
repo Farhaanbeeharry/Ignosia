@@ -41,9 +41,16 @@ class Common {
   static List<Widget> validatorBeneficiaryWidgetList = [EmptyBeneficiaryScheduleWidget()];
   static List<BeneficiaryModel> validatorBeneficiaryList = new List<BeneficiaryModel>();
 
+  static List<Widget> beneficiaryWidgetList = new List<Widget>();
+  static List<BeneficiaryModel> beneficiaryList = new List<BeneficiaryModel>();
+
   static String resetEmailAddress = "";
   static String selectedValidatorSchedule = "";
   static String selectedValidatorName = "";
+  static String selectedBeneficiaryName = "";
+
+  static bool selectedBeneficiary = false;
+  static Widget beneficiaryWidget = Container();
 
   static TextStyle labelTextStyle = new TextStyle(
     fontSize: 16.0,

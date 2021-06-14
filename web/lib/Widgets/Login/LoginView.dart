@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 50.0,
                             width: 275.0,
                             child: TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 FocusScope.of(context).requestFocus(new FocusNode());
                                 loginController.emailController.text = 'admin@ignosia.com';
                                 loginController.passwordController.text = 'Password123@';
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                       size: 25.0,
                                     );
                                   });
-                                  loginController.logIn(loginController.emailController.text, loginController.passwordController.text, context);
+                                  await loginController.logIn(loginController.emailController.text, loginController.passwordController.text, context);
                                   setState(() {
                                     loginController.loginBtnWidget = Text(
                                       "Log in",

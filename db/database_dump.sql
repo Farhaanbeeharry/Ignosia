@@ -153,4 +153,16 @@ CREATE TABLE BUG (
     FOREIGN KEY (ReportedBy) REFERENCES USER(ID)
 );
 
+CREATE TABLE MESSAGE (
+    ID VARCHAR(100) NOT NULL,
+    SenderID VARCHAR(100) NOT NULL,
+    ReceiverID VARCHAR(100) NOT NULL,
+    TimeAndDate VARCHAR(64) NOT NULL,
+    Subject TEXT NOT NULL,
+    Content TEXT NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (SenderID) REFERENCES USER(ID),
+    FOREIGN KEY (ReceiverID) REFERENCES USER(ID)
+);
+
 INSERT INTO USER(ID, FirstName, LastName, EmailAddress, Password, DateOfBirth, PhoneNumber, Address, UserToken, DeviceToken, FirstTimeUser, WebUser, MobileUser, ResetKey, Status) VALUES('5153d1c0-bcf1-11eb-997c-d9fd0a38fcfe', 'Admin', 'Ignosia', 'admin@ignosia.com', 'jPSzC9Uv++2cepFUloAkgw==', '30/07/2021','57076881', 'Port-Louis', 'null', 'null', 'false', 'true', 'true', 'null', 'admin');

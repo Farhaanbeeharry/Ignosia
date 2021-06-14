@@ -114,6 +114,7 @@ class BeneficiaryValidatorController {
           ),
         ));
       }
+
       callSetState();
       AwesomeDialog(
         context: secondaryContext,

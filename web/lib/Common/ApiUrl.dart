@@ -30,6 +30,10 @@ class ApiUrl {
   static const String getBeneficiaryFromSchedule = 'getBeneficiaryFromSchedule';
   static const String markScheduleCompleted = 'markScheduleCompleted';
   static const String alterBeneficiary = 'alterBeneficiary';
+  static const String getBeneficiaryList = 'getBeneficiaryList';
+  static const String getBeneficiary = 'getBeneficiary';
+  static const String sendEmailWithSubject = 'sendEmailWithSubject';
+  static const String deleteBeneficiary = 'deleteBeneficiary';
 
   static String getURL(String url) {
     return baseURL + url.toString();

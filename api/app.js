@@ -345,7 +345,7 @@ app.use("/API/web/deleteMember", function(req, res, next) {
         if (result == 1) {
             res.status(200).json({
                 success: true,
-                error: "Failed to delete member with ID " + id + "!",
+                error: "",
                 data: {},
                 msg: ""
             });
@@ -389,6 +389,50 @@ app.use("/API/web/reportBug", function(req, res, next) {
         }
 
     });
+
+});
+
+app.use("/API/web/sendEmailWithSubject", function(req, res, next) {
+
+    var id = req.body.id;
+    var senderID = req.body.senderID;
+    var recipientID = req.body.recipientID;
+    var timeAndDate = req.body.timeAndDate;
+    var subject = req.body.subject;
+    var content = req.body.content;
+    var emailAddress = req.body.emailAddress;
+
+    sendEmailWithSubject(subject, content, emailAddress).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to send new member email!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            addMessage(id, senderID, recipientID, timeAndDate, subject, content).then(result => {
+
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Failed to keep track of sent email!",
+                        data: {},
+                        msg: ""
+                    });
+                } else if (result == 1) {
+                    res.status(200).json({
+                        success: true,
+                        error: "",
+                        data: {},
+                        msg: ""
+                    });
+                }
+
+            });
+        }
+    });
+
 
 });
 
@@ -558,6 +602,28 @@ app.use("/API/web/getTransactionList", function(req, res, next) {
 
 });
 
+app.use("/API/web/getBeneficiaryList", function(req, res, next) {
+
+    getBeneficiaryList().then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
 
 app.use("/API/web/getMobileUsersList", function(req, res, next) {
 
@@ -859,6 +925,33 @@ app.use("/API/web/getCaseList", function(req, res, next) {
 
 });
 
+app.use("/API/web/getBeneficiary", function(req, res, next) {
+
+    var id = req.body.id;
+
+    getBeneficiary(id).then(result => {
+
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: [],
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+});
+
+
+
 app.use("/API/web/getScheduleList", function(req, res, next) {
 
     getScheduleList().then(result => {
@@ -954,6 +1047,32 @@ app.use("/API/web/deleteEvent", function(req, res, next) {
 
 });
 
+app.use("/API/web/deleteBeneficiary", function(req, res, next) {
+
+
+
+    var id = req.body.id;
+    deleteBeneficiary(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete beneficiary with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
+
 app.use("/API/web/getDashboardData", function(req, res, next) {
 
     getDashboardData().then(result => {
@@ -1034,6 +1153,22 @@ async function deleteEvent(id) {
     });
 }
 
+async function deleteBeneficiary(id) {
+    let sqlQuery = "UPDATE Beneficiary SET Validated = 'false', Rejected = 'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
 async function setCaseUnscheduled(id) {
     let sqlQuery = "UPDATE Request SET Scheduled = 'false' WHERE ID = '" + id + "';";
 
@@ -1093,6 +1228,23 @@ async function getCaseList() {
                 resolve(-1);
             } else {
                 resolve(result);
+            }
+        });
+
+    });
+}
+
+async function getBeneficiary(id) {
+    let sqlQuery = "SELECT * FROM Beneficiary WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result[0]);
             }
         });
 
@@ -1162,6 +1314,26 @@ async function getCarriedOutSchedules() {
         });
 
     });
+}
+
+async function addMessage(id, senderID, recipientID, timeAndDate, subject, content) {
+
+
+    let sqlQuery = "INSERT INTO MESSAGE(ID, SenderID, ReceiverID, TimeAndDate, Subject, Content) VALUES ('" + id + "', '" + senderID + "', '" + recipientID + "', '" + timeAndDate + "', '" + subject + "', '" + content + "');"
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                reject("Error executing the query: " + JSON.stringify(err));
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+
+        });
+    });
+
 }
 
 async function createEvent(id, createdBy, eventName, sponsorName, createdFor, cost, date, time, description) {
@@ -1360,7 +1532,7 @@ async function reportBug(id, reportedBy, bug, date) {
 }
 
 async function deleteMember(id) {
-    let sqlQuery = "DELETE FROM User WHERE ID = '" + id + "';";
+    let sqlQuery = "UPDATE USER SET Status = 'deleted' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 
@@ -1368,7 +1540,6 @@ async function deleteMember(id) {
             if (err) {
                 resolve(0);
             } else {
-
                 resolve(1);
             }
         });
@@ -1427,6 +1598,22 @@ async function getTransactionList() {
     });
 }
 
+
+async function getBeneficiaryList() {
+    let sqlQuery = "SELECT * FROM Beneficiary WHERE Validated = 'true';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
 async function getMobileUsersList() {
     let sqlQuery = "SELECT * FROM User WHERE MobileUser = 'true' AND FirstTimeUser = 'false' AND (Status = 'active' OR Status = 'admin');";
 
@@ -1595,6 +1782,29 @@ async function sendNewMemberEmail(emailAddress, password) {
         to: emailAddress,
         subject: 'Your Credentials',
         html: '<h1>Welcome!</h1><h2>Your Credentials</h2><p>Email address: ' + emailAddress + '</p><p>Password: ' + password + '</p><p>Login to complete registration step.</p>',
+    };
+
+
+    return new Promise((resolve, reject) => {
+
+        transporter.sendMail(mailOptions, function(error, info) {
+
+            if (error) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function sendEmailWithSubject(subject, content, emailAddress) {
+    var mailOptions = {
+        from: '"Support" <support@ignosia.com>',
+        to: emailAddress,
+        subject: subject,
+        html: content,
     };
 
 

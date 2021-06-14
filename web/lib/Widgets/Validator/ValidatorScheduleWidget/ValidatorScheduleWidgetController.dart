@@ -147,6 +147,7 @@ class _YesButtonState extends State<YesButton> {
     var body = {"id": scheduleID};
 
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.markScheduleCompleted), body);
+    Common.selectedValidatorName = "";
 
     if (response.success) {
       AwesomeDialog(

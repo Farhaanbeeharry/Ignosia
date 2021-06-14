@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
+import 'package:web/Model/BeneficiaryModel.dart';
+import 'package:web/Widgets/Beneficiary/BeneficiarySummaryWidget/BeneficiarySummaryController.dart';
 
 class BeneficiarySummaryWidget extends StatefulWidget {
+  final BeneficiaryModel data;
+  final Function callSetState;
+  final Function loadData;
+  final BuildContext secondaryContext;
+
+  BeneficiarySummaryWidget({this.data, this.callSetState, this.loadData, this.secondaryContext});
+
   @override
   _BeneficiarySummaryWidgetState createState() => _BeneficiarySummaryWidgetState();
 }
 
 class _BeneficiarySummaryWidgetState extends State<BeneficiarySummaryWidget> {
+  BeneficiarySummaryController beneficiarySummaryController = new BeneficiarySummaryController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +45,7 @@ class _BeneficiarySummaryWidgetState extends State<BeneficiarySummaryWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Farhaan Beeharry',
+                          widget.data.firstName + ' ' + widget.data.lastName,
                           style: TextStyle(
                             fontSize: 24.0,
                             color: Colors.black,
@@ -44,7 +56,9 @@ class _BeneficiarySummaryWidgetState extends State<BeneficiarySummaryWidget> {
                           height: 7.5,
                         ),
                         Text(
-                          'James Anderson F., Port Louis',
+                          widget.data.location,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -55,7 +69,7 @@ class _BeneficiarySummaryWidgetState extends State<BeneficiarySummaryWidget> {
                           height: 5.0,
                         ),
                         Text(
-                          '57076881',
+                          widget.data.mobilePhone,
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -68,7 +82,11 @@ class _BeneficiarySummaryWidgetState extends State<BeneficiarySummaryWidget> {
                 ),
                 Spacer(),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    Common.selectedBeneficiaryName = widget.data.firstName + " " + widget.data.lastName;
+                    widget.callSetState();
+                    await beneficiarySummaryController.getBeneficiary(widget.data.iD, widget.callSetState, widget.secondaryContext, widget.loadData);
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
