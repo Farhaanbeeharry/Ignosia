@@ -1473,6 +1473,7 @@ async function addSchedule(id, createdByUserId, assignedUserId, caseID, schedule
 
         pool.query(sqlQuery, (err, result) => {
             if (err) {
+                console.log(err);
                 resolve(0);
             } else {
                 resolve(1);

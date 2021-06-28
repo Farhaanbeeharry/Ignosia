@@ -254,5 +254,5 @@ class SetSchedule {
   static String selectedTime = "null";
   static List<UserModel> mobileUsers = new List<UserModel>();
   static List<String> stringMobileUsers = new List<String>();
-  static String selectedUserID = "null";
+  static String selectedUserID;
 }

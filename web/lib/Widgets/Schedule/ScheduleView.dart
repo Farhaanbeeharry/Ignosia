@@ -29,7 +29,7 @@ class _ScheduleViewState extends State<ScheduleView> {
   clearInputs() {
     scheduleController.selectedDate = 'Choose date';
     scheduleController.isTimeSelected = false;
-    SetSchedule.selectedUserID = "null";
+    SetSchedule.selectedUserID = null;
     SetSchedule.selectedDate = "null";
     SetSchedule.selectedTime = "null";
   }
