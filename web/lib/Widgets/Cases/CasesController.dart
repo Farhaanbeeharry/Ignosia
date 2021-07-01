@@ -15,6 +15,7 @@ class CaseController {
   TextEditingController phoneNumberController = new TextEditingController();
   TextEditingController locationController = new TextEditingController();
   TextEditingController notesController = new TextEditingController();
+  TextEditingController searchController = new TextEditingController();
 
   final createCaseKey = GlobalKey<FormState>();
 
@@ -137,7 +138,7 @@ class CaseController {
     Common.caseWidgetList.clear();
 
     for (var datum in Common.caseList) {
-      if (datum.name.toLowerCase().contains(value.toLowerCase()) || datum.location.toLowerCase().contains(value.toLowerCase()) || datum.phoneNumber.toLowerCase().contains(value.toLowerCase())) {
+      if ((datum.name.toLowerCase().contains(value.toLowerCase()) || datum.location.toLowerCase().contains(value.toLowerCase()) || datum.phoneNumber.toLowerCase().contains(value.toLowerCase())) && datum.scheduled == 'false') {
         Common.caseWidgetList.add(CaseWidget(data: datum, getCaseList: callSetState));
       }
     }

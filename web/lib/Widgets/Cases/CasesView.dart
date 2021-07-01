@@ -316,6 +316,7 @@ class _CaseViewState extends State<CaseView> {
                               validator: (emailAddress) {
                                 return null;
                               },
+                              controller: caseController.searchController,
                               style: Common.labelTextStyle,
                               decoration: InputDecoration(
                                 border: new OutlineInputBorder(
@@ -327,6 +328,10 @@ class _CaseViewState extends State<CaseView> {
                                 suffixIcon: InkWell(
                                   onTap: () {
                                     FocusScope.of(context).requestFocus(new FocusNode());
+                                    setState(() {
+                                      caseController.searchController.clear();
+                                      loadData();
+                                    });
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -339,7 +344,7 @@ class _CaseViewState extends State<CaseView> {
                                         color: Color(0xFF6c63ff),
                                       ),
                                       child: Icon(
-                                        FontAwesomeIcons.search,
+                                        FontAwesomeIcons.times,
                                         color: Colors.white,
                                       ),
                                     ),

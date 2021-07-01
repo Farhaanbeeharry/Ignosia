@@ -14,6 +14,8 @@ class BeneficiaryController {
     color: Color(0xFF6c63ff),
   );
 
+  TextEditingController searchController = new TextEditingController();
+
   Future<void> getBeneficiaryList(Function callSetState, Function loadData, BuildContext context) async {
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getBeneficiaryList), {});
 

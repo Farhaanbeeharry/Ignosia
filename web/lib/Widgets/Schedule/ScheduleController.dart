@@ -20,6 +20,9 @@ class ScheduleController {
   String displayTime;
   TimeOfDay selectedTime = TimeOfDay.now().replacing(minute: 30);
 
+  String selectedMember;
+  TextEditingController searchController = new TextEditingController();
+
   Widget refreshBtnIcon = Icon(
     FontAwesomeIcons.syncAlt,
     color: Color(0xFF6c63ff),

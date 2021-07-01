@@ -129,6 +129,11 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                       suffixIcon: InkWell(
                                         onTap: () {
                                           FocusScope.of(context).requestFocus(new FocusNode());
+
+                                          setState(() {
+                                            beneficiaryController.searchController.clear();
+                                            loadBeneficiaryData();
+                                          });
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -141,7 +146,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                               color: Color(0xFF6c63ff),
                                             ),
                                             child: Icon(
-                                              FontAwesomeIcons.search,
+                                              FontAwesomeIcons.times,
                                               color: Colors.white,
                                             ),
                                           ),

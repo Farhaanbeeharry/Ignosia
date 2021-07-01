@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,6 +28,7 @@ class _ScheduleViewState extends State<ScheduleView> {
   clearInputs() {
     scheduleController.selectedDate = 'Choose date';
     scheduleController.isTimeSelected = false;
+    scheduleController.selectedMember = null;
     SetSchedule.selectedUserID = null;
     SetSchedule.selectedDate = "null";
     SetSchedule.selectedTime = "null";
@@ -163,6 +163,10 @@ class _ScheduleViewState extends State<ScheduleView> {
                                       suffixIcon: InkWell(
                                         onTap: () {
                                           FocusScope.of(context).requestFocus(new FocusNode());
+                                          setState(() {
+                                            scheduleController.searchController.clear();
+                                            loadData();
+                                          });
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -175,7 +179,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                                               color: Color(0xFF6c63ff),
                                             ),
                                             child: Icon(
-                                              FontAwesomeIcons.search,
+                                              FontAwesomeIcons.times,
                                               color: Colors.white,
                                             ),
                                           ),
@@ -315,23 +319,38 @@ class _ScheduleViewState extends State<ScheduleView> {
                           ),
                           Spacer(),
                           Container(
+                            alignment: Alignment.centerLeft,
                             width: 200.0,
                             height: 60.0,
                             child: Padding(
                               padding: const EdgeInsets.only(top: 5.0),
-                              child: DropdownSearch<String>(
-                                mode: Mode.MENU,
-                                showSelectedItem: true,
-                                items: SetSchedule.stringMobileUsers,
-                                label: "Assign to...",
-                                onChanged: (value) {
-                                  List<String> name = value.split(" ");
+                              child: DropdownButton<String>(
+                                value: scheduleController.selectedMember,
+                                hint: Text("Choose a member                 "),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.deepPurple),
+                                underline: Container(
+                                  height: 2,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                onChanged: (String newValue) {
+                                  List<String> names = newValue.split(" ");
+
                                   for (var user in SetSchedule.mobileUsers) {
-                                    if (user.firstName == name[0] && user.lastName == name[1]) {
+                                    if (user.firstName == names[0] && user.lastName == names[1]) {
                                       SetSchedule.selectedUserID = user.iD;
                                     }
                                   }
+                                  setState(() {
+                                    scheduleController.selectedMember = newValue;
+                                  });
                                 },
+                                items: SetSchedule.stringMobileUsers.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ),
