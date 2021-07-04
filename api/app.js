@@ -1907,4 +1907,21 @@ async function setKeyToNull(emailAddress) {
     });
 }
 
+
+/**
+ 
+-------------------------------- MOBILE API --------------------------------
+
+**/
+
+app.use("/API/mobile/login", function(req, res, next) {
+
+    var emailAddress = req.body.emaiLAddress;
+    var password = req.body.password;
+
+
+
+
+});
+
 module.exports = app;

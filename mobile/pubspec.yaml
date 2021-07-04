@@ -23,9 +23,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
+  flutter_svg: ^0.19.3
+  validators: ^2.0.1
+  font_awesome_flutter: ^8.12.0
+  latlng: any
+  encrypt: ^4.1.0
+  awesome_dialog: ^1.3.2
+  flutter_spinkit: ^3.1.0
+  page_slider: ^0.0.2
+  day_night_time_picker: ^1.0.1
+  material_dialogs: any
+  uuid: any
+  intl: ^0.17.0
+  dropdown_search: ^0.6.1
+   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
@@ -46,6 +57,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   # assets:
+  assets:
+    - assets/images/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -61,6 +74,43 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
+  fonts:
+    - family: StemBold
+      fonts:
+        - asset: assets/fonts/Stem-Bold.otf
+    - family: StemBoldItalic
+      fonts:
+        - asset: assets/fonts/Stem-BoldItalic.otf
+    - family: StemExtraLight
+      fonts:
+        - asset: assets/fonts/Stem-ExtraLight.otf
+    - family: StemExtraLightItalic
+      fonts:
+        - asset: assets/fonts/Stem-ExtraLightItalic.otf
+    - family: StemHairline
+      fonts:
+        - asset: assets/fonts/Stem-Hairline.otf
+    - family: StemItalic
+      fonts:
+        - asset: assets/fonts/Stem-Italic.otf
+    - family: StemLight
+      fonts:
+        - asset: assets/fonts/Stem-Light.otf
+    - family: StemLightItalic
+      fonts:
+        - asset: assets/fonts/Stem-LightItalic.otf
+    - family: StemMedium
+      fonts:
+        - asset: assets/fonts/Stem-Medium.otf
+    - family: StemMediumItalic
+      fonts:
+        - asset: assets/fonts/Stem-MediumItalic.otf
+    - family: StemRegular
+      fonts:
+        - asset: assets/fonts/Stem-Regular.otf
+    - family: StemThin
+      fonts:
+        - asset: assets/fonts/Stem-Thin.otf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
