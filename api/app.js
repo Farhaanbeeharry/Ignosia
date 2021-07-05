@@ -36,11 +36,12 @@ app.use("/API/web/login", function(req, res, next) {
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
 
+
+
     checkValidEmailAddress(emailAddress).then(result => {
 
         if (result == 1) {
             checkAccountType(emailAddress).then(result => {
-
                 if (result == 'true') {
                     checkValidLogIn(emailAddress, password).then(result => {
 
@@ -65,7 +66,9 @@ app.use("/API/web/login", function(req, res, next) {
                         }
 
                     });
-                } else if (result == 0) {
+
+                } else if (result == 'false') {
+
                     res.status(200).json({
                         success: false,
                         error: "Account does not exist for web!",
@@ -1108,6 +1111,8 @@ app.use("/API/web/getRecentTransactionData", function(req, res, next) {
                 msg: ""
             });
         } else {
+
+
             res.status(200).json({
                 success: true,
                 error: "",
@@ -1846,11 +1851,6 @@ async function emailResetKey(emailAddress, resetKey) {
     });
 }
 
-function generatePassword() {
-    var password = "Password123";
-    return password;
-
-}
 
 function generateRandomSixNumbers() {
     return Math.floor(100000 + Math.random() * 900000);
@@ -1916,12 +1916,107 @@ async function setKeyToNull(emailAddress) {
 
 app.use("/API/mobile/login", function(req, res, next) {
 
-    var emailAddress = req.body.emaiLAddress;
+    var emailAddress = req.body.emailAddress;
     var password = req.body.password;
+
+    checkExistingAccountMobile(emailAddress).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Account does not exist!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            checkValidMobileLogin(emailAddress, password).then(result => {
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Password does not match!",
+                        data: {},
+                        msg: ""
+                    });
+                } else if (result == 1) {
+
+                    getMobileUserData(emailAddress).then(result => {
+
+                        if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "",
+                                data: {},
+                                msg: ""
+                            });
+                        } else {
+                            res.status(200).json({
+                                success: true,
+                                error: "",
+                                data: result,
+                                msg: ""
+                            });
+                        }
+
+                    });
+
+                }
+
+
+            });
+        }
+    });
 
 
 
 
 });
+
+async function checkExistingAccountMobile(emailAddress) {
+    let sqlQuery = "SELECT EXISTS(SELECT * FROM User WHERE EmailAddress = '" + emailAddress + "' AND MobileUser = 'true') AS result;";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(result[0]['result']);
+            }
+        });
+
+    });
+}
+
+async function checkValidMobileLogin(emailAddress, password) {
+    let sqlQuery = "SELECT EXISTS(SELECT * FROM User WHERE EmailAddress = '" + emailAddress + "' AND Password = '" + password + "' AND FirstTimeUser = 'false') AS result;";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(result[0]['result']);
+            }
+        });
+
+    });
+}
+
+async function getMobileUserData(emailAddress) {
+    let sqlQuery = "SELECT ID, FirstName, LastName, EmailAddress, DateOfBirth, PhoneNumber, Address, FirstTimeUser FROM User WHERE EmailAddress = '" + emailAddress + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(result[0]);
+            }
+        });
+
+    });
+}
+
 
 module.exports = app;

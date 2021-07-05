@@ -2,12 +2,21 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/UserModel.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Common {
+  static UserModel loggedInUserData;
+
   static TextStyle labelTextStyle = new TextStyle(
     fontSize: 16.0,
     color: Colors.white,
     fontFamily: Stem.regular,
+  );
+
+  static var alertStyle = AlertStyle(
+    descStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: Stem.regular, fontSize: 16.0),
+    titleStyle: TextStyle(color: Colors.red, fontFamily: Stem.bold),
   );
 
   static Map<String, dynamic> headers = {
@@ -23,6 +32,18 @@ class Common {
   static String generatePassword(int length) => String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(rnd.nextInt(_chars.length))));
 
   static List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  static String getDOB(String dob) {
+    String day = dob[0] + dob[1];
+    String month = dob[3] + dob[4];
+    String year = dob[6] + dob[7] + dob[8] + dob[9];
+
+    String monthWord = months[int.parse(month) -1 ];
+
+    String dateOfBirth = day + " " + monthWord + " " + year;
+
+    return dateOfBirth;
+  }
 
   static String getAge(String dob) {
     DateTime now = DateTime.now();
