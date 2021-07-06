@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/Widgets/Compose/Compose.dart';
+import 'package:mobile/Widgets/Events/EventView.dart';
 import 'package:mobile/Widgets/Profile/Profile.dart';
 
-class DashboardController {
+class HomePageController {
   int selectedIndex = 0;
   List<Widget> pages = [
     Container(
@@ -15,11 +16,7 @@ class DashboardController {
         child: Text('Schedules'),
       ),
     ),
-    Container(
-      child: Center(
-        child: Text('Events'),
-      ),
-    ),
+    EventView(),
     ComposeView(),
     ProfileView()
   ];

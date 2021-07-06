@@ -14,9 +14,14 @@ class Common {
     fontFamily: Stem.regular,
   );
 
-  static var alertStyle = AlertStyle(
+  static var errorAlertStyle = AlertStyle(
     descStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: Stem.regular, fontSize: 16.0),
     titleStyle: TextStyle(color: Colors.red, fontFamily: Stem.bold),
+  );
+
+  static var successAlertStyle = AlertStyle(
+    descStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: Stem.regular, fontSize: 16.0),
+    titleStyle: TextStyle(color: Colors.green, fontFamily: Stem.bold),
   );
 
   static Map<String, dynamic> headers = {
@@ -38,7 +43,7 @@ class Common {
     String month = dob[3] + dob[4];
     String year = dob[6] + dob[7] + dob[8] + dob[9];
 
-    String monthWord = months[int.parse(month) -1 ];
+    String monthWord = months[int.parse(month) - 1];
 
     String dateOfBirth = day + " " + monthWord + " " + year;
 

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/RecipientModel.dart';
 import 'package:mobile/Widgets/Compose/EmailWidget/EmailWidget.dart';
 import 'package:mobile/Widgets/Compose/RecipientWidget/RecipientController.dart';
 
 class RecipientWidget extends StatefulWidget {
-  final String firstName, lastName, emailAddress;
+  final RecipientModel recipient;
 
-  RecipientWidget({this.firstName, this.lastName, this.emailAddress});
+  RecipientWidget({this.recipient});
 
   @override
   _RecipientWidgetState createState() => _RecipientWidgetState();
@@ -25,6 +26,7 @@ class _RecipientWidgetState extends State<RecipientWidget> {
             borderRadius: BorderRadius.all(
               Radius.circular(20.0),
             ),
+            // color: Color(0xFFc5d7db),
             gradient: new LinearGradient(
                 colors: [
                   const Color(0xFF31196d).withOpacity(0.4),
@@ -46,14 +48,14 @@ class _RecipientWidgetState extends State<RecipientWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.firstName + ' ' + widget.lastName,
+                        widget.recipient.firstName + ' ' + widget.recipient.lastName,
                         style: TextStyle(fontSize: 20.0, fontFamily: Stem.regular),
                       ),
                       SizedBox(
                         height: 2.0,
                       ),
                       Text(
-                        widget.emailAddress.toLowerCase(),
+                        widget.recipient.emailAddress.toLowerCase(),
                         style: TextStyle(fontSize: 14.0, fontFamily: Stem.light),
                       ),
                     ],
@@ -70,7 +72,7 @@ class _RecipientWidgetState extends State<RecipientWidget> {
                       context: context,
                       barrierDismissible: true, // user must tap button!
                       builder: (BuildContext context) {
-                        return EmailWidget(firstName: widget.firstName, lastName: widget.lastName, emailAddress: widget.emailAddress.toLowerCase());
+                        return EmailWidget(firstName: widget.recipient.firstName, lastName: widget.recipient.lastName, emailAddress: widget.recipient.emailAddress.toLowerCase(), id: widget.recipient.id);
                       },
                     );
                   },

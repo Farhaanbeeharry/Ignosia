@@ -2017,6 +2017,129 @@ async function getMobileUserData(emailAddress) {
 
     });
 }
+app.use("/API/mobile/getRecipientList", function(req, res, next) {
 
+
+    getRecipientList().then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function getRecipientList() {
+    let sqlQuery = "SELECT ID, FirstName, LastName, EmailAddress FROM User WHERE Status = 'active';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+app.use("/API/mobile/sendEmail", function(req, res, next) {
+
+    var id = req.body.id;
+    var senderID = req.body.senderID;
+    var recipientID = req.body.recipientID;
+    var timeAndDate = req.body.timeAndDate;
+    var subject = req.body.subject;
+    var content = req.body.content;
+    var emailAddress = req.body.emailAddress;
+
+    sendEmailWithSubject(subject, content, emailAddress).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to send new member email!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            addMessage(id, senderID, recipientID, timeAndDate, subject, content).then(result => {
+
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Failed to keep track of sent email!",
+                        data: {},
+                        msg: ""
+                    });
+                } else if (result == 1) {
+                    res.status(200).json({
+                        success: true,
+                        error: "",
+                        data: {},
+                        msg: "Your email has been sent successfully!"
+                    });
+                }
+
+            });
+        }
+    });
+
+
+});
+
+
+app.use("/API/mobile/getEventList", function(req, res, next) {
+
+
+    getEventList().then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function getEventList() {
+    let sqlQuery = "SELECT * FROM Event WHERE Deleted = 'false';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
 
 module.exports = app;

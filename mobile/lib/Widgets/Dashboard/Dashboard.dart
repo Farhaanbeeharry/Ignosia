@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Widgets/Dashboard/DashboardController.dart';
 
-class Dashboard extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  DashboardController dashboardController = new DashboardController();
+class _HomePageState extends State<HomePage> {
+  HomePageController dashboardController = new HomePageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

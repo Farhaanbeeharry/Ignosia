@@ -252,7 +252,7 @@ class _LoginViewState extends State<LoginView> {
                                 if (await loginController.login(loginController.emailController.text, loginController.passwordController.text, context)) {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => Dashboard()),
+                                    MaterialPageRoute(builder: (context) => HomePage()),
                                   );
                                 }
                               }

@@ -35,7 +35,7 @@ class LoginController {
     } else {
       Alert(
         context: context,
-        style: Common.alertStyle,
+        style: Common.errorAlertStyle,
         type: AlertType.error,
         title: "Login failed",
         desc: response.error,

@@ -3,29 +3,29 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Compose/ComposeController.dart';
+import 'package:mobile/Widgets/Events/EventController.dart';
 
-class ComposeView extends StatefulWidget {
+class EventView extends StatefulWidget {
   @override
-  _ComposeViewState createState() => _ComposeViewState();
+  _EventViewState createState() => _EventViewState();
 }
 
-class _ComposeViewState extends State<ComposeView> {
-  ComposeController composeController = new ComposeController();
+class _EventViewState extends State<EventView> {
+  EventController eventController = new EventController();
+
+  callSetState() {
+    setState(() {});
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getRecipientList();
+    getEventList();
   }
 
-  getRecipientList() async {
-    await composeController.loadRecipientList(context, callSetState);
-  }
-
-  callSetState() {
-    setState(() {});
+  getEventList() async {
+    await eventController.loadEventList(context, callSetState);
   }
 
   @override
@@ -43,7 +43,7 @@ class _ComposeViewState extends State<ComposeView> {
               Row(
                 children: [
                   Text(
-                    "Choose recipient",
+                    "Future Events",
                     style: TextStyle(fontSize: 28.0, fontFamily: Stem.bold),
                   ),
                   Spacer(),
@@ -53,17 +53,17 @@ class _ComposeViewState extends State<ComposeView> {
                     child: NeumorphicButton(
                       onPressed: () async {
                         setState(() {
-                          composeController.listLoaded = false;
+                          eventController.listLoaded = false;
                         });
 
-                        await composeController.loadRecipientList(context, callSetState);
+                        await eventController.loadEventList(context, callSetState);
 
                         setState(() {
-                          composeController.listLoaded = true;
+                          eventController.listLoaded = true;
                         });
                       },
                       child: Center(
-                        child: composeController.listLoaded
+                        child: eventController.listLoaded
                             ? Icon(
                                 FontAwesomeIcons.sync,
                                 size: 24.0,
@@ -85,7 +85,7 @@ class _ComposeViewState extends State<ComposeView> {
                 height: MediaQuery.of(context).size.height - 185.0,
                 child: SingleChildScrollView(
                     child: Column(
-                  children: composeController.recipientWidgetList,
+                  children: eventController.eventWidgetList,
                 )),
               )
             ],
