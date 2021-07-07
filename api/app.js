@@ -2126,20 +2126,6 @@ app.use("/API/mobile/getEventList", function(req, res, next) {
 
 });
 
-async function getEventList() {
-    let sqlQuery = "SELECT * FROM Event WHERE Deleted = 'false';";
 
-    return new Promise((resolve, reject) => {
-
-        pool.query(sqlQuery, (err, result) => {
-            if (err) {
-                resolve(-1);
-            } else {
-                resolve(result);
-            }
-        });
-
-    });
-}
 
 module.exports = app;

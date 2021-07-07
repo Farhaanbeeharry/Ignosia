@@ -6,6 +6,10 @@ import 'package:web/Widgets/Cases/CaseWidget/DetailedCaseWidget/DetailedCaseWidg
 class CaseWidgetController {
   openDetails(CaseModel data, BuildContext context, Function refreshCaseList, Function callSetState) {
     String displayDate = Common.convertDate(data.dateReceived);
+    if (data.firstName == null || data.lastName == null) {
+      data.firstName = "Account";
+      data.lastName = "Deleted!";
+    }
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!

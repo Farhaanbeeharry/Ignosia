@@ -10,6 +10,11 @@ class EventWidgetController {
 
     String displayDate = data.date[0] + data.date[1] + " " + Common.months[monthIndex] + " " + data.date[6] + data.date[7] + data.date[8] + data.date[9];
 
+    if (data.firstName == null || data.lastName == null) {
+      data.firstName = "Account";
+      data.lastName = "Deleted!";
+    }
+
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
