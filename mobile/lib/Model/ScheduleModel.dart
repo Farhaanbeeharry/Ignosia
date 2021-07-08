@@ -3,6 +3,7 @@ class ScheduleModel {
   String createdByUserID;
   String assignedUserID;
   String caseID;
+  String scheduleName;
   String location;
   String latitude;
   String longitude;
@@ -14,18 +15,16 @@ class ScheduleModel {
   String status;
   String deleted;
   String carriedOut;
-  String createdByFirstName;
-  String createdByLastName;
-  String assignedToFirstName;
-  String assignedToLastName;
+  String validated;
 
-  ScheduleModel({this.iD, this.createdByUserID, this.assignedUserID, this.caseID, this.location, this.latitude, this.longitude, this.date, this.time, this.name, this.phoneNumber, this.notes, this.status, this.deleted, this.carriedOut, this.createdByFirstName, this.createdByLastName, this.assignedToFirstName, this.assignedToLastName});
+  ScheduleModel({this.iD, this.createdByUserID, this.assignedUserID, this.caseID, this.scheduleName, this.location, this.latitude, this.longitude, this.date, this.time, this.name, this.phoneNumber, this.notes, this.status, this.deleted, this.carriedOut, this.validated});
 
   ScheduleModel fromJson(Map<String, dynamic> json) {
     this.iD = json['ID'];
     this.createdByUserID = json['CreatedByUserID'];
     this.assignedUserID = json['AssignedUserID'];
     this.caseID = json['CaseID'];
+    this.scheduleName = json['ScheduleName'];
     this.location = json['Location'];
     this.latitude = json['Latitude'];
     this.longitude = json['Longitude'];
@@ -37,10 +36,7 @@ class ScheduleModel {
     this.status = json['Status'];
     this.deleted = json['Deleted'];
     this.carriedOut = json['CarriedOut'];
-    this.createdByFirstName = json['CreatedByFirstName'];
-    this.createdByLastName = json['CreatedByLastName'];
-    this.assignedToFirstName = json['AssignedToFirstName'];
-    this.assignedToLastName = json['AssignedToLastName'];
+    this.validated = json['Validated'];
     return this;
   }
 
@@ -50,6 +46,7 @@ class ScheduleModel {
     data['CreatedByUserID'] = this.createdByUserID;
     data['AssignedUserID'] = this.assignedUserID;
     data['CaseID'] = this.caseID;
+    data['ScheduleName'] = this.scheduleName;
     data['Location'] = this.location;
     data['Latitude'] = this.latitude;
     data['Longitude'] = this.longitude;
@@ -61,10 +58,7 @@ class ScheduleModel {
     data['Status'] = this.status;
     data['Deleted'] = this.deleted;
     data['CarriedOut'] = this.carriedOut;
-    data['CreatedByFirstName'] = this.createdByFirstName;
-    data['CreatedByLastName'] = this.createdByLastName;
-    data['AssignedToFirstName'] = this.assignedToFirstName;
-    data['AssignedToLastName'] = this.assignedToLastName;
+    data['Validated'] = this.validated;
     return data;
   }
 }

@@ -5,6 +5,8 @@ class ApiUrl {
   static const String getRecipientList = 'getRecipientList';
   static const String sendEmail = 'sendEmail';
   static const String getEventList = 'getEventList';
+  static const String getScheduleForUser = 'getScheduleForUser';
+  static const String setScheduleDone = 'setScheduleDone';
 
   static String getURL(String url) {
     return baseURL + url.toString();

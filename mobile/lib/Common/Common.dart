@@ -8,6 +8,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 class Common {
   static UserModel loggedInUserData;
 
+  static String nextScheduleDate = "";
+
   static TextStyle labelTextStyle = new TextStyle(
     fontSize: 16.0,
     color: Colors.white,
@@ -38,6 +40,13 @@ class Common {
 
   static List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  static String getMonth(String month) {
+    int monthInt = int.parse(month);
+    String selectedMonth = months[monthInt - 1];
+    String returnMonth = selectedMonth[0] + selectedMonth[1] + selectedMonth[2];
+    return returnMonth;
+  }
+
   static String getDOB(String dob) {
     String day = dob[0] + dob[1];
     String month = dob[3] + dob[4];
@@ -48,6 +57,31 @@ class Common {
     String dateOfBirth = day + " " + monthWord + " " + year;
 
     return dateOfBirth;
+  }
+
+  static setNextVisit(String nextVisit) {
+    nextScheduleDate = convertNormalDate(nextVisit);
+  }
+
+  static bool checkLateness(String dateTime) {
+    String yearString = dateTime[6] + dateTime[7] + dateTime[8] + dateTime[9];
+    String monthString = dateTime[3] + dateTime[4];
+    String dayString = dateTime[0] + dateTime[1];
+    String hourString = dateTime[10] + dateTime[11];
+    String minuteString = dateTime[13] + dateTime[14];
+    DateTime scheduledDateTime = new DateTime(
+      int.parse(yearString),
+      int.parse(monthString),
+      int.parse(dayString),
+      int.parse(hourString),
+      int.parse(minuteString),
+    );
+    int difference = DateTime.now().difference(scheduledDateTime).inSeconds;
+
+    if (difference >= 0) {
+      return true;
+    } else
+      return false;
   }
 
   static String getAge(String dob) {

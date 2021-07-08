@@ -2127,5 +2127,89 @@ app.use("/API/mobile/getEventList", function(req, res, next) {
 });
 
 
+app.use("/API/mobile/getScheduleForUser", function(req, res, next) {
+
+    var userID = req.body.userID;
+
+    getScheduleForUser(userID).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function getScheduleForUser(userID) {
+    let sqlQuery = "SELECT * FROM Schedule WHERE AssignedUserID = '" + userID + "' AND Deleted = 'false' AND CarriedOut = 'false';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+app.use("/API/mobile/setScheduleDone", function(req, res, next) {
+
+    var scheduleID = req.body.scheduleID;
+
+    setScheduleDone(scheduleID).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to set schedule as completed!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function setScheduleDone(scheduleID) {
+    let sqlQuery = "UPDATE Schedule SET CarriedOut = 'true' WHERE ID = '" + scheduleID + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+
+
 
 module.exports = app;
