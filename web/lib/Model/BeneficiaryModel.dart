@@ -32,11 +32,12 @@ class BeneficiaryModel {
   String numberOfChildren;
   String notes;
   String status;
+  String deleted;
   String validated;
   String rejected;
   String emailAddress;
 
-  BeneficiaryModel({this.iD, this.scheduleID, this.firstName, this.lastName, this.age, this.gender, this.nationalID, this.dateOfBirth, this.location, this.latitude, this.longitude, this.responsiblePartyName, this.responsiblePartyRelationship, this.qualificationYear, this.school, this.university, this.skill, this.workExperience, this.workingCapabilities, this.currentWorkplace, this.currentWorkplaceRole, this.maritalStatus, this.policeRecord, this.receivesPension, this.socialAid, this.homePhone, this.mobilePhone, this.workFromDate, this.workToDate, this.salary, this.numberOfChildren, this.notes, this.status, this.validated, this.rejected, this.emailAddress});
+  BeneficiaryModel({this.iD, this.scheduleID, this.firstName, this.lastName, this.age, this.gender, this.nationalID, this.dateOfBirth, this.location, this.latitude, this.longitude, this.responsiblePartyName, this.responsiblePartyRelationship, this.qualificationYear, this.school, this.university, this.skill, this.workExperience, this.workingCapabilities, this.currentWorkplace, this.currentWorkplaceRole, this.maritalStatus, this.policeRecord, this.receivesPension, this.socialAid, this.homePhone, this.mobilePhone, this.workFromDate, this.workToDate, this.salary, this.numberOfChildren, this.notes, this.status, this.deleted, this.validated, this.rejected, this.emailAddress});
 
   BeneficiaryModel fromJson(Map<String, dynamic> json) {
     this.iD = json['ID'];
@@ -72,6 +73,7 @@ class BeneficiaryModel {
     this.numberOfChildren = json['NumberOfChildren'];
     this.notes = json['Notes'];
     this.status = json['status'];
+    this.deleted = json['Deleted'];
     this.validated = json['Validated'];
     this.rejected = json['Rejected'];
     this.emailAddress = json['EmailAddress'];
@@ -113,6 +115,7 @@ class BeneficiaryModel {
     data['NumberOfChildren'] = this.numberOfChildren;
     data['Notes'] = this.notes;
     data['status'] = this.status;
+    data['Deleted'] = this.deleted;
     data['Validated'] = this.validated;
     data['Rejected'] = this.rejected;
     data['EmailAddress'] = this.emailAddress;

@@ -21,52 +21,55 @@ class _RecipientWidgetState extends State<RecipientWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 10.0,
+        ),
         Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: 110.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(20.0),
             ),
-            // color: Color(0xFFc5d7db),
             gradient: new LinearGradient(
                 colors: [
-                  const Color(0xFF31196d).withOpacity(0.4),
-                  const Color(0xFF2ebec6).withOpacity(0.4),
+                  const Color(0xFF01877b),
+                  const Color(0xFF00b8a7),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 stops: [0.0, 1.0],
                 tileMode: TileMode.clamp),
+            // color: Color(0xFFc5d7db),
           ),
-          child: Row(
-            children: [
-              Container(
-                height: 90.0,
-                width: MediaQuery.of(context).size.width - 150,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 25.0),
+            child: Row(
+              children: [
+                Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.recipient.firstName + ' ' + widget.recipient.lastName,
-                        style: TextStyle(fontSize: 20.0, fontFamily: Stem.regular),
+                        widget.recipient.firstName + " " + widget.recipient.lastName,
+                        style: TextStyle(fontFamily: Stem.medium, fontSize: 22.0, color: Colors.white),
                       ),
                       SizedBox(
-                        height: 2.0,
+                        height: 5.0,
                       ),
-                      Text(
-                        widget.recipient.emailAddress.toLowerCase(),
-                        style: TextStyle(fontSize: 14.0, fontFamily: Stem.light),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 180,
+                        child: Text(
+                          widget.recipient.emailAddress,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontFamily: Stem.regular, fontSize: 15.0, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                width: 90.0,
-                height: 90.0,
-                alignment: Alignment.center,
-                child: InkWell(
+                Spacer(),
+                InkWell(
                   onTap: () {
                     return showDialog<void>(
                       context: context,
@@ -77,27 +80,23 @@ class _RecipientWidgetState extends State<RecipientWidget> {
                     );
                   },
                   child: Container(
-                    width: 55.0,
-                    height: 55.0,
+                    width: 50.0,
+                    height: 50.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20.0),
+                        Radius.circular(15.0),
                       ),
-                      color: Color(0xFF31196d).withOpacity(0.5),
+                      color: Colors.white,
                     ),
                     child: Icon(
                       FontAwesomeIcons.solidPaperPlane,
-                      size: 24.0,
-                      color: Colors.white,
+                      color: Color(0xff01877b),
                     ),
                   ),
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 10.0,
         ),
       ],
     );

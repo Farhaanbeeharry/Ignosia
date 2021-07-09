@@ -6,6 +6,7 @@ import 'package:mobile/Common/Stem.dart';
 import 'package:mobile/Model/ScheduleModel.dart';
 import 'package:mobile/Widgets/Schedule/FamilyMember/FamilyMemberView.dart';
 import 'package:mobile/Widgets/Schedule/ScheduleWidget/ScheduleWidgetController.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ScheduleWidget extends StatefulWidget {
   final ScheduleModel schedule;
@@ -100,7 +101,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                             child: Container(
                               alignment: Alignment.center,
                               width: 75.0,
-                              height: 25.0,
+                              height: 35.0,
                               color: Colors.blue,
                               child: Text(
                                 'Open',
@@ -111,18 +112,44 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                           Spacer(),
                           InkWell(
                             onTap: () async {
-                              setState(() {
-                                scheduleWidgetController.doneBtnWidget = SpinKitWave(
-                                  color: Colors.white,
-                                  size: 16.0,
-                                );
-                              });
-                              await scheduleWidgetController.setScheduleDone(widget.schedule.iD, callSetState, context, widget.loadData);
+                              Alert(
+                                context: context,
+                                type: AlertType.warning,
+                                title: "Mark as done",
+                                desc: "Are you sure you want to mark schedule with name ${widget.schedule.name} as done?",
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: Colors.red,
+                                  ),
+                                  DialogButton(
+                                    child: Text(
+                                      "Yes",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        scheduleWidgetController.doneBtnWidget = SpinKitWave(
+                                          color: Colors.white,
+                                          size: 16.0,
+                                        );
+                                      });
+                                      await scheduleWidgetController.setScheduleDone(widget.schedule.iD, callSetState, context, widget.loadData);
+                                      Navigator.pop(context);
+                                    },
+                                    color: Colors.green,
+                                  )
+                                ],
+                              ).show();
                             },
                             child: Container(
                               alignment: Alignment.center,
                               width: 75.0,
-                              height: 25.0,
+                              height: 35.0,
                               color: Colors.green,
                               child: scheduleWidgetController.doneBtnWidget,
                             ),
@@ -149,8 +176,8 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                   ),
                   gradient: new LinearGradient(
                       colors: [
-                        const Color(0xFF4537f2),
-                        const Color(0xFF8442fe),
+                        const Color(0xFF00e6d1),
+                        const Color(0xFF01877b),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,

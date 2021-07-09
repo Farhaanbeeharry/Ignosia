@@ -1159,7 +1159,7 @@ async function deleteEvent(id) {
 }
 
 async function deleteBeneficiary(id) {
-    let sqlQuery = "UPDATE Beneficiary SET Validated = 'false', Rejected = 'true' WHERE ID = '" + id + "';";
+    let sqlQuery = "UPDATE Beneficiary SET Deleted = 'true' WHERE ID = '" + id + "';";
 
     return new Promise((resolve, reject) => {
 
@@ -2209,6 +2209,114 @@ async function setScheduleDone(scheduleID) {
     });
 }
 
+
+app.use("/API/mobile/getFamilyMembers", function(req, res, next) {
+
+    var scheduleID = req.body.scheduleID;
+
+    getFamilyMembers(scheduleID).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to get family members!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function getFamilyMembers(scheduleID) {
+    let sqlQuery = "SELECT * FROM Beneficiary WHERE ScheduleID = '" + scheduleID + "' AND Deleted = 'false';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+app.use("/API/mobile/addFamilyMember", function(req, res, next) {
+
+    var scheduleID = req.body.scheduleID;
+    var beneficiaryID = req.body.beneficiaryID;
+
+    addFamilyMember(beneficiaryID, scheduleID).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to get family members!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+
+});
+
+async function addFamilyMember(beneficiaryID, scheduleID) {
+    let sqlQuery = "INSERT INTO Beneficiary VALUES('" + beneficiaryID + "', '" + scheduleID + "', 'New', 'family member', '00', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'false', 'false', 'false');";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+app.use("/API/mobile/deleteBeneficiary", function(req, res, next) {
+
+
+    var id = req.body.beneficiaryID;
+    deleteBeneficiary(id).then(result => {
+
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "An error occured while trying to delete beneficiary with ID '" + id + "'",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+            });
+        }
+    });
+
+});
 
 
 

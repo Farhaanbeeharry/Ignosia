@@ -93,8 +93,8 @@ class _ScheduleViewState extends State<ScheduleView> {
               decoration: BoxDecoration(
                 gradient: new LinearGradient(
                     colors: [
-                      const Color(0xFF84a1d1),
-                      const Color(0xFF2ad0d9),
+                      const Color(0xFF09b8a8),
+                      const Color(0xFF168a7f),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,

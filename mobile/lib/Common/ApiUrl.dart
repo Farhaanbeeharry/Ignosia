@@ -7,6 +7,9 @@ class ApiUrl {
   static const String getEventList = 'getEventList';
   static const String getScheduleForUser = 'getScheduleForUser';
   static const String setScheduleDone = 'setScheduleDone';
+  static const String getFamilyMembers = 'getFamilyMembers';
+  static const String addFamilyMember = 'addFamilyMember';
+  static const String deleteBeneficiary = 'deleteBeneficiary';
 
   static String getURL(String url) {
     return baseURL + url.toString();

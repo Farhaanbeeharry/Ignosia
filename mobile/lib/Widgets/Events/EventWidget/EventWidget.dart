@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Common/Common.dart';
@@ -31,8 +32,8 @@ class _EventWidgetState extends State<EventWidget> {
             ),
             gradient: new LinearGradient(
                 colors: [
-                  const Color(0xFF31196d).withOpacity(0.4),
-                  const Color(0xFF2ebec6).withOpacity(0.4),
+                  const Color(0xFF01877b),
+                  const Color(0xFF00b8a7),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -50,14 +51,14 @@ class _EventWidgetState extends State<EventWidget> {
                     children: [
                       Text(
                         widget.event.eventName,
-                        style: TextStyle(fontFamily: Stem.medium, fontSize: 22.0),
+                        style: TextStyle(fontFamily: Stem.medium, fontSize: 22.0, color: Colors.white),
                       ),
                       SizedBox(
                         height: 5.0,
                       ),
                       Text(
                         Common.convertNormalDate(widget.event.date) + " at " + widget.event.time,
-                        style: TextStyle(fontFamily: Stem.regular, fontSize: 18.0),
+                        style: TextStyle(fontFamily: Stem.regular, fontSize: 18.0, color: Colors.white),
                       ),
                     ],
                   ),
@@ -80,11 +81,11 @@ class _EventWidgetState extends State<EventWidget> {
                       borderRadius: BorderRadius.all(
                         Radius.circular(15.0),
                       ),
-                      color: Color(0xFF31196d).withOpacity(0.5),
+                      color: Colors.white,
                     ),
                     child: Icon(
                       FontAwesomeIcons.solidEye,
-                      color: Colors.white,
+                      color: Color(0xff01877b),
                     ),
                   ),
                 )

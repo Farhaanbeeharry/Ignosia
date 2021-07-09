@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/BeneficiaryModel.dart';
 import 'package:mobile/Model/UserModel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -9,6 +10,8 @@ class Common {
   static UserModel loggedInUserData;
 
   static String nextScheduleDate = "";
+
+  static List<BeneficiaryModel> familyMembers = new List<BeneficiaryModel>();
 
   static TextStyle labelTextStyle = new TextStyle(
     fontSize: 16.0,

@@ -23,7 +23,7 @@ class BeneficiaryController {
 
     for (var datum in response.data) {
       BeneficiaryModel beneficiaryData = BeneficiaryModel().fromJson(datum);
-      if (beneficiaryData.validated == 'true') emptyListCheck = false;
+      if (beneficiaryData.validated == 'true' && beneficiaryData.deleted == 'false') emptyListCheck = false;
     }
 
     if (response.success) {
@@ -47,11 +47,11 @@ class BeneficiaryController {
 
         for (int i = 0; i < response.data.length; i++) {
           BeneficiaryModel beneficiaryData = BeneficiaryModel().fromJson(response.data[i]);
-          if (beneficiaryData.validated == 'true') Common.beneficiaryList.add(beneficiaryData);
+          if (beneficiaryData.validated == 'true' && beneficiaryData.deleted == 'false') Common.beneficiaryList.add(beneficiaryData);
         }
 
         for (var beneficiaryData in Common.beneficiaryList) {
-          if (beneficiaryData.validated == "true") {
+          if (beneficiaryData.validated == "true" && beneficiaryData.deleted == 'false') {
             Common.beneficiaryWidgetList.add(BeneficiarySummaryWidget(data: beneficiaryData, callSetState: callSetState, secondaryContext: context, loadData: loadData));
           }
         }

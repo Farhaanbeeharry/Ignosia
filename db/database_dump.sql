@@ -121,7 +121,7 @@ CREATE TABLE BENEFICIARY (
     WorkFromDate VARCHAR(12),
     WorkToDate VARCHAR(12),
     Salary VARCHAR(10),
-    NumberOfChildren VARCHAR(2) NOT NULL,
+    NumberOfChildren VARCHAR(5) NOT NULL,
     Notes TEXT,
     status VARCHAR(12) NOT NULL,
     Validated VARCHAR(10) NOT NULL,
