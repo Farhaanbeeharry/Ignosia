@@ -88,9 +88,12 @@ class _RecipientWidgetState extends State<RecipientWidget> {
                       ),
                       color: Colors.white,
                     ),
-                    child: Icon(
-                      FontAwesomeIcons.solidPaperPlane,
-                      color: Color(0xff01877b),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: Icon(
+                        FontAwesomeIcons.solidPaperPlane,
+                        color: Color(0xff01877b),
+                      ),
                     ),
                   ),
                 )
