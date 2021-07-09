@@ -19,6 +19,37 @@ class BeneficiaryView extends StatefulWidget {
 
 class _BeneficiaryViewState extends State<BeneficiaryView> {
   BeneficiaryController beneficiaryController = new BeneficiaryController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initialise();
+  }
+
+  initialise() {
+    setState(() {
+      if (widget.beneficiary.gender == "Male") {
+        beneficiaryController.maleChecked = true;
+        beneficiaryController.femaleChecked = false;
+        beneficiaryController.otherGenderChecked = false;
+      } else if (widget.beneficiary.gender == "Female") {
+        beneficiaryController.maleChecked = false;
+        beneficiaryController.femaleChecked = true;
+        beneficiaryController.otherGenderChecked = false;
+      } else if (widget.beneficiary.gender == "Unspecified Gender") {
+        beneficiaryController.maleChecked = false;
+        beneficiaryController.femaleChecked = false;
+        beneficiaryController.otherGenderChecked = true;
+      }
+      if (widget.beneficiary.dateOfBirth == "null") {
+        beneficiaryController.selectedDate = 'Date of birth';
+      } else {
+        beneficiaryController.selectedDate = widget.beneficiary.dateOfBirth;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -138,6 +169,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                                 color: Colors.black,
                                                 fontFamily: Stem.regular,
                                               ),
+                                              initialValue: widget.beneficiary.firstName == "New" ? "" : widget.beneficiary.firstName,
                                               decoration: new InputDecoration(
                                                 border: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
@@ -170,6 +202,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                                 color: Colors.black,
                                                 fontFamily: Stem.regular,
                                               ),
+                                              initialValue: widget.beneficiary.lastName == "family member" ? "" : widget.beneficiary.lastName,
                                               decoration: new InputDecoration(
                                                 border: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
@@ -191,91 +224,127 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Container(
-                                                width: 80.0,
-                                                height: 100.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
+                                              InkWell(
+                                                onTap: () {
+                                                  if (!beneficiaryController.maleChecked) {
+                                                    setState(() {
+                                                      beneficiaryController.maleChecked = true;
+                                                      beneficiaryController.femaleChecked = false;
+                                                      beneficiaryController.otherGenderChecked = false;
+                                                      beneficiaryController.selectedGender = "Male";
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: 80.0,
+                                                  height: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: beneficiaryController.maleChecked ? beneficiaryController.selectedGenderBGColor : beneficiaryController.unselectedGenderBGColor,
                                                   ),
-                                                  color: beneficiaryController.maleBGColor,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      FontAwesomeIcons.mars,
-                                                      color: beneficiaryController.maleTextColor,
-                                                      size: 42.0,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Text(
-                                                      'Male',
-                                                      style: TextStyle(color: beneficiaryController.maleTextColor, fontSize: 18.0, fontFamily: Stem.medium),
-                                                    )
-                                                  ],
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons.mars,
+                                                        color: beneficiaryController.maleChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor,
+                                                        size: 42.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        'Male',
+                                                        style: TextStyle(color: beneficiaryController.maleChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor, fontSize: 18.0, fontFamily: Stem.medium),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: 25.0,
                                               ),
-                                              Container(
-                                                width: 80.0,
-                                                height: 100.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
+                                              InkWell(
+                                                onTap: () {
+                                                  if (!beneficiaryController.femaleChecked) {
+                                                    setState(() {
+                                                      beneficiaryController.maleChecked = false;
+                                                      beneficiaryController.femaleChecked = true;
+                                                      beneficiaryController.otherGenderChecked = false;
+                                                      beneficiaryController.selectedGender = "Female";
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: 80.0,
+                                                  height: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: beneficiaryController.femaleChecked ? beneficiaryController.selectedGenderBGColor : beneficiaryController.unselectedGenderBGColor,
                                                   ),
-                                                  color: beneficiaryController.femaleBGColor,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      FontAwesomeIcons.venus,
-                                                      color: beneficiaryController.femaleTextColor,
-                                                      size: 42.0,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Text(
-                                                      'Female',
-                                                      style: TextStyle(color: beneficiaryController.femaleTextColor, fontSize: 18.0, fontFamily: Stem.medium),
-                                                    )
-                                                  ],
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons.venus,
+                                                        color: beneficiaryController.femaleChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor,
+                                                        size: 42.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        'Female',
+                                                        style: TextStyle(color: beneficiaryController.femaleChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor, fontSize: 18.0, fontFamily: Stem.medium),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: 25.0,
                                               ),
-                                              Container(
-                                                width: 80.0,
-                                                height: 100.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
+                                              InkWell(
+                                                onTap: () {
+                                                  if (!beneficiaryController.otherGenderChecked) {
+                                                    setState(() {
+                                                      beneficiaryController.maleChecked = false;
+                                                      beneficiaryController.femaleChecked = false;
+                                                      beneficiaryController.otherGenderChecked = true;
+                                                      beneficiaryController.selectedGender = "Unspecified Gender";
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: 80.0,
+                                                  height: 100.0,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: beneficiaryController.otherGenderChecked ? beneficiaryController.selectedGenderBGColor : beneficiaryController.unselectedGenderBGColor,
                                                   ),
-                                                  color: beneficiaryController.otherGenderBGColor,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      FontAwesomeIcons.transgenderAlt,
-                                                      color: beneficiaryController.otherGenderTextColor,
-                                                      size: 42.0,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Text(
-                                                      'Other',
-                                                      style: TextStyle(color: beneficiaryController.otherGenderTextColor, fontSize: 18.0, fontFamily: Stem.medium),
-                                                    )
-                                                  ],
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Icon(
+                                                        FontAwesomeIcons.transgenderAlt,
+                                                        color: beneficiaryController.otherGenderChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor,
+                                                        size: 42.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5.0,
+                                                      ),
+                                                      Text(
+                                                        'Other',
+                                                        style: TextStyle(color: beneficiaryController.otherGenderChecked ? beneficiaryController.selectedGenderTextColor : beneficiaryController.unselectedGenderTextColor, fontSize: 18.0, fontFamily: Stem.medium),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -297,6 +366,7 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                                 color: Colors.black,
                                                 fontFamily: Stem.regular,
                                               ),
+                                              initialValue: widget.beneficiary.nationalID == "null" ? "" : widget.beneficiary.nationalID,
                                               decoration: new InputDecoration(
                                                 border: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
@@ -315,9 +385,82 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                                           SizedBox(
                                             height: 10.0,
                                           ),
-                                          //date picker
-                                          SizedBox(
-                                            height: 10.0,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: (MediaQuery.of(context).size.width * 0.75) - 60,
+                                                height: 50.0,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0),
+                                                  ),
+                                                  color: Color(0xffb0ffee),
+                                                ),
+                                                child: TextFormField(
+                                                  enabled: false,
+                                                  validator: (date) {
+                                                    if (beneficiaryController.selectedDate == "Date of birth") {
+                                                      return "Select your date of birth!";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  style: Common.labelTextStyle,
+                                                  decoration: InputDecoration(
+                                                    errorStyle: TextStyle(
+                                                      color: Theme.of(context).errorColor, // or any other color
+                                                    ),
+                                                    contentPadding: EdgeInsets.only(left: 20, top: 50.0),
+                                                    labelText: beneficiaryController.selectedDate,
+                                                    labelStyle: TextStyle(color: Colors.black),
+                                                    border: new OutlineInputBorder(
+                                                      borderRadius: const BorderRadius.only(
+                                                        topLeft: Radius.circular(15.0),
+                                                        bottomLeft: Radius.circular(15.0),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 10.0),
+                                              InkWell(
+                                                onTap: () async {
+                                                  FocusScope.of(context).requestFocus(new FocusNode());
+
+                                                  final DateTime picked = await showDatePicker(
+                                                    context: context,
+                                                    initialDate: beneficiaryController.dateToday, // Refer step 1
+                                                    firstDate: DateTime(1920),
+                                                    lastDate: DateTime.now(),
+                                                  );
+                                                  String dateRAW;
+                                                  if (picked != null && picked.toString() != beneficiaryController.selectedDate) {
+                                                    dateRAW = picked.toString();
+                                                    String displayDate = dateRAW[8] + dateRAW[9] + "/" + dateRAW[5] + dateRAW[6] + "/" + dateRAW[0] + dateRAW[1] + dateRAW[2] + dateRAW[3];
+
+                                                    beneficiaryController.selectedDate = displayDate;
+
+                                                    setState(() {
+                                                      beneficiaryController.selectedDate = displayDate;
+                                                    });
+                                                  }
+                                                },
+                                                child: Container(
+                                                  width: 50,
+                                                  height: 50.0,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    color: Color(0xff35d7b4),
+                                                  ),
+                                                  child: Icon(
+                                                    FontAwesomeIcons.calendarAlt,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(
                                             height: 10.0,
@@ -341,7 +484,8 @@ class _BeneficiaryViewState extends State<BeneficiaryView> {
                     children: [
                       Spacer(),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          await widget.loadData();
                           Navigator.pop(context);
                         },
                         child: Container(

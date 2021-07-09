@@ -23,7 +23,7 @@ class BeneficiaryController {
 
   bool basicDetailsVisibility = false;
   double basicDetailsHeight = 90.0;
-  double basicDetailsMaxHeight = 430.0;
+  double basicDetailsMaxHeight = 470.0;
   Widget basicDetailsBtn = Icon(
     FontAwesomeIcons.chevronDown,
     color: Colors.white,
@@ -43,6 +43,9 @@ class BeneficiaryController {
   Color femaleTextColor = Colors.grey.shade400;
   Color otherGenderBGColor = Color(0xffccfff4);
   Color otherGenderTextColor = Colors.grey.shade400;
+
+  DateTime dateToday = DateTime.now();
+  String selectedDate = 'Date of birth';
 
   Future<bool> deleteBeneficiary(String id, Function loadData) async {
     var body = {"beneficiaryID": id};
