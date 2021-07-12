@@ -56,6 +56,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                         children: [
                           Text(
                             widget.schedule.name,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20.0,
@@ -132,6 +133,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                                       style: TextStyle(color: Colors.white, fontSize: 20),
                                     ),
                                     onPressed: () async {
+                                      print(widget.schedule.iD);
                                       setState(() {
                                         scheduleWidgetController.doneBtnWidget = SpinKitWave(
                                           color: Colors.white,
@@ -140,6 +142,12 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                                       });
                                       await scheduleWidgetController.setScheduleDone(widget.schedule.iD, callSetState, context, widget.loadData);
                                       Navigator.pop(context);
+                                      setState(() {
+                                        scheduleWidgetController.doneBtnWidget = Text(
+                                          'Done',
+                                          style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: Stem.regular),
+                                        );
+                                      });
                                     },
                                     color: Colors.green,
                                   )

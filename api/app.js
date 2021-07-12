@@ -2278,7 +2278,7 @@ app.use("/API/mobile/addFamilyMember", function(req, res, next) {
 });
 
 async function addFamilyMember(beneficiaryID, scheduleID) {
-    let sqlQuery = "INSERT INTO Beneficiary VALUES('" + beneficiaryID + "', '" + scheduleID + "', 'New', 'family member', '00', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'false', 'false', 'false');";
+    let sqlQuery = "INSERT INTO Beneficiary VALUES('" + beneficiaryID + "', '" + scheduleID + "', 'New', 'family member', '00', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'active', 'false', 'false', 'false');";
 
     return new Promise((resolve, reject) => {
 
@@ -2318,6 +2318,81 @@ app.use("/API/mobile/deleteBeneficiary", function(req, res, next) {
 
 });
 
+app.use("/API/mobile/saveBeneficiaryData", function(req, res, next) {
+
+    var id = req.body.id;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var age = req.body.age;
+    var gender = req.body.gender;
+    var nationalID = req.body.nationalID;
+    var dateOfBirth = req.body.dateOfBirth;
+    var emailAddress = req.body.emailAddress;
+    var location = req.body.location;
+    var latitude = req.body.latitude;
+    var longitude = req.body.longitude;
+    var responsiblePartyName = req.body.responsiblePartyName;
+    var responsiblePartyRelationship = req.body.responsiblePartyRelationship;
+    var qualificationYear = req.body.qualificationYear;
+    var school = req.body.school;
+    var university = req.body.university;
+    var skill = req.body.skill;
+    var workExperience = req.body.workExperience;
+    var workingCapabilities = req.body.workingCapabilities;
+    var currentWorkplace = req.body.currentWorkplace;
+    var currentWorkplaceRole = req.body.currentWorkplaceRole;
+    var maritalStatus = req.body.maritalStatus;
+    var policeRecord = req.body.policeRecord;
+    var receivesPension = req.body.receivesPension;
+    var socialAid = req.body.socialAid;
+    var homePhone = req.body.homePhone;
+    var mobilePhone = req.body.mobilePhone;
+    var workFromDate = req.body.workFromDate;
+    var workToDate = req.body.workToDate;
+    var salary = req.body.salary;
+    var numberOfChildren = req.body.numberOfChildren;
+    var notes = req.body.notes;
+
+
+
+
+
+    saveBeneficiaryData(id, firstName, lastName, age, gender, nationalID, dateOfBirth, emailAddress, location, latitude, longitude, responsiblePartyName, responsiblePartyRelationship, qualificationYear, school, university, skill, workExperience, workingCapabilities, currentWorkplace, currentWorkplaceRole, maritalStatus, policeRecord, receivesPension, socialAid, homePhone, mobilePhone, workFromDate, workToDate, salary, numberOfChildren, notes).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: firstName == "null" ? "Failed to update new member's data!" : "Failed to update " + firstName + "'s data!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: "Data saved/updated successfully!"
+            });
+        }
+    });
+
+
+});
+
+async function saveBeneficiaryData(id, firstName, lastName, age, gender, nationalID, dateOfBirth, emailAddress, location, latitude, longitude, responsiblePartyName, responsiblePartyRelationship, qualificationYear, school, university, skill, workExperience, workingCapabilities, currentWorkplace, currentWorkplaceRole, maritalStatus, policeRecord, receivesPension, socialAid, homePhone, mobilePhone, workFromDate, workToDate, salary, numberOfChildren, notes) {
+    let sqlQuery = "UPDATE beneficiary SET FirstName = '" + firstName + "', LastName = '" + lastName + "', Age = '" + age + "', Gender = '" + gender + "', NationalID = '" + nationalID + "', DateOfBirth = '" + dateOfBirth + "', EmailAddress = '" + emailAddress + "', Location = '" + location + "', Latitude = '" + latitude + "', Longitude = '" + longitude + "', ResponsiblePartyName = '" + responsiblePartyName + "', ResponsiblePartyRelationship = '" + responsiblePartyRelationship + "', QualificationYear = '" + qualificationYear + "', School = '" + school + "', University = '" + university + "', Skill = '" + skill + "', WorkExperience = '" + workExperience + "', WorkingCapabilities = '" + workingCapabilities + "', CurrentWorkplace = '" + currentWorkplace + "', CurrentWorkplaceRole = '" + currentWorkplaceRole + "', MaritalStatus = '" + maritalStatus + "', PoliceRecord = '" + policeRecord + "', ReceivesPension = '" + receivesPension + "', SocialAid = '" + socialAid + "', HomePhone = '" + homePhone + "', MobilePhone = '" + mobilePhone + "', WorkFromDate = '" + workFromDate + "', WorkToDate = '" + workToDate + "', Salary = '" + salary + "', NumberOfChildren = '" + numberOfChildren + "', Notes = '" + notes + "' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
 
 
 module.exports = app;

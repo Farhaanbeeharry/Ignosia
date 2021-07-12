@@ -185,7 +185,7 @@ class _BeneficiaryDetailedWidgetState extends State<BeneficiaryDetailedWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          widget.data.salary == "0" ? "None" : "Rs" + widget.data.salary,
+                          widget.data.salary == "null" ? "None" : "Rs" + widget.data.salary,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -627,7 +627,7 @@ class _BeneficiaryDetailedWidgetState extends State<BeneficiaryDetailedWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          widget.data.workFromDate == "false" ? "Has not worked" : widget.data.workFromDate,
+                          widget.data.workFromDate == "null" ? "Has not worked" : widget.data.workFromDate,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -653,7 +653,7 @@ class _BeneficiaryDetailedWidgetState extends State<BeneficiaryDetailedWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          widget.data.workToDate == "false" ? "Has not worked" : widget.data.workToDate,
+                          widget.data.workToDate == "null" ? "Has not worked" : widget.data.workToDate,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -679,7 +679,7 @@ class _BeneficiaryDetailedWidgetState extends State<BeneficiaryDetailedWidget> {
                       ),
                       Expanded(
                         child: Text(
-                          widget.data.numberOfChildren,
+                          widget.data.numberOfChildren == "null" ? "0" : widget.data.numberOfChildren,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
@@ -1006,9 +1006,13 @@ class _EmailWidgetState extends State<EmailWidget> {
                                       widget.emailAddress,
                                       style: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: Stem.regular),
                                     ),
-                                    Text(
-                                      ' (${widget.name})',
-                                      style: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: Stem.regular),
+                                    Container(
+                                      width: 170,
+                                      child: Text(
+                                        ' (${widget.name})',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 20.0, color: Colors.black, fontFamily: Stem.regular),
+                                      ),
                                     ),
                                   ],
                                 ),

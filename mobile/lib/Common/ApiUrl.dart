@@ -10,6 +10,7 @@ class ApiUrl {
   static const String getFamilyMembers = 'getFamilyMembers';
   static const String addFamilyMember = 'addFamilyMember';
   static const String deleteBeneficiary = 'deleteBeneficiary';
+  static const String saveBeneficiaryData = 'saveBeneficiaryData';
 
   static String getURL(String url) {
     return baseURL + url.toString();

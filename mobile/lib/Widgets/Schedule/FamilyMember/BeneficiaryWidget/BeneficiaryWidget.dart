@@ -39,12 +39,31 @@ class _BeneficiaryWidgetState extends State<BeneficiaryWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.beneficiary.firstName + " " + widget.beneficiary.lastName,
-                        style: TextStyle(color: Colors.white, fontSize: 24.0, fontFamily: Stem.medium),
+                      Container(
+                        width: 225,
+                        child: widget.beneficiary.firstName == "New" && widget.beneficiary.lastName == "family member"
+                            ? Text(
+                                widget.beneficiary.firstName + " " + widget.beneficiary.lastName,
+                                style: TextStyle(color: Colors.white, fontSize: 24.0, fontFamily: Stem.medium),
+                              )
+                            : Row(
+                                children: [
+                                  Text(
+                                    widget.beneficiary.lastName + " ",
+                                    style: TextStyle(color: Colors.white, fontSize: 24.0, fontFamily: Stem.medium),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      widget.beneficiary.firstName,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(color: Colors.white, fontSize: 24.0, fontFamily: Stem.medium),
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ),
                       Text(
-                        widget.beneficiary.firstName == 'New' && widget.beneficiary.lastName == 'family member' ? "Open to add details" : Common.getAge(widget.beneficiary.dateOfBirth) + " years old",
+                        widget.beneficiary.dateOfBirth == "null" ? "Open to add details" : Common.getAge(widget.beneficiary.dateOfBirth) + " years old",
                         style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: Stem.light),
                       ),
                     ],
