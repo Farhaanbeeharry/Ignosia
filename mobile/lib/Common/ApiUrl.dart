@@ -13,6 +13,7 @@ class ApiUrl {
   static const String saveBeneficiaryData = 'saveBeneficiaryData';
   static const String forgotPassword = 'forgotPassword';
   static const String signUp = 'signUp';
+  static const String getBeneficiaryData = 'getBeneficiaryData';
 
   static String getURL(String url) {
     return baseURL + url.toString();

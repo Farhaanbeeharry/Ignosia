@@ -1916,7 +1916,6 @@ async function setKeyToNull(emailAddress) {
 
 app.use("/API/mobile/login", function(req, res, next) {
 
-    console.log(req.body)
 
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
@@ -2532,7 +2531,6 @@ async function signUp(id, password, location, dateOfBirth) {
 
         pool.query(sqlQuery, (err, result) => {
             if (err) {
-                console.log(err);
                 resolve(-1);
             } else {
                 resolve(1);
@@ -2542,5 +2540,46 @@ async function signUp(id, password, location, dateOfBirth) {
     });
 }
 
+app.use("/API/mobile/getBeneficiaryData", function(req, res, next) {
+
+
+    getBeneficiaryData().then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to update data!",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+
+            });
+        }
+    });
+
+
+});
+
+async function getBeneficiaryData() {
+    let sqlQuery = "SELECT * FROM beneficiary WHERE Deleted = 'false' AND Validated = 'true';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
 
 module.exports = app;
