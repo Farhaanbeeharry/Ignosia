@@ -80,6 +80,35 @@ class _SignUpViewState extends State<SignUpView> {
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: Row(
                                   children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        FocusScope.of(context).requestFocus(new FocusNode());
+                                        Common.loggedInUserData = null;
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => LoginView()),
+                                        );
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 40.0,
+                                        height: 40.0,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          color: Colors.blueAccent,
+                                        ),
+                                        child: Icon(
+                                          FontAwesomeIcons.arrowLeft,
+                                          color: Colors.white,
+                                          size: 20.0,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.0,
+                                    ),
                                     Text(
                                       'Complete ',
                                       style: TextStyle(
@@ -99,37 +128,10 @@ class _SignUpViewState extends State<SignUpView> {
                                   ],
                                 ),
                               ),
-                              Spacer(),
-                              InkWell(
-                                onTap: () async {
-                                  FocusScope.of(context).requestFocus(new FocusNode());
-                                  Common.loggedInUserData = null;
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => LoginView()),
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 40.0,
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    color: Colors.blueAccent,
-                                  ),
-                                  child: Icon(
-                                    FontAwesomeIcons.signOutAlt,
-                                    color: Colors.white,
-                                    size: 20.0,
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                           SizedBox(
-                            height: 30.0,
+                            height: 20.0,
                           ),
                           Expanded(
                             child: SingleChildScrollView(
