@@ -1916,6 +1916,8 @@ async function setKeyToNull(emailAddress) {
 
 app.use("/API/mobile/login", function(req, res, next) {
 
+    console.log(req.body)
+
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
 
@@ -1987,7 +1989,7 @@ async function checkExistingAccountMobile(emailAddress) {
 }
 
 async function checkValidMobileLogin(emailAddress, password) {
-    let sqlQuery = "SELECT EXISTS(SELECT * FROM User WHERE EmailAddress = '" + emailAddress + "' AND Password = '" + password + "' AND FirstTimeUser = 'false') AS result;";
+    let sqlQuery = "SELECT EXISTS(SELECT * FROM User WHERE EmailAddress = '" + emailAddress + "' AND Password = '" + password + "') AS result;";
 
     return new Promise((resolve, reject) => {
 
@@ -2353,10 +2355,6 @@ app.use("/API/mobile/saveBeneficiaryData", function(req, res, next) {
     var numberOfChildren = req.body.numberOfChildren;
     var notes = req.body.notes;
 
-
-
-
-
     saveBeneficiaryData(id, firstName, lastName, age, gender, nationalID, dateOfBirth, emailAddress, location, latitude, longitude, responsiblePartyName, responsiblePartyRelationship, qualificationYear, school, university, skill, workExperience, workingCapabilities, currentWorkplace, currentWorkplaceRole, maritalStatus, policeRecord, receivesPension, socialAid, homePhone, mobilePhone, workFromDate, workToDate, salary, numberOfChildren, notes).then(result => {
         if (result == -1) {
             res.status(200).json({
@@ -2385,6 +2383,156 @@ async function saveBeneficiaryData(id, firstName, lastName, age, gender, nationa
 
         pool.query(sqlQuery, (err, result) => {
             if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+app.use("/API/mobile/forgotPassword", function(req, res, next) {
+
+    var emailAddress = req.body.emailAddress;
+    var rawPassword = req.body.rawPassword;
+    var password = req.body.password;
+
+    checkExistingAccountMobile(emailAddress).then(result => {
+        if (result == 0) {
+            res.status(200).json({
+                success: false,
+                error: "Account does not exist!",
+                data: {},
+                msg: ""
+            });
+        } else if (result == 1) {
+            resetMobilePassword(emailAddress, rawPassword, password).then(result => {
+
+                if (result == -1) {
+                    res.status(200).json({
+                        success: false,
+                        error: "Failed to email new password!",
+                        data: {},
+                        msg: ""
+                    });
+                } else if (result == 1) {
+                    emailNewPassword(emailAddress, rawPassword).then(result => {
+                        if (result == 0) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Failed to email new password!",
+                                data: {},
+                                msg: ""
+                            });
+                        } else {
+                            res.status(200).json({
+                                success: true,
+                                error: "Failed to email new password!",
+                                data: {},
+                                msg: ""
+                            });
+                        }
+
+
+                    });
+                }
+
+            });
+        }
+    });
+
+
+});
+
+async function resetMobilePassword(emailAddress, rawPassword, password) {
+    let sqlQuery = "UPDATE user SET Password = '" + password + "' WHERE EmailAddress = '" + emailAddress + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function emailNewPassword(emailAddress, password) {
+    var mailOptions = {
+        from: '"Support" <support@ignosia.com>',
+        to: emailAddress,
+        subject: 'Your new password',
+        html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"><link type="text/css" rel="stylesheet" id="dark-mode-custom-link"> <link type="text/css" rel="stylesheet" id="dark-mode-general-link"> <style lang="en" type="text/css" id="dark-mode-custom-style"></style><style lang="en" type="text/css" id="dark-mode-native-style"></style> <head>  <meta charset="UTF-8"> <meta content="width=device-width, initial-scale=1" name="viewport"><meta name="x-apple-disable-message-reformatting"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta content="telephone=no" name="format-detection"><title></title> </head> <body> <div class="es-wrapper-color"> <table class="es-right" cellspacing="0" cellpadding="0" align="right"> <tbody> <tr> <td class="esd-container-frame" width="270" align="left"> </td> </tr> </tbody></table></td></tr></table> </td> </tr></tbody>    </table>   </td> </tr>  </tbody> </table> <table class="es-content" cellspacing="0" cellpadding="0" align="center">  <tbody>  <tr> <td class="esd-stripe" style="background-color: #fafafa;" bgcolor="#fafafa" align="center"> <table class="es-content-body" style="background-color: #ffffff;" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center"> <tbody> <tr><td class="esd-structure es-p40t es-p20r es-p20l" style="background-color: transparent; background-position: left top;" bgcolor="transparent" align="left"><table width="100%" cellspacing="0" cellpadding="0"><tbody> <tr><td class="esd-container-frame" width="560" valign="top" align="center"> <table style="background-position: left top;" width="100%" cellspacing="0" cellpadding="0">  <tbody><tr> <td class="esd-block-image es-p5t es-p5b" align="center" style="font-size:0"> <a target="_blank"><img src="https://tlr.stripocdn.email/content/guids/CABINET_dd354a98a803b60e2f0411e893c82f56/images/23891556799905703.png" alt style="display: block;" width="175"></a> </td>  </tr> <tr><td class="esd-block-text es-p15t es-p15b" align="center"><h1 style="color: #333333; font-size: 20px;"><strong>FORGOT YOUR</strong></h1><h1 style="color: #333333; font-size: 20px;"><strong>&nbsp;PASSWORD?</strong></h1></td> </tr> <tr> <td class="esd-block-text es-p35r es-p40l" align="left"><p style="text-align: center;">Hello ' + emailAddress + '</p>  </td></tr>    <tr><td class="esd-block-text es-p35r es-p40l" align="left"> <p style="text-align: center;">There was a request to change your password!</p> </td> </tr> <tr> <td class="esd-block-button es-p40t es-p40b es-p10r es-p10l" align="center"><span class="es-button-border"><h1>New password: ' + password + '</h1></span></td></tr> <tr><td class="esd-block-text es-p25t es-p40r es-p40l" align="center"><p>If you did not make this request, just ignore this email.<br>Otherwise, please use the reset key above to change your password.</p> </td> </tr> </tbody> </table></td> </tr>  </tbody>  </table></td> </tr><tr><td class="esd-structure es-p20t es-p10r es-p10l" style="background-position: center center;" align="left"> <!--[if mso]><table width="580" cellpadding="0" cellspacing="0"><tr><td width="199" valign="top"><![endif]--> <table class="es-left" cellspacing="0" cellpadding="0" align="left"> <tbody><tr> <td class="esd-container-frame" width="199" align="left">  </td>  </tr>  </tbody>  </table></td><td width="20"></td><td width="361" valign="top"></div>        </body>        </html>',
+    };
+
+    return new Promise((resolve, reject) => {
+
+        transporter.sendMail(mailOptions, function(error, info) {
+
+            if (error) {
+                resolve(0);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+
+}
+
+app.use("/API/mobile/signUp", function(req, res, next) {
+    var emailAddress = req.body.emailAddress;
+    var id = req.body.id;
+    var password = req.body.password;
+    var location = req.body.location;
+    var dateOfBirth = req.body.dateOfBirth;
+
+    signUp(id, password, location, dateOfBirth).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to update data!",
+                data: {},
+                msg: ""
+            });
+        } else {
+            getMobileUserData(emailAddress).then(result => {
+
+                if (result == 0) {
+                    res.status(200).json({
+                        success: false,
+                        error: "",
+                        data: {},
+                        msg: ""
+                    });
+                } else {
+                    res.status(200).json({
+                        success: true,
+                        error: "",
+                        data: result,
+                        msg: ""
+                    });
+                }
+
+            });
+        }
+    });
+
+
+});
+
+async function signUp(id, password, location, dateOfBirth) {
+    let sqlQuery = "UPDATE user SET Password = '" + password + "', Address = '" + location + "', DateOfBirth = '" + dateOfBirth + "', FirstTimeUser = 'false' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                console.log(err);
                 resolve(-1);
             } else {
                 resolve(1);

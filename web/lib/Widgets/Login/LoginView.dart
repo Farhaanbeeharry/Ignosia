@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                             validator: (password) {
                               if (password.isEmpty) {
                                 return "Password cannot be empty!";
-                              } else if (password.length < 8) {
+                              } else if (password.length < 6) {
                                 return "Password too short!";
                               } else if (password.length > 32) {
                                 return "Password too long!";

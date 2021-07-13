@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Common/Common.dart';
 import 'package:mobile/Common/Stem.dart';
 import 'package:mobile/Model/ScheduleModel.dart';
 import 'package:mobile/Widgets/Schedule/FamilyMember/FamilyMemberView.dart';
+import 'package:mobile/Widgets/Schedule/MarkAsDoneView/MarkAsDoneView.dart';
 import 'package:mobile/Widgets/Schedule/ScheduleWidget/ScheduleWidgetController.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ScheduleWidget extends StatefulWidget {
   final ScheduleModel schedule;
@@ -113,46 +112,51 @@ class _ScheduleWidgetState extends State<ScheduleWidget> {
                           Spacer(),
                           InkWell(
                             onTap: () async {
-                              Alert(
-                                context: context,
-                                type: AlertType.warning,
-                                title: "Mark as done",
-                                desc: "Are you sure you want to mark schedule with name ${widget.schedule.name} as done?",
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "No",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: Colors.red,
-                                  ),
-                                  DialogButton(
-                                    child: Text(
-                                      "Yes",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () async {
-                                      print(widget.schedule.iD);
-                                      setState(() {
-                                        scheduleWidgetController.doneBtnWidget = SpinKitWave(
-                                          color: Colors.white,
-                                          size: 16.0,
-                                        );
-                                      });
-                                      await scheduleWidgetController.setScheduleDone(widget.schedule.iD, callSetState, context, widget.loadData);
-                                      Navigator.pop(context);
-                                      setState(() {
-                                        scheduleWidgetController.doneBtnWidget = Text(
-                                          'Done',
-                                          style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: Stem.regular),
-                                        );
-                                      });
-                                    },
-                                    color: Colors.green,
-                                  )
-                                ],
-                              ).show();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => MarkAsDoneView(schedule: widget.schedule, loadData: widget.loadData)),
+                              );
+
+                              // Alert(
+                              //   context: context,
+                              //   type: AlertType.warning,
+                              //   title: "Mark as done",
+                              //   desc: "Are you sure you want to mark schedule with name ${widget.schedule.name} as done?",
+                              //   buttons: [
+                              //     DialogButton(
+                              //       child: Text(
+                              //         "No",
+                              //         style: TextStyle(color: Colors.white, fontSize: 20),
+                              //       ),
+                              //       onPressed: () => Navigator.pop(context),
+                              //       color: Colors.red,
+                              //     ),
+                              //     DialogButton(
+                              //       child: Text(
+                              //         "Yes",
+                              //         style: TextStyle(color: Colors.white, fontSize: 20),
+                              //       ),
+                              //       onPressed: () async {
+                              //         print(widget.schedule.iD);
+                              //         setState(() {
+                              //           scheduleWidgetController.doneBtnWidget = SpinKitWave(
+                              //             color: Colors.white,
+                              //             size: 16.0,
+                              //           );
+                              //         });
+                              //         await scheduleWidgetController.setScheduleDone(widget.schedule.iD, callSetState, context, widget.loadData);
+                              //         Navigator.pop(context);
+                              //         setState(() {
+                              //           scheduleWidgetController.doneBtnWidget = Text(
+                              //             'Done',
+                              //             style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: Stem.regular),
+                              //           );
+                              //         });
+                              //       },
+                              //       color: Colors.green,
+                              //     )
+                              //   ],
+                              // ).show();
                             },
                             child: Container(
                               alignment: Alignment.center,

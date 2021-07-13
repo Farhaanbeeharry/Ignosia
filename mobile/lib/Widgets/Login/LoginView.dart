@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +8,9 @@ import 'package:mobile/Common/Common.dart';
 import 'package:mobile/Common/Stem.dart';
 import 'package:mobile/Common/Validator.dart';
 import 'package:mobile/Widgets/Dashboard/Dashboard.dart';
+import 'package:mobile/Widgets/Login/ForgotPassword/ForgotPassword.dart';
 import 'package:mobile/Widgets/Login/LoginController.dart';
+import 'package:mobile/Widgets/Login/SignUp/SignUpView.dart';
 import 'package:validators/validators.dart';
 
 class LoginView extends StatefulWidget {
@@ -250,10 +253,17 @@ class _LoginViewState extends State<LoginView> {
                                 });
 
                                 if (await loginController.login(loginController.emailController.text, loginController.passwordController.text, context)) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => HomePage()),
-                                  );
+                                  if (Common.loggedInUserData.firstTimeUser) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => SignUpView(data: Common.loggedInUserData)),
+                                    );
+                                  } else {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => HomePage()),
+                                    );
+                                  }
                                 }
                               }
 
@@ -275,6 +285,27 @@ class _LoginViewState extends State<LoginView> {
                                 color: Colors.blueAccent,
                               ),
                               child: loginController.loginBtn,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ForgotPasswordView(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Forgot password?',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: Stem.light),
+                              ),
                             ),
                           ),
                         ],

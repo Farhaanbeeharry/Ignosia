@@ -48,7 +48,7 @@ class MembersController {
     emailAddress = emailAddress.toLowerCase();
     var uuid = Uuid();
     String id = uuid.v1();
-    String rawPassword = Generator.generatePassword(PasswordStrength.weak);
+    String rawPassword = Generator.generatePassword(PasswordStrength.normal);
     String password = Encrypt().encryptPassword(rawPassword);
 
     String webUser = selectedAccountType == "web" || selectedAccountType == "hybrid" ? "true" : "false";
@@ -127,7 +127,6 @@ class MembersController {
 
         Common.memberList.removeAt(indexRef);
         Common.memberList.insert(0, tempUser);
-
 
         for (var member in Common.memberList) {
           Common.memberWidgetList.add(MemberWidget(memberData: member, callSetState: callSetState));
