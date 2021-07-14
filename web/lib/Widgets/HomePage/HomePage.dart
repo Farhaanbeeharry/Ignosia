@@ -821,6 +821,7 @@ class _HomepageState extends State<Homepage> {
                     physics: new NeverScrollableScrollPhysics(),
                     controller: sliderController,
                     children: <Widget>[
+                      Analytics(),
                       Dashboard(moveToFinancePage: moveToFinancePage),
                       CaseView(),
                       ScheduleView(),
@@ -829,7 +830,6 @@ class _HomepageState extends State<Homepage> {
                       EventView(),
                       MembersView(),
                       BeneficiaryView(),
-                      Analytics(),
                       Settings(),
                     ],
                   ),

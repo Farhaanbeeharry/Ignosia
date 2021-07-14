@@ -34,6 +34,8 @@ class ApiUrl {
   static const String getBeneficiary = 'getBeneficiary';
   static const String sendEmailWithSubject = 'sendEmailWithSubject';
   static const String deleteBeneficiary = 'deleteBeneficiary';
+  static const String getBugsReported = 'getBugsReported';
+  static const String solveBug = 'solveBug';
 
   static String getURL(String url) {
     return baseURL + url.toString();

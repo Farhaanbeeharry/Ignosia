@@ -2626,4 +2626,94 @@ async function getBeneficiaryData() {
 }
 
 
+app.use("/API/web/getBugsReported", function(req, res, next) {
+
+
+
+
+    getBugsReported().then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to get bugs reported!",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+
+            });
+        }
+    });
+
+
+});
+
+async function getBugsReported() {
+    let sqlQuery = "SELECT * FROM bug;";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+
+app.use("/API/web/solveBug", function(req, res, next) {
+
+    var id = req.body.id;
+
+
+    solveBug(id).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to solve bug!",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+
+            });
+        }
+    });
+
+
+});
+
+async function solveBug(id) {
+    let sqlQuery = "UPDATE bug SET Solved =  'true' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+
 module.exports = app;

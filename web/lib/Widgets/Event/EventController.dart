@@ -79,7 +79,6 @@ class EventController {
 
     bool emptyListCheck = true;
 
-    print(response.data.toString());
     for (var datum in response.data) {
       EventModel event = EventModel().fromJson(datum);
       if (Common.checkFutureDate(event.date + event.time)) emptyListCheck = false;

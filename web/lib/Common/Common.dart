@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:web/Model/BeneficiaryModel.dart';
+import 'package:web/Model/BugModel.dart';
 import 'package:web/Model/CaseModel.dart';
 import 'package:web/Model/EventModel.dart';
 import 'package:web/Model/ScheduleModel.dart';
@@ -43,6 +44,9 @@ class Common {
 
   static List<Widget> beneficiaryWidgetList = new List<Widget>();
   static List<BeneficiaryModel> beneficiaryList = new List<BeneficiaryModel>();
+
+  static List<BugModel> bugsList = new List<BugModel>();
+  static List<Widget> bugsWidgetList = new List<Widget>();
 
   static String resetEmailAddress = "";
   static String selectedValidatorSchedule = "";
