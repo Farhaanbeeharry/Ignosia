@@ -2680,7 +2680,7 @@ app.use("/API/web/solveBug", function(req, res, next) {
         if (result == -1) {
             res.status(200).json({
                 success: false,
-                error: "Failed to solve bug!",
+                error: "Failed to mark bug as solved!",
                 data: {},
                 msg: ""
             });
