@@ -1,12 +1,15 @@
 import 'package:mobile/Common/API.dart';
 import 'package:mobile/Common/ApiUrl.dart';
 import 'package:mobile/Model/BeneficiaryModel.dart';
+import 'package:mobile/Model/DashboardModel.dart';
 import 'package:mobile/Model/ResponseModel.dart';
 
 class DashController {
   List<Beneficiaries> maleList = new List<Beneficiaries>();
   List<Beneficiaries> femaleList = new List<Beneficiaries>();
   List<Beneficiaries> otherList = new List<Beneficiaries>();
+
+  DashboardModel dashboardData = new DashboardModel();
 
   List<String> genderValues = new List<String>();
 
@@ -98,35 +101,18 @@ class DashController {
     }
   }
 
-  Future<void> loadGenderData(Function callSetState) async {
-    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getBeneficiaryData), {});
+  Future<void> loadDashboardData(Function loadData, Function callSetState) async {
+    dataLoaded = false;
+    callSetState();
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getDashboardData), {});
 
     if (response.success) {
-      List<BeneficiaryModel> beneficiaries = new List<BeneficiaryModel>();
-
-      int male = 0, female = 0, other = 0;
-      for (int i = 0; i < response.data.length; i++) {
-        beneficiaries.add(BeneficiaryModel().fromJson(response.data[i]));
-      }
-
-      for (var beneficiary in beneficiaries) {
-        if (beneficiary.gender == "Male") {
-          male++;
-        } else if (beneficiary.gender == "Female") {
-          female++;
-        } else {
-          other++;
-        }
-      }
-
-      genderValues.clear();
-      genderValues.add(male.toString());
-      genderValues.add(female.toString());
-      genderValues.add(other.toString());
-
+      dashboardData = DashboardModel().fromJson(response.data[0]);
       dataLoaded = true;
-
       callSetState();
+    } else {
+      await Future.delayed(Duration(seconds: 3));
+      await loadData();
     }
   }
 }

@@ -2582,4 +2582,48 @@ async function getBeneficiaryData() {
     });
 }
 
+
+app.use("/API/mobile/getDashboardData", function(req, res, next) {
+
+
+    getBeneficiaryData().then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to retrieve data!",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: result,
+                msg: ""
+
+            });
+        }
+    });
+
+
+});
+
+async function getBeneficiaryData() {
+    let sqlQuery = "SELECT (SELECT COUNT(ID) FROM beneficiary WHERE Gender = 'Male') as male, (SELECT COUNT(ID) FROM beneficiary WHERE Gender = 'Female') as female, (SELECT COUNT(ID) FROM beneficiary WHERE Gender = 'Unspecified Gender') as other, (SELECT COUNT(ID) FROM request WHERE Deleted = 'false') as cases, (SELECT COUNT(ID) FROM event WHERE Deleted = 'false') as events, (SELECT COUNT(ID) FROM user WHERE Status = 'active' OR status = 'admin') as users";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result);
+            }
+        });
+
+    });
+}
+
+
 module.exports = app;

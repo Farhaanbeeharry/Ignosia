@@ -196,8 +196,7 @@ class _LoginViewState extends State<LoginView> {
                           InkWell(
                             onTap: () async {
                               FocusScope.of(context).requestFocus(new FocusNode());
-                              loginController.emailController.text = "admin@ignosia.com";
-                              loginController.passwordController.text = "Password123@";
+
                               if (loginController.emailController.text.isEmpty) {
                                 setState(() {
                                   loginController.hasError = true;

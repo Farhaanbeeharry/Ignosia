@@ -23,7 +23,15 @@ class _DashViewState extends State<DashView> {
     // TODO: implement initState
     super.initState();
     // dashController.loadBeneficiaryData(callSetState);
-    dashController.loadGenderData(callSetState);
+    getData();
+  }
+
+  getData() async {
+    await loadData();
+  }
+
+  loadData() async {
+    await dashController.loadDashboardData(loadData, callSetState);
   }
 
   @override
@@ -67,12 +75,12 @@ class _DashViewState extends State<DashView> {
                               children: [
                                 DashboardWidget(
                                   item: "Male",
-                                  value: dashController.genderValues[0],
+                                  value: dashController.dashboardData.male.toString(),
                                 ),
                                 Spacer(),
                                 DashboardWidget(
                                   item: "Female",
-                                  value: dashController.genderValues[1],
+                                  value: dashController.dashboardData.female.toString(),
                                 ),
                               ],
                             ),
@@ -83,12 +91,12 @@ class _DashViewState extends State<DashView> {
                               children: [
                                 DashboardWidget(
                                   item: "Other",
-                                  value: dashController.genderValues[2],
+                                  value: dashController.dashboardData.other.toString(),
                                 ),
                                 Spacer(),
                                 DashboardWidget(
                                   item: "Cases",
-                                  value: "12",
+                                  value: dashController.dashboardData.cases.toString(),
                                 ),
                               ],
                             ),
@@ -99,12 +107,12 @@ class _DashViewState extends State<DashView> {
                               children: [
                                 DashboardWidget(
                                   item: "Events",
-                                  value: "14",
+                                  value: dashController.dashboardData.events.toString(),
                                 ),
                                 Spacer(),
                                 DashboardWidget(
                                   item: "Users",
-                                  value: "12",
+                                  value: dashController.dashboardData.users.toString(),
                                 ),
                               ],
                             ),
