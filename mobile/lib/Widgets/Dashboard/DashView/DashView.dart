@@ -4,7 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/Common/Stem.dart';
 import 'package:mobile/Widgets/Dashboard/DashView/DashController.dart';
-import 'package:mobile/Widgets/Dashboard/DashView/GenderDashboardWidget/GenderWidget.dart';
+import 'package:mobile/Widgets/Dashboard/DashView/DashWidget/GenderWidget.dart';
 
 class DashView extends StatefulWidget {
   @override

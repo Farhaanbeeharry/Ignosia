@@ -5,10 +5,14 @@ import 'package:web/Common/ApiUrl.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Model/BugModel.dart';
+import 'package:web/Model/DashboardModel.dart';
 import 'package:web/Model/ResponseModel.dart';
 import 'package:web/Widgets/Analytics/BugReportedWidget/BugReportedWidget.dart';
 
 class AnalyticsController {
+  bool dataLoaded = false;
+  DashboardModel dashboardData = new DashboardModel();
+
   Widget refreshBtnIcon = Icon(
     FontAwesomeIcons.syncAlt,
     color: Color(0xFF6c63ff),
@@ -79,6 +83,21 @@ class AnalyticsController {
         ],
       ));
       callSetState();
+    }
+  }
+
+  Future<void> loadDashboardData(Function loadData, Function callSetState) async {
+    dataLoaded = false;
+    callSetState();
+    ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.getAnalyticsData), {});
+
+    if (response.success) {
+      dashboardData = DashboardModel().fromJson(response.data[0]);
+      dataLoaded = true;
+      callSetState();
+    } else {
+      await Future.delayed(Duration(seconds: 3));
+      await loadData();
     }
   }
 }

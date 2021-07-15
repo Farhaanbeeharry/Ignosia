@@ -38,6 +38,7 @@ dependencies:
   page_slider: ^0.0.2
   day_night_time_picker: ^1.0.1
   material_dialogs: any
+  flutter_neumorphic: ^3.1.0
   uuid: any
   intl: ^0.17.0
   dropdown_search: ^0.6.1

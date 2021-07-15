@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:web/Common/Common.dart';
 import 'package:web/Common/Stem.dart';
 import 'package:web/Widgets/Analytics/AnalyticsController.dart';
+import 'package:web/Widgets/Analytics/DashWidget/GenderWidget.dart';
 
 class Analytics extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class _AnalyticsState extends State<Analytics> {
   }
 
   loadData() async {
+    await analyticsController.loadDashboardData(getData, callSetState);
     await analyticsController.getData(getData, callSetState, context);
   }
 
@@ -139,21 +141,57 @@ class _AnalyticsState extends State<Analytics> {
               ),
               Spacer(),
               Container(
-                width: MediaQuery.of(context).size.width * 0.33,
-                height: MediaQuery.of(context).size.height * 0.83,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
+                  width: MediaQuery.of(context).size.width * 0.33,
+                  height: MediaQuery.of(context).size.height * 0.83,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    color: Colors.white,
                   ),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 35.0, horizontal: 40.0),
-                  child: Column(
-                    children: [],
-                  ),
-                ),
-              ),
+                  child: analyticsController.dataLoaded
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 35.0, horizontal: 40.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  DashboardWidget(item: "Male", value: analyticsController.dashboardData.male.toString()),
+                                  Spacer(),
+                                  DashboardWidget(item: "Female", value: analyticsController.dashboardData.female.toString()),
+                                ],
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  DashboardWidget(item: "Other", value: analyticsController.dashboardData.other.toString()),
+                                  Spacer(),
+                                  DashboardWidget(item: "Cases", value: analyticsController.dashboardData.cases.toString()),
+                                ],
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  DashboardWidget(item: "Events", value: analyticsController.dashboardData.events.toString()),
+                                  Spacer(),
+                                  DashboardWidget(item: "Users", value: analyticsController.dashboardData.users.toString()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SpinKitWave(
+                              color: Colors.black,
+                              size: 36.0,
+                            ),
+                            SizedBox(
+                              height: 100.0,
+                            ),
+                          ],
+                        )),
             ],
           ),
         ),

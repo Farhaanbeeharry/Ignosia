@@ -36,6 +36,7 @@ class ApiUrl {
   static const String deleteBeneficiary = 'deleteBeneficiary';
   static const String getBugsReported = 'getBugsReported';
   static const String solveBug = 'solveBug';
+  static const String getAnalyticsData = 'getAnalyticsData';
 
   static String getURL(String url) {
     return baseURL + url.toString();
