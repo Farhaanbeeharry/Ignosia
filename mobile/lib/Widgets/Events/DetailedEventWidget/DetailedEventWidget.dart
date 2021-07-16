@@ -1,7 +1,7 @@
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Model/EventModel.dart';
-import 'package:Ignosia/Widgets/Events/DetailedEventWidget/DetailedWidgetController.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/EventModel.dart';
+import 'package:mobile/Widgets/Events/DetailedEventWidget/DetailedWidgetController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_svg/flutter_svg.dart';

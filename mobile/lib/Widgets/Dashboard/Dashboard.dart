@@ -1,4 +1,4 @@
-import 'package:Ignosia/Widgets/Dashboard/DashboardController.dart';
+import 'package:mobile/Widgets/Dashboard/DashboardController.dart';
 import 'package:flashy_tab_bar/flashy_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

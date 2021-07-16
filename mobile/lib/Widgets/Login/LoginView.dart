@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Common/Validator.dart';
-import 'package:Ignosia/Widgets/Dashboard/Dashboard.dart';
-import 'package:Ignosia/Widgets/Login/ForgotPassword/ForgotPassword.dart';
-import 'package:Ignosia/Widgets/Login/LoginController.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Common/Validator.dart';
+import 'package:mobile/Widgets/Dashboard/Dashboard.dart';
+import 'package:mobile/Widgets/Login/ForgotPassword/ForgotPassword.dart';
+import 'package:mobile/Widgets/Login/LoginController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

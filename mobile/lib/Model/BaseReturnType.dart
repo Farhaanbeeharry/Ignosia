@@ -1,4 +1,4 @@
-import 'package:Ignosia/Model/BaseClass.dart';
+import 'package:mobile/Model/BaseClass.dart';
 
 class BaseReturnType<T> extends ReturnModel {
   dynamic data;

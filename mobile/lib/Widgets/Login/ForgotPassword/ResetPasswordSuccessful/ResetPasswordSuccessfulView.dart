@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Widgets/Login/LoginView.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Widgets/Login/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

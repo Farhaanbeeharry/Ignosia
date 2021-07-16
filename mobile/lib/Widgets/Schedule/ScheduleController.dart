@@ -1,10 +1,10 @@
-import 'package:Ignosia/Common/API.dart';
-import 'package:Ignosia/Common/ApiUrl.dart';
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Model/ResponseModel.dart';
-import 'package:Ignosia/Model/ScheduleModel.dart';
-import 'package:Ignosia/Widgets/Schedule/ScheduleWidget/ScheduleWidget.dart';
+import 'package:mobile/Common/API.dart';
+import 'package:mobile/Common/ApiUrl.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/ResponseModel.dart';
+import 'package:mobile/Model/ScheduleModel.dart';
+import 'package:mobile/Widgets/Schedule/ScheduleWidget/ScheduleWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

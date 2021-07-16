@@ -1,7 +1,7 @@
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Widgets/Login/LoginView.dart';
-import 'package:Ignosia/Widgets/Profile/ProfileController.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Widgets/Login/LoginView.dart';
+import 'package:mobile/Widgets/Profile/ProfileController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

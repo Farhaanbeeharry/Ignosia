@@ -1,6 +1,6 @@
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Widgets/Schedule/ScheduleController.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Widgets/Schedule/ScheduleController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

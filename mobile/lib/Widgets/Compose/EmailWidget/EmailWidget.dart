@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Widgets/Compose/EmailWidget/EmailWidgetController.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Widgets/Compose/EmailWidget/EmailWidgetController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

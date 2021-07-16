@@ -2,7 +2,7 @@
     package="com.farhaan.mobile">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
-        android:label="mobile"
+        android:label="Ignosia"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

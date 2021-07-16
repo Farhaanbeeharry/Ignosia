@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Ignosia/Model/ResponseModel.dart';
+import 'package:mobile/Model/ResponseModel.dart';
 import 'package:http/http.dart' as http;
 
 class API {

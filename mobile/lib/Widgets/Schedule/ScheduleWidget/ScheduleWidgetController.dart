@@ -1,4 +1,4 @@
-import 'package:Ignosia/Common/Stem.dart';
+import 'package:mobile/Common/Stem.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleWidgetController {

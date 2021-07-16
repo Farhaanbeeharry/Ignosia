@@ -1,10 +1,10 @@
-import 'package:Ignosia/Common/API.dart';
-import 'package:Ignosia/Common/ApiUrl.dart';
-import 'package:Ignosia/Common/Common.dart';
-import 'package:Ignosia/Common/Encryptor.dart';
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Model/ResponseModel.dart';
-import 'package:Ignosia/Model/UserModel.dart';
+import 'package:mobile/Common/API.dart';
+import 'package:mobile/Common/ApiUrl.dart';
+import 'package:mobile/Common/Common.dart';
+import 'package:mobile/Common/Encryptor.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/ResponseModel.dart';
+import 'package:mobile/Model/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

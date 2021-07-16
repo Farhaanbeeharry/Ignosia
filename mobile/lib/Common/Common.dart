@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:Ignosia/Common/Stem.dart';
-import 'package:Ignosia/Model/BeneficiaryModel.dart';
-import 'package:Ignosia/Model/UserModel.dart';
+import 'package:mobile/Common/Stem.dart';
+import 'package:mobile/Model/BeneficiaryModel.dart';
+import 'package:mobile/Model/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
