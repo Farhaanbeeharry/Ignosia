@@ -15,6 +15,7 @@ class ApiUrl {
   static const String signUp = 'signUp';
   static const String getDashboardData = 'getDashboardData';
   static const String getBeneficiaryData = 'getBeneficiaryData';
+  static const String logout = 'logout';
 
   static String getURL(String url) {
     return baseURL + url.toString();

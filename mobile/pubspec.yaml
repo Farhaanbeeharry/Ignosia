@@ -44,6 +44,7 @@ dependencies:
   geolocator: any
   xlive_switch: ^1.0.5
   fl_chart: ^0.36.2
+  firebase_core : any
   firebase_messaging: ^10.0.3
 
 

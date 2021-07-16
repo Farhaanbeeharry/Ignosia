@@ -5,7 +5,8 @@ const bodyParser = require("body-parser"); //requiring module 'body-parser' to b
 const app = express(); //defining express
 const nodeMailer = require('nodemailer');
 const { response } = require("express");
-const e = require("express");
+const axios = require("axios");
+
 
 var transporter = nodeMailer.createTransport({
     name: 'www.ignosia.com',
@@ -544,6 +545,8 @@ app.use("/API/web/addSchedule", function(req, res, next) {
     var name = req.body.name;
     var phoneNumber = req.body.phoneNumber;
     var notes = req.body.notes;
+    var notifID = req.body.notifID;
+    var notifDate = req.body.notifDate;
 
     addSchedule(id, createdByUserId, assignedUserId, caseID, scheduleName, location, date, time, name, phoneNumber, notes).then(result => {
 
@@ -556,6 +559,7 @@ app.use("/API/web/addSchedule", function(req, res, next) {
             });
         } else if (result == 1) {
 
+
             setCaseScheduled(caseID).then(result => {
 
                 if (result == 0) {
@@ -566,11 +570,58 @@ app.use("/API/web/addSchedule", function(req, res, next) {
                         msg: ""
                     });
                 } else {
-                    res.status(200).json({
-                        success: true,
-                        error: "",
-                        data: {},
-                        msg: ""
+
+                    getDeviceToken(assignedUserId).then(result => {
+
+                        if (result == -1) {
+                            res.status(200).json({
+                                success: false,
+                                error: "Failed to send notification",
+                                data: {},
+                                msg: ""
+                            });
+                        } else {
+
+                            sendNotification(result, date).then(result => {
+
+                                if (result == -1) {
+                                    res.status(200).json({
+                                        success: false,
+                                        error: "Failed to send notification",
+                                        data: {},
+                                        msg: ""
+                                    });
+                                } else {
+
+                                    addNotifToDB(notifID, createdByUserId, assignedUserId, scheduleName, "New schedule created", notifDate, "false").then(result => {
+
+                                        if (result == -1) {
+                                            res.status(200).json({
+                                                success: false,
+                                                error: "",
+                                                data: {},
+                                                msg: ""
+                                            });
+                                        } else {
+                                            res.status(200).json({
+                                                success: true,
+                                                error: "",
+                                                data: {},
+                                                msg: ""
+                                            });
+                                        }
+
+
+                                    });
+
+
+
+                                }
+
+                            });
+
+                        }
+
                     });
                 }
 
@@ -581,6 +632,82 @@ app.use("/API/web/addSchedule", function(req, res, next) {
     });
 
 });
+
+
+async function addNotifToDB(notifID, createdByUserId, assignedUserId, scheduleName, description, notifDate, readStatus) {
+    let sqlQuery = "INSERT INTO notification VALUES ('" + notifID + "', '" + createdByUserId + "', '" + assignedUserId + "', '" + scheduleName + "', '" + description + "','" + notifDate + "','" + readStatus + "');";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
+async function getDeviceToken(userID) {
+    let sqlQuery = "SELECT DeviceToken FROM user WHERE ID = '" + userID + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(result[0]['DeviceToken']);
+            }
+        });
+
+    });
+}
+
+async function sendNotification(deviceToken, date) {
+
+    const resp = await axios({
+        method: "POST",
+        url: `https://fcm.googleapis.com/fcm/send`,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "key=AAAAcYLqWw8:APA91bGpPi9OVUvoBhUR6RHt4iSo4mYMCFt6gHVEffNDyfgeTgJQgMk0HJi29pbeLxQW1CVOM1dIhXrE9I_j-VWN7iVtD5p4UVzY3J1D0Ds3ttneJgWziewQCgLnz8MsUdBt3mjSBiYx", // API KEY
+        },
+        data: {
+            "to": deviceToken,
+            "collapse_key": "type_a",
+            "notification": {
+                "body": "You have a new schedule on " + date,
+                "title": "New schedule"
+            },
+            "data": {
+                "body": "You have a new schedule on " + date,
+                "title": "New schedule",
+                "key_1": "Value for key_1",
+                "key_2": "Value for key_2"
+            }
+        },
+    });
+
+
+    return new Promise((resolve, reject) => {
+
+
+        if (resp['data']['success'] == 1) {
+
+            resolve(1);
+        } else {
+            resolve(-1);
+        }
+
+
+
+
+    });
+}
+
 
 app.use("/API/web/getTransactionList", function(req, res, next) {
 
@@ -1947,6 +2074,7 @@ app.use("/API/mobile/login", function(req, res, next) {
 
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
+    var deviceToken = req.body.deviceToken;
 
     checkExistingAccountMobile(emailAddress).then(result => {
         if (result == 0) {
@@ -1967,9 +2095,9 @@ app.use("/API/mobile/login", function(req, res, next) {
                     });
                 } else if (result == 1) {
 
-                    getMobileUserData(emailAddress).then(result => {
+                    setDeviceToken(emailAddress, deviceToken).then(result => {
 
-                        if (result == 0) {
+                        if (result == -1) {
                             res.status(200).json({
                                 success: false,
                                 error: "",
@@ -1977,12 +2105,29 @@ app.use("/API/mobile/login", function(req, res, next) {
                                 msg: ""
                             });
                         } else {
-                            res.status(200).json({
-                                success: true,
-                                error: "",
-                                data: result,
-                                msg: ""
+
+                            getMobileUserData(emailAddress).then(result => {
+
+
+                                if (result == -1) {
+                                    res.status(200).json({
+                                        success: false,
+                                        error: "",
+                                        data: {},
+                                        msg: ""
+                                    });
+                                } else {
+                                    res.status(200).json({
+                                        success: true,
+                                        error: "",
+                                        data: result,
+                                        msg: ""
+                                    });
+                                }
+
                             });
+
+
                         }
 
                     });
@@ -1998,6 +2143,22 @@ app.use("/API/mobile/login", function(req, res, next) {
 
 
 });
+
+async function setDeviceToken(emailAddress, deviceToken) {
+    let sqlQuery = "UPDATE user SET DeviceToken = '" + deviceToken + "' WHERE EmailAddress = '" + emailAddress + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
 
 async function checkExistingAccountMobile(emailAddress) {
     let sqlQuery = "SELECT EXISTS(SELECT * FROM User WHERE EmailAddress = '" + emailAddress + "' AND MobileUser = 'true') AS result;";
@@ -2743,6 +2904,53 @@ async function solveBug(id) {
 
     });
 }
+
+
+
+
+app.use("/API/mobile/logout", function(req, res, next) {
+
+    var id = req.body.id;
+
+    resetDeviceToken(id).then(result => {
+        if (result == -1) {
+            res.status(200).json({
+                success: false,
+                error: "Failed to reset devide token!",
+                data: {},
+                msg: ""
+            });
+        } else {
+
+            res.status(200).json({
+                success: true,
+                error: "",
+                data: {},
+                msg: ""
+
+            });
+        }
+    });
+
+
+});
+
+async function resetDeviceToken(id) {
+    let sqlQuery = "UPDATE user SET DeviceToken = 'null' WHERE ID = '" + id + "';";
+
+    return new Promise((resolve, reject) => {
+
+        pool.query(sqlQuery, (err, result) => {
+            if (err) {
+                resolve(-1);
+            } else {
+                resolve(1);
+            }
+        });
+
+    });
+}
+
 
 
 module.exports = app;

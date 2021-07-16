@@ -128,7 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
                       );
                     });
 
-                    await Future.delayed(Duration(milliseconds: 500));
+                    await profileController.logOut(Common.loggedInUserData.iD);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => LoginView()),

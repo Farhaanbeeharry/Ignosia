@@ -1,6 +1,6 @@
 class ApiUrl {
   static String baseURL = 'http://127.0.0.1:90/API/web/';
-
+static const fcmURL = "https://fcm.googleapis.com/fcm/send";
   static const String login = 'login';
   static const String forgotPassword = 'forgotPassword';
   static const String resetPassword = 'resetPassword';

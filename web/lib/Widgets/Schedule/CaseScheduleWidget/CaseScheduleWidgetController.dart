@@ -18,20 +18,9 @@ class CaseScheduleController {
   Future<void> addSchedule(CaseModel data, BuildContext context, Function refreshData, Function clearInputs) async {
     var uuid = Uuid();
     String id = uuid.v1();
+    String notifID = uuid.v1();
 
-    var body = {
-      "id": id,
-      "createdByUserId": Common.loggedInData.iD,
-      "assignedUserId": SetSchedule.selectedUserID,
-      "caseID": data.iD,
-      "scheduleName": data.name,
-      "location": data.location,
-      "date": SetSchedule.selectedDate,
-      "time": SetSchedule.selectedTime,
-      "name": data.name,
-      "phoneNumber": data.phoneNumber,
-      "notes": data.notes,
-    };
+    var body = {"id": id, "createdByUserId": Common.loggedInData.iD, "assignedUserId": SetSchedule.selectedUserID, "caseID": data.iD, "scheduleName": data.name, "location": data.location, "date": SetSchedule.selectedDate, "time": SetSchedule.selectedTime, "name": data.name, "phoneNumber": data.phoneNumber, "notes": data.notes, "notifID": notifID, "notifDate": DateTime.now().toString()};
 
     if (checkFreeMember(SetSchedule.selectedUserID)) {
       ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.addSchedule), body);

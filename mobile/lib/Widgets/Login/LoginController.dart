@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ignosia/Common/API.dart';
@@ -22,10 +23,13 @@ class LoginController {
   );
 
   Future<bool> login(String emailAddress, String password, BuildContext context) async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String token = await messaging.getToken();
+
     password = Encrypt().encryptPassword(password); //encrypt password
     emailAddress = emailAddress.toLowerCase();
 
-    var body = {"emailAddress": emailAddress, "password": password};
+    var body = {"emailAddress": emailAddress, "password": password, "deviceToken": token};
 
     ResponseModel response = await API().post(ApiUrl.getURL(ApiUrl.login), body);
 
