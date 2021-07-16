@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Login/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Widgets/Login/LoginView.dart';
 
 class ResetPasswordSuccessfulView extends StatefulWidget {
   @override

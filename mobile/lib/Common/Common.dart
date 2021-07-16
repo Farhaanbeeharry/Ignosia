@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/BeneficiaryModel.dart';
-import 'package:mobile/Model/UserModel.dart';
 import 'package:flutter/material.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Model/BeneficiaryModel.dart';
+import 'package:ignosia/Model/UserModel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Common {

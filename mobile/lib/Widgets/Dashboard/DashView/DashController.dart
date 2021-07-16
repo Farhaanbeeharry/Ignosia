@@ -1,8 +1,8 @@
-import 'package:mobile/Common/API.dart';
-import 'package:mobile/Common/ApiUrl.dart';
-import 'package:mobile/Model/BeneficiaryModel.dart';
-import 'package:mobile/Model/DashboardModel.dart';
-import 'package:mobile/Model/ResponseModel.dart';
+import 'package:ignosia/Common/API.dart';
+import 'package:ignosia/Common/ApiUrl.dart';
+import 'package:ignosia/Model/BeneficiaryModel.dart';
+import 'package:ignosia/Model/DashboardModel.dart';
+import 'package:ignosia/Model/ResponseModel.dart';
 
 class DashController {
   List<Beneficiaries> maleList = new List<Beneficiaries>();

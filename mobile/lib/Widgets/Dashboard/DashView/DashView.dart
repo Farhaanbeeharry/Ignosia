@@ -1,9 +1,9 @@
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Dashboard/DashView/DashWidget/GenderWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Widgets/Dashboard/DashView/DashWidget/GenderWidget.dart';
 
 import 'DashController.dart';
 

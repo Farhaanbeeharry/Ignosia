@@ -1,5 +1,5 @@
-import 'package:mobile/Common/Stem.dart';
 import 'package:flutter/material.dart';
+import 'package:ignosia/Common/Stem.dart';
 
 class ScheduleWidgetController {
   Widget doneBtnWidget = Text(

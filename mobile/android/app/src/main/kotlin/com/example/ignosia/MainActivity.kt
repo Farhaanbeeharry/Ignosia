@@ -1,4 +1,4 @@
-package com.farhaan.mobile
+package com.example.ignosia
 
 import io.flutter.embedding.android.FlutterActivity
 

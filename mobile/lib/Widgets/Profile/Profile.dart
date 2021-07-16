@@ -1,10 +1,10 @@
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Login/LoginView.dart';
-import 'package:mobile/Widgets/Profile/ProfileController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Widgets/Login/LoginView.dart';
+import 'package:ignosia/Widgets/Profile/ProfileController.dart';
 
 class ProfileView extends StatefulWidget {
   @override

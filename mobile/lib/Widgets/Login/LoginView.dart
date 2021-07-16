@@ -1,15 +1,15 @@
 import 'dart:ui';
 
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Common/Validator.dart';
-import 'package:mobile/Widgets/Dashboard/Dashboard.dart';
-import 'package:mobile/Widgets/Login/ForgotPassword/ForgotPassword.dart';
-import 'package:mobile/Widgets/Login/LoginController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Common/Validator.dart';
+import 'package:ignosia/Widgets/Dashboard/Dashboard.dart';
+import 'package:ignosia/Widgets/Login/ForgotPassword/ForgotPassword.dart';
+import 'package:ignosia/Widgets/Login/LoginController.dart';
 import 'package:validators/validators.dart';
 
 import 'SignUp/SignUpView.dart';

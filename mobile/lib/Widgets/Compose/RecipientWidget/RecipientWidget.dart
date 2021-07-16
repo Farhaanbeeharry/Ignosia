@@ -1,10 +1,10 @@
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/RecipientModel.dart';
-import 'package:mobile/Widgets/Compose/EmailWidget/EmailWidget.dart';
-import 'package:mobile/Widgets/Compose/RecipientWidget/RecipientController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Model/RecipientModel.dart';
+import 'package:ignosia/Widgets/Compose/EmailWidget/EmailWidget.dart';
+import 'package:ignosia/Widgets/Compose/RecipientWidget/RecipientController.dart';
 
 class RecipientWidget extends StatefulWidget {
   final RecipientModel recipient;

@@ -1,6 +1,6 @@
-# mobile
+# ignosia
 
-Digitalisation of Paper-Based System of NGOs
+Digitalisation system of NGO
 
 ## Getting Started
 

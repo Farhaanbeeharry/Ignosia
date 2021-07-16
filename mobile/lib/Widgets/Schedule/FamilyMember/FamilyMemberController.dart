@@ -1,14 +1,14 @@
-import 'package:mobile/Common/API.dart';
-import 'package:mobile/Common/ApiUrl.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/BeneficiaryModel.dart';
-import 'package:mobile/Model/ResponseModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Common/API.dart';
+import 'package:ignosia/Common/ApiUrl.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Model/BeneficiaryModel.dart';
+import 'package:ignosia/Model/ResponseModel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:uuid/uuid.dart';
 

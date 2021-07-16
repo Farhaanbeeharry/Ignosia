@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Login/ForgotPassword/ForgotPasswordController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Widgets/Login/ForgotPassword/ForgotPasswordController.dart';
 import 'package:validators/validators.dart';
 
 class ForgotPasswordView extends StatefulWidget {

@@ -98,7 +98,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   day_night_time_picker:
     dependency: "direct main"
     description:
@@ -140,28 +140,42 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3"
+    version: "1.4.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "4.0.1"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1+1"
+    version: "1.1.0"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.3"
+    version: "10.0.4"
+  firebase_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_messaging_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3"
+  firebase_messaging_web:
+    dependency: transitive
+    description:
+      name: firebase_messaging_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   fl_chart:
     dependency: "direct main"
     description:
@@ -239,35 +253,35 @@ packages:
       name: geocoding
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "2.0.0"
   geocoding_platform_interface:
     dependency: transitive
     description:
       name: geocoding_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1+1"
+    version: "2.0.0"
   geolocator:
     dependency: "direct main"
     description:
       name: geolocator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.2.1"
+    version: "7.3.0"
   geolocator_platform_interface:
     dependency: transitive
     description:
       name: geolocator_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.9"
+    version: "2.3.2"
   geolocator_web:
     dependency: transitive
     description:
       name: geolocator_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.0.5"
   http:
     dependency: transitive
     description:
@@ -393,7 +407,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "2.0.1"
   pointycastle:
     dependency: transitive
     description:
@@ -401,20 +415,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.5"
   random_string:
     dependency: transitive
     description:
       name: random_string
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.3.1"
   rflutter_alert:
     dependency: "direct main"
     description:
@@ -511,48 +518,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
-  url_launcher:
-    dependency: transitive
-    description:
-      name: url_launcher
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.7.10"
-  url_launcher_linux:
-    dependency: transitive
-    description:
-      name: url_launcher_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+4"
-  url_launcher_macos:
-    dependency: transitive
-    description:
-      name: url_launcher_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+9"
-  url_launcher_platform_interface:
-    dependency: transitive
-    description:
-      name: url_launcher_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.9"
-  url_launcher_web:
-    dependency: transitive
-    description:
-      name: url_launcher_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.5+3"
-  url_launcher_windows:
-    dependency: transitive
-    description:
-      name: url_launcher_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+3"
   uuid:
     dependency: "direct main"
     description:

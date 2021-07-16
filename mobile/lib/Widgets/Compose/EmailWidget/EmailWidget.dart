@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Compose/EmailWidget/EmailWidgetController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Widgets/Compose/EmailWidget/EmailWidgetController.dart';
 
 class EmailWidget extends StatefulWidget {
   final String firstName, lastName, emailAddress, id;

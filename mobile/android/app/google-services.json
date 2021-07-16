@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "615945444599",
-    "project_id": "ignosia-93581",
-    "storage_bucket": "ignosia-93581.appspot.com"
+    "project_number": "487527701263",
+    "project_id": "ignosia-f6316",
+    "storage_bucket": "ignosia-f6316.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:615945444599:android:e04074d46cac41837407f2",
+        "mobilesdk_app_id": "1:487527701263:android:8e34f27baf19f53aa5bc7a",
         "android_client_info": {
-          "package_name": "com.farhaan.mobile"
+          "package_name": "com.example.ignosia"
         }
       },
       "oauth_client": [
         {
-          "client_id": "615945444599-1a35qr5r4ep78pmjli3b5bbk491nnd4f.apps.googleusercontent.com",
+          "client_id": "487527701263-god5v8564bkoft4ko6veijfvil736nqr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDW9fwQSXgS05GUJ_Erlc8G9TTjmkq_Czw"
+          "current_key": "AIzaSyCrr84yMp2VI_5KL9WbngWZzc715UozZ7Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "615945444599-1a35qr5r4ep78pmjli3b5bbk491nnd4f.apps.googleusercontent.com",
+              "client_id": "487527701263-god5v8564bkoft4ko6veijfvil736nqr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:mobile/Widgets/Login/LoginView.dart';
 import 'package:flutter/material.dart';
+import 'package:ignosia/Widgets/Login/LoginView.dart';
 
 import 'Common/Stem.dart';
 

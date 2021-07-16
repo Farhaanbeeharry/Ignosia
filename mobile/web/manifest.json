@@ -1,11 +1,11 @@
 {
-    "name": "mobile",
-    "short_name": "mobile",
+    "name": "ignosia",
+    "short_name": "ignosia",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Digitalisation of Paper-Based System of NGOs",
+    "description": "Digitalisation system of NGO",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

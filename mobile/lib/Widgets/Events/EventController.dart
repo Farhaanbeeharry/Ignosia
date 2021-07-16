@@ -1,12 +1,12 @@
-import 'package:mobile/Common/API.dart';
-import 'package:mobile/Common/ApiUrl.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/EventModel.dart';
-import 'package:mobile/Model/ResponseModel.dart';
-import 'package:mobile/Widgets/Events/EventWidget/EventWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ignosia/Common/API.dart';
+import 'package:ignosia/Common/ApiUrl.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Model/EventModel.dart';
+import 'package:ignosia/Model/ResponseModel.dart';
+import 'package:ignosia/Widgets/Events/EventWidget/EventWidget.dart';
 
 class EventController {
   bool listLoaded = false;

@@ -1,7 +1,7 @@
-import 'package:mobile/Widgets/Dashboard/DashboardController.dart';
 import 'package:flashy_tab_bar/flashy_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ignosia/Widgets/Dashboard/DashboardController.dart';
 
 class HomePage extends StatefulWidget {
   @override

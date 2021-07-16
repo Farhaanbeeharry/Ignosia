@@ -1,12 +1,12 @@
-import 'package:mobile/Common/API.dart';
-import 'package:mobile/Common/ApiUrl.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/ResponseModel.dart';
-import 'package:mobile/Model/ScheduleModel.dart';
-import 'package:mobile/Widgets/Schedule/ScheduleWidget/ScheduleWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ignosia/Common/API.dart';
+import 'package:ignosia/Common/ApiUrl.dart';
+import 'package:ignosia/Common/Common.dart';
+import 'package:ignosia/Common/Stem.dart';
+import 'package:ignosia/Model/ResponseModel.dart';
+import 'package:ignosia/Model/ScheduleModel.dart';
+import 'package:ignosia/Widgets/Schedule/ScheduleWidget/ScheduleWidget.dart';
 
 class ScheduleController {
   bool listLoaded = false;
