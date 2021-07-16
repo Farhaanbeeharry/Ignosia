@@ -1,5 +1,5 @@
+import 'package:Ignosia/Common/Stem.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/Common/Stem.dart';
 
 class ProfileController {
   Widget logOutBtn = Text(

@@ -1,12 +1,12 @@
+import 'package:Ignosia/Common/API.dart';
+import 'package:Ignosia/Common/ApiUrl.dart';
+import 'package:Ignosia/Common/Stem.dart';
+import 'package:Ignosia/Model/RecipientModel.dart';
+import 'package:Ignosia/Model/ResponseModel.dart';
+import 'package:Ignosia/Widgets/Compose/RecipientWidget/RecipientWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/Common/API.dart';
-import 'package:mobile/Common/ApiUrl.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/RecipientModel.dart';
-import 'package:mobile/Model/ResponseModel.dart';
-import 'package:mobile/Widgets/Compose/RecipientWidget/RecipientWidget.dart';
 
 class ComposeController {
   bool listLoaded = false;

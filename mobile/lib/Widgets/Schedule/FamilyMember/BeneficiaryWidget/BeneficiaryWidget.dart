@@ -1,9 +1,9 @@
+import 'package:Ignosia/Common/Common.dart';
+import 'package:Ignosia/Common/Stem.dart';
+import 'package:Ignosia/Model/BeneficiaryModel.dart';
+import 'package:Ignosia/Widgets/Schedule/FamilyMember/BeneficiaryView/BeneficiaryView.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/BeneficiaryModel.dart';
-import 'package:mobile/Widgets/Schedule/FamilyMember/BeneficiaryView/BeneficiaryView.dart';
 
 class BeneficiaryWidget extends StatefulWidget {
   final BeneficiaryModel beneficiary;

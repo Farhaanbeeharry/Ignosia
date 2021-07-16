@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:Ignosia/Model/ResponseModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile/Model/ResponseModel.dart';
 
 class API {
   Future<ResponseModel> post(String url, var body) async {

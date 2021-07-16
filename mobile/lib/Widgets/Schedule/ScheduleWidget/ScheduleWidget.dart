@@ -1,11 +1,11 @@
+import 'package:Ignosia/Common/Common.dart';
+import 'package:Ignosia/Common/Stem.dart';
+import 'package:Ignosia/Model/ScheduleModel.dart';
+import 'package:Ignosia/Widgets/Schedule/FamilyMember/FamilyMemberView.dart';
+import 'package:Ignosia/Widgets/Schedule/MarkAsDoneView/MarkAsDoneView.dart';
+import 'package:Ignosia/Widgets/Schedule/ScheduleWidget/ScheduleWidgetController.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/ScheduleModel.dart';
-import 'package:mobile/Widgets/Schedule/FamilyMember/FamilyMemberView.dart';
-import 'package:mobile/Widgets/Schedule/MarkAsDoneView/MarkAsDoneView.dart';
-import 'package:mobile/Widgets/Schedule/ScheduleWidget/ScheduleWidgetController.dart';
 
 class ScheduleWidget extends StatefulWidget {
   final ScheduleModel schedule;

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Ignosia/Widgets/Login/LoginView.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Login/LoginView.dart';
+
+import 'Common/Stem.dart';
 
 void main() {
   runApp(LandingPage());

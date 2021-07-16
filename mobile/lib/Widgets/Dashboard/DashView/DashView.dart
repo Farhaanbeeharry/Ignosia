@@ -1,10 +1,11 @@
+import 'package:Ignosia/Common/Stem.dart';
+import 'package:Ignosia/Widgets/Dashboard/DashView/DashWidget/GenderWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Widgets/Dashboard/DashView/DashController.dart';
-import 'package:mobile/Widgets/Dashboard/DashView/DashWidget/GenderWidget.dart';
+
+import 'DashController.dart';
 
 class DashView extends StatefulWidget {
   @override

@@ -1,10 +1,10 @@
+import 'package:Ignosia/Common/Common.dart';
+import 'package:Ignosia/Common/Stem.dart';
+import 'package:Ignosia/Model/EventModel.dart';
+import 'package:Ignosia/Widgets/Events/DetailedEventWidget/DetailedEventWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile/Common/Common.dart';
-import 'package:mobile/Common/Stem.dart';
-import 'package:mobile/Model/EventModel.dart';
-import 'package:mobile/Widgets/Events/DetailedEventWidget/DetailedEventWidget.dart';
 
 class EventWidget extends StatefulWidget {
   final EventModel event;
