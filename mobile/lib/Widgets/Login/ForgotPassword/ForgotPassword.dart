@@ -76,7 +76,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                 ),
                               ),
                               SizedBox(
-                                width: 15.0,
+                                width: 10.0,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),

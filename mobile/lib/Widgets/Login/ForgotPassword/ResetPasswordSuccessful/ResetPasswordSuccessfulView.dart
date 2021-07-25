@@ -85,7 +85,7 @@ class _ResetPasswordSuccessfulViewState extends State<ResetPasswordSuccessfulVie
                             height: 20.0,
                           ),
                           Text(
-                            'You will received an email with the new password to your email address. Please check and login with the new password.',
+                            'You will receive an email with the new password to your email address. Please check and login with the new password.',
                             textAlign: TextAlign.justify,
                             style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: Stem.regular),
                           ),

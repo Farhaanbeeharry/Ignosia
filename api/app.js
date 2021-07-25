@@ -106,7 +106,6 @@ app.use("/API/web/forgotPassword", function(req, res, next) {
 
             addResetKeyToUser(emailAddress).then(result => {
 
-
                 if (result == 0) {
                     res.status(200).json({
                         success: false,
