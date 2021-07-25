@@ -1931,13 +1931,13 @@ async function sendNewMemberEmail(emailAddress, password) {
 }
 
 async function sendEmailWithSubject(subject, content, emailAddress) {
+
     var mailOptions = {
         from: '"Support" <support@ignosia.com>',
         to: emailAddress,
         subject: subject,
         html: content,
     };
-
 
     return new Promise((resolve, reject) => {
 
