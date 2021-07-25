@@ -97,7 +97,6 @@ app.use("/API/web/login", function(req, res, next) {
 
 app.use("/API/web/forgotPassword", function(req, res, next) {
 
-
     var emailAddress = req.body.emailAddress;
 
     checkValidEmailAddressAndRegistered(emailAddress).then(result => {
