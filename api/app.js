@@ -97,6 +97,7 @@ app.use("/API/web/login", function(req, res, next) {
 
 app.use("/API/web/forgotPassword", function(req, res, next) {
 
+
     var emailAddress = req.body.emailAddress;
 
     checkValidEmailAddressAndRegistered(emailAddress).then(result => {
@@ -104,6 +105,7 @@ app.use("/API/web/forgotPassword", function(req, res, next) {
         if (result == 1) {
 
             addResetKeyToUser(emailAddress).then(result => {
+
 
                 if (result == 0) {
                     res.status(200).json({
@@ -1931,13 +1933,13 @@ async function sendNewMemberEmail(emailAddress, password) {
 }
 
 async function sendEmailWithSubject(subject, content, emailAddress) {
-
     var mailOptions = {
         from: '"Support" <support@ignosia.com>',
         to: emailAddress,
         subject: subject,
         html: content,
     };
+
 
     return new Promise((resolve, reject) => {
 

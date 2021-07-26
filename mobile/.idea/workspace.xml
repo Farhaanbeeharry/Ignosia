@@ -7,7 +7,6 @@
     <list default="true" id="aad4d5d6-a58e-4aaa-bb71-d8de4dc78d32" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Common/ApiUrl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/ApiUrl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Common/Encryptor.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Common/Encryptor.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/Login/ForgotPassword/ForgotPassword.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/Login/ForgotPassword/ForgotPassword.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Widgets/Login/ForgotPassword/ResetPasswordSuccessful/ResetPasswordSuccessfulView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Widgets/Login/ForgotPassword/ResetPasswordSuccessful/ResetPasswordSuccessfulView.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../web/lib/Common/ApiUrl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../web/lib/Common/ApiUrl.dart" afterDir="false" />
